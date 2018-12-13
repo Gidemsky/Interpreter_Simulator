@@ -1,6 +1,6 @@
 #include <iostream>
 
 int main() {
-    std::cout << "DBD - test" << std::endl;
+    std::cout << "Hello, World to david the brother!" << std::endl;
     return 0;
 }
