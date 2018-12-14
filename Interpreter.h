@@ -8,19 +8,17 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-
-
-
 using namespace std;
 
 class Interpreter {
-    bool fileLoaded;
-    fstream simulatorUserCode;
-    string lexer;
+    bool isFileLoaded;
+    fstream simulatorUserFile;
+    string flightUserInput;
 public:
     Interpreter();
-    Interpreter(fstream flightCode);
-    void loadFileData(fstream *dataFile, bool *isLoaded);
+    explicit Interpreter(string userFileName);
+    string fileReader(fstream *dataFile, bool isLoaded, string& userFileName);
+    string lexer(string line, string split);
 };
 
 #endif //SIMULATOR_INTERPRETER_H

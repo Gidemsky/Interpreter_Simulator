@@ -4,67 +4,63 @@
 
 #include "Interpreter.h"
 
+#define CMD_SPLIT "|"
+#define FILE_SPACE " "
 
+/**
+ * Interpreter's Constructor
+ */
 Interpreter::Interpreter(){
-    fileLoaded = false;
+    isFileLoaded = false;//TODO:add the flight user data from the Cin?
 }
-
-Interpreter::Interpreter(fstream flightCode){
-    fileLoaded = false;
-
+/**
+ * Interpreter's Constructor
+ * @param userFileName - the name of the user's flights commands
+ */
+Interpreter::Interpreter(string userFileName){
+    isFileLoaded = false;//TODO:check if necessary
+    this->flightUserInput = fileReader(&simulatorUserFile, this->isFileLoaded, userFileName);
+    cout<<flightUserInput<<endl;//TODO:for debuging reasons
 }
-
-void Interpreter::loadFileData(fstream *dataFile, bool *isLoaded) {
-    vector <string> lineFilds;
-    string line;
+/**
+ * Function Name: FileReader
+ * @param dataFile - A pointer to the user's flight commands file
+ * @param isLoaded - TODO:check if necessary
+ * @param fileName - The user's flight commands file name as.txt. sends via the register
+ * @return all the commands as one string splited by the sign '|'
+ */
+string Interpreter::fileReader(fstream *dataFile, bool isLoaded, string& fileName) {
+    string line, commandsFileLine;
     dataFile->open(fileName);
+    //checks if the file has been opened successfully
     if (!dataFile->is_open()) {
-        dataFile->open(fileName, fstream::out);
-        if (!dataFile->is_open()) {
-            throw "ERROR: CAN'T OPEN THE FILE";
-        }
-        dataFile->close();
-        return;
+        throw "ERROR: CAN'T OPEN THE FILE";
     }
-    if (!*isLoaded) {
+        //run the lexer functions as far as there is a non empty line
         while (getline(*dataFile, line)) {
-            lineFilds = lineParser(line, " | ");
-            enterObjData(lineFilds, section);
+            commandsFileLine += lexer(line, FILE_SPACE);
+            //enterObjData(lineFilds, section);//TODO:check if needed for the map
         }
-        if (section == PLANE) {
-            this->generator.setPlanes(static_cast<int>(companyFleet.size()));
-        } else if (section == EMPLOYEE) {
-            this->generator.setEmployees(static_cast<int>(employeeMap.size()));
-            for (int i = 1; i <= employeeMap.size(); i++) {
-                employeeMap[to_string(i)]->setEmployer(employeeMap[to_string(i)]);
-            }
-        } else if (section == FLIGHT) {
-            this->generator.setFlights(static_cast<int>(FlightsMap.size()));
-        }
-        //mark the files as readed
-        *isLoaded = true;
-    }
+        cout<<commandsFileLine<<endl;//TODO:for debuging reasons
+        //*isLoaded = true;TODO:check if necessary
     dataFile->close();
-    if (section == SCHEDUALE) {
-        for (int i = 1; i <= fleetSchedule.size(); i++) {
-            if (fleetSchedule[to_string(i)] == "") {
-                continue;
-            }
-            companyFleet[fleetSchedule[to_string(i)]]->
-                    setOccupiedDatesList(FlightsMap[to_string(i)]->getDate());
-        }
-    } else if (section == EMPLOYEE_SCHEDULE) {
-        if (FlightsMap.size() != 0 && crewSchedule.size() != 0) {
-            tempCrewSchedule = crewSchedule;
-            for (int i = 1; i <= FlightsMap.size(); i++) {
-                while (tempCrewSchedule.find(to_string(i)) != tempCrewSchedule.end()) {
-                    FlightsMap[to_string(i)]->setAssignedCrew(
-                            employeeMap[tempCrewSchedule.find(to_string(i))->second]);
-                    employeeMap[tempCrewSchedule.find(to_string(i))->second]->setOccupiedDatesList(
-                            FlightsMap[to_string(i)]->getDate());
-                    tempCrewSchedule.erase(tempCrewSchedule.find(to_string(i)));
-                }
-            }
-        }
+    return(commandsFileLine);
+}
+/**
+ * Function Name: lexer
+ * @param line - the line for lexing
+ * @param split - the split sign between the commands
+ * @return - a string that ready to be add to all commands string (commandsFileLine)
+ */
+string Interpreter::lexer(string line, string split) {
+    size_t pos = 0;
+    string dataTaken;
+    //run the loop as far as it has space bars
+    while ((pos = line.find(split)) != string::npos) {
+        dataTaken += line.substr(0, pos) + CMD_SPLIT;
+        line.erase(0, pos + split.length());
     }
+    //adds the last string left in the line
+    dataTaken += line.substr(0, pos) + CMD_SPLIT;
+    return dataTaken;
 }
