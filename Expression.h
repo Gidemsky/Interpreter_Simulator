@@ -6,7 +6,22 @@
 #define SIMULATOR_EXPRESSION_H
 
 class Expression {
-    virtual double calculate() = 0;
+
+    class BinaryExpression {
+    public:
+        virtual double calculate() = 0;
+    };
+
+    class UnaryExpression {
+    public:
+        virtual double calculate() = 0;
+    };
+
+    class Number {
+    public:
+        virtual double calculate() = 0;
+    };
+
 };
 
 #endif //SIMULATOR_EXPRESSION_H
