@@ -8,7 +8,8 @@
 /**
  * Constructor.
  */
-Plus::Plus(Expression* left, Expression* right):BinaryExpression(left, right) {
+Plus::Plus(Expression* left, Expression* right):
+    BinaryExpression(left, right) {
 }
 
 /**
