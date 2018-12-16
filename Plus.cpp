@@ -3,7 +3,6 @@
 //
 
 #include "Plus.h"
-#include "BinaryExpression.h"
 
 /**
  * Constructor.
