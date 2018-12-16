@@ -3,4 +3,4 @@ project(Simulator)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Simulator main.cpp Interpreter.cpp Interpreter.h BinaryExpression.cpp BinaryExpression.h Expression.h Plus.cpp Plus.h Number.cpp Number.h Div.cpp Div.h Mult.cpp Mult.h Minus.cpp Minus.h)
+add_executable(Simulator main.cpp Interpreter.cpp Interpreter.h BinaryExpression.cpp BinaryExpression.h Expression.h Plus.cpp Plus.h Number.cpp Number.h)

@@ -19,6 +19,7 @@ public:
     explicit Interpreter(string userFileName);
     string fileReader(fstream *dataFile, bool isLoaded, string& userFileName);
     string lexer(string line, string split);
+
 };
 
 #endif //SIMULATOR_INTERPRETER_H
