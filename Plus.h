@@ -6,8 +6,12 @@
 #define SIMULATOR_PLUS_H
 
 
-class Plus {
+#include "BinaryExpression.h"
 
+class Plus : public BinaryExpression{
+public:
+    Plus(Expression* left, Expression* right);
+    virtual double calculate();
 };
 
 

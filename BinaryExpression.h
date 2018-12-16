@@ -8,11 +8,16 @@
 #include "Expression.h"
 
 class BinaryExpression : public Expression {
-    Expression first_exp;
-    Expression second_exp;
+protected:
+    Expression* left_arg;
+    Expression* right_arg;
 
 public:
-    virtual double calculate()=0;
+    // constructor
+    BinaryExpression(Expression* left, Expression* right);
+    virtual double calculate() = 0;
+    virtual Expression* getLeftArg();
+    virtual Expression* getRightArg();
 };
 
 #endif //SIMULATOR_BINARYEXPRESSION_H
