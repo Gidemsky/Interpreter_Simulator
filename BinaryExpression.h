@@ -12,7 +12,7 @@ class BinaryExpression : public Expression {
     Expression second_exp;
 
 public:
-    virtual double calculate();
+    virtual double calculate()=0;
 };
 
 #endif //SIMULATOR_BINARYEXPRESSION_H
