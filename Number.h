@@ -5,8 +5,13 @@
 #ifndef SIMULATOR_NUMBER_H
 #define SIMULATOR_NUMBER_H
 
+#include "Expression.h"
 
-class Number {
+class Number : public Expression {
+    double num;
+
+public:
+    virtual double calculate();
 
 };
 

@@ -3,3 +3,11 @@
 //
 
 #include "Number.h"
+
+/**
+ * Calculate.
+ * @return the number.
+ */
+double Number::calculate() {
+    return this->num;
+}
