@@ -4,7 +4,8 @@
 
 #include "Interpreter.h"
 
-#define CMD_SPLIT "|"
+#define CMD_SPLIT "#"
+#define CMD_PARAMETER "|"
 #define FILE_SPACE " "
 
 /**
@@ -57,7 +58,7 @@ string Interpreter::lexer(string line, string split) {
     string dataTaken;
     //run the loop as far as it has space bars
     while ((pos = line.find(split)) != string::npos) {
-        dataTaken += line.substr(0, pos) + CMD_SPLIT;
+        dataTaken += line.substr(0, pos) + CMD_PARAMETER;
         line.erase(0, pos + split.length());
     }
     //adds the last string left in the line
