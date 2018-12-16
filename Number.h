@@ -11,6 +11,8 @@ class Number : public Expression {
     double num;
 
 public:
+    // constructor
+    Number(double num);
     virtual double calculate();
 
 };

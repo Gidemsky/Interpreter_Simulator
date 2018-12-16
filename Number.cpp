@@ -5,6 +5,14 @@
 #include "Number.h"
 
 /**
+ * Constructor.
+ * @param num is the number.
+ */
+Number::Number(double num) {
+    this->num = num;
+}
+
+/**
  * Calculate.
  * @return the number.
  */
