@@ -22,6 +22,7 @@ Interpreter::Interpreter(string userFileName){
     isFileLoaded = false;//TODO:check if necessary
     this->flightUserInput = fileReader(&simulatorUserFile, this->isFileLoaded, userFileName);
     cout<<flightUserInput<<endl;//TODO:for debuging reasons
+    DataParser(this->flightUserInput,CMD_SPLIT);
 }
 /**
  * Function Name: FileReader
@@ -63,5 +64,74 @@ string Interpreter::lexer(string line, string split) {
     }
     //adds the last string left in the line
     dataTaken += line.substr(0, pos) + CMD_SPLIT;
+    dataTaken = dataTaken.substr(2,dataTaken.length());//earse the number from the beginning
     return dataTaken;
 }
+
+void Interpreter::DataParser(string strData, string strSpliter) {
+    vector<string> cmdData;
+    string lineData = strData;
+    size_t pos = 0;
+    string cmdParameters;
+    if (strSpliter == CMD_SPLIT) {
+        while ((pos = lineData.find(strSpliter)) != string::npos) {
+            cmdParameters = lineData.substr(0, pos);
+            DataParser(cmdParameters,CMD_PARAMETER);
+            //cmdData.push_back(cmdParameters);
+            lineData.erase(0, pos + 1);
+        }
+        cmdData.push_back(lineData);
+    } else {
+        while ((pos = lineData.find(strSpliter)) != string::npos) {
+            cmdParameters = lineData.substr(0, pos);//TODO:check if might be faster only with one substring
+            cmdData.push_back(cmdParameters);
+            lineData.erase(0, pos + 1);
+        }
+        cmdData.push_back(lineData);
+        if(cmdData[0]!="Val"){
+            data.setSimulatorData(cmdData);
+        } else {
+            data.setPlaneData(cmdData);
+        }
+    }
+}
+
+//    string section;
+//    vector<string> parameters;
+//    string lineData = dataInput;
+//    size_t pos = 0;
+//    string dataTaken;
+//    while ((pos = lineData.find('#')) != string::npos) {
+//        dataTaken = lineData.substr(0, pos);
+//        while
+//        parameters.push_back(dataTaken);
+//        lineData.erase(0, pos + 1);
+//    }
+//    parameters.push_back(lineData);
+//    //return parameters;
+//}
+
+//vector <string> lineParser(string line, string strSpliter) {
+//    vector <string> listData;
+//    string lineData = line;
+//    size_t pos = 0;
+//    string dataTaken;
+//    while ((pos = lineData.find(strSpliter)) != string::npos) {
+//        dataTaken = lineData.substr(0, pos);
+//        listData.push_back(dataTaken);
+//        lineData.erase(0, pos + strSpliter.length());
+//    }
+//    listData.push_back(lineData);
+//    return listData;
+//}
+//
+//void enterObjData(vector <string> parameters, fileSection section) {
+//    int id = stoi(parameters[0]);
+//    switch (section) {
+//        case CUSTOMER: {
+//            string customerName = parameters[1];
+//            int priority = stoi(parameters[2]);
+//            myCustomer *curCustomer = new myCustomer(customerName, priority, id);
+//            this->customerMap.insert(pair<string, myCustomer *>(curCustomer->getID(), curCustomer));
+//            break;
+//        }
