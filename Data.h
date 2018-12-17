@@ -12,17 +12,18 @@
 using namespace std;
 
 class Data {
-    map<string,double> planeData;
+    //map<string,double> planeData;
+    map<string,string> planeData;
     map<string,string> simulatorData;
 public:
-    void setPlaneData(string symbol, string value);
+    //void setPlaneData(string symbol, string value);
     void setPlaneData(vector<string> planeData);
     void setSimulatorData(string cmd, string expression);
     void setSimulatorData(vector<string> cmdData);
 
     const map<string,double> &getPlaneData() const;
 
-    void setPlaneData(const map<string,double> &planeData);
+    //void setPlaneData(const map<string,string> &planeData);
 
     const map <string, string> &getSimulatorData() const;
 
