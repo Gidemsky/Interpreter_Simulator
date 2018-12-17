@@ -7,15 +7,18 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 using namespace std;
 
 class Data {
-    map<string,double > planeData;
-    map<string,string > simulatorData;
+    map<string,double> planeData;
+    map<string,string> simulatorData;
 public:
     void setPlaneData(string symbol, string value);
+    void setPlaneData(vector<string> planeData);
     void setSimulatorData(string cmd, string expression);
+    void setSimulatorData(vector<string> cmdData);
 
     const map<string,double> &getPlaneData() const;
 

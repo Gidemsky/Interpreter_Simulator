@@ -8,12 +8,14 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "Data.h"
 using namespace std;
 
 class Interpreter {
     bool isFileLoaded;
     fstream simulatorUserFile;
     string flightUserInput;
+    Data data;
     //enum
 
 public:
@@ -21,7 +23,7 @@ public:
     explicit Interpreter(string userFileName);
     string fileReader(fstream *dataFile, bool isLoaded, string& userFileName);
     string lexer(string line, string split);
-    void parse(string dataInput);
+    void DataParser(string strData, string strSpliter);
 };
 
 #endif //SIMULATOR_INTERPRETER_H
