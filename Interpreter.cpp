@@ -63,5 +63,22 @@ string Interpreter::lexer(string line, string split) {
     }
     //adds the last string left in the line
     dataTaken += line.substr(0, pos) + CMD_SPLIT;
+    dataTaken = dataTaken.substr(2,dataTaken.length());//earse the number from the beginning
     return dataTaken;
+}
+
+void Interpreter::parse(string dataInput) {
+    string section;
+    vector<string> parameters;
+    string lineData = dataInput;
+    size_t pos = 0;
+    string dataTaken;
+    while ((pos = lineData.find('#')) != string::npos) {
+        dataTaken = lineData.substr(0, pos);
+        while
+        parameters.push_back(dataTaken);
+        lineData.erase(0, pos + 1);
+    }
+    parameters.push_back(lineData);
+    //return parameters;
 }

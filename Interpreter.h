@@ -14,12 +14,14 @@ class Interpreter {
     bool isFileLoaded;
     fstream simulatorUserFile;
     string flightUserInput;
+    //enum
+
 public:
     Interpreter();
     explicit Interpreter(string userFileName);
     string fileReader(fstream *dataFile, bool isLoaded, string& userFileName);
     string lexer(string line, string split);
-
+    void parse(string dataInput);
 };
 
 #endif //SIMULATOR_INTERPRETER_H
