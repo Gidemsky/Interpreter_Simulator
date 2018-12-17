@@ -13,5 +13,4 @@ public:
     virtual double calculate();
 };
 
-
 #endif //SIMULATOR_MINUS_H
