@@ -13,7 +13,7 @@ class Connect : public Command{
     double port;
 public:
 
-    double execute();
+    double execute();//TODO:check maybe we need to do override
 
     Connect(const string &ip_address, string& port);
 
@@ -21,6 +21,5 @@ public:
 
     void setIp_address(const string &ip_address);
 };
-
 
 #endif //SIMULATOR_CONNECT_H

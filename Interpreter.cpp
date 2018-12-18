@@ -67,6 +67,7 @@ string Interpreter::lexer(string line, string split) {
         line.erase(0, pos + split.length());
     }
     //adds the last string left in the line
+    //deletes the number in the begging of the line
     dataTaken += line.substr(0, pos) + CMD_SPLIT;
     pos = dataTaken.find(".") + 1;
     dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
@@ -106,7 +107,7 @@ void Interpreter::DataParser(string strData, string strSpliter) {
         switch(commandClass)
         {
             case OPEN_DATA_SERVER: {
-                ce = new CommandExpression(new OpenDataServer(cmdData[1],cmdData[2]));
+                ce = new CommandExpression(new OpenDataServer(cmdData[1],cmdData[2]));//TODO: add calculate
                 data.setSimulatorData(cmdData[0],ce);
                 break;
             }

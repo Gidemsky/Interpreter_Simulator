@@ -9,5 +9,5 @@ CommandExpression::CommandExpression(Command* cmd) {
 }
 
 double CommandExpression::calculate() {
-
+    cmd->execute();
 }
