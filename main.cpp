@@ -5,6 +5,7 @@
 #include "Plus.h"
 #include "Number.h"
 #include "Neg.h"
+
 int main() {
     std::cout << "DBD LEGEND" << std::endl;
     Interpreter* check = new Interpreter("CommandTestFile.txt");

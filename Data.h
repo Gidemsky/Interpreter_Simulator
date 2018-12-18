@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "Expression.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ class Data {
     //map<string,double> planeData;
     map<string,string> planeData;
     map<string,string> simulatorData;
+    map<string,Expression*> simData;
     map<string,string> binds;
 public:
     const map<string, string> &getBinds() const;
@@ -24,6 +26,7 @@ public:
     //void setPlaneData(string symbol, string value);
     void setPlaneData(vector<string> planeData);
     void setSimulatorData(string cmd, string expression);
+    void setSimulatorData(string cmd,  Expression* ce);
     void setSimulatorData(vector<string> cmdData);
 
     const map<string,double> &getPlaneData() const;

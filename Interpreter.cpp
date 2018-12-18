@@ -3,6 +3,9 @@
 //
 
 #include "Interpreter.h"
+#include "CommandExpression.h"
+#include "Command.h"
+#include "OpenDataServer.h"
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
@@ -89,10 +92,42 @@ void Interpreter::DataParser(string strData, string strSpliter) {
             lineData.erase(0, pos + 1);
         }
         cmdData.push_back(lineData);
-        if(cmdData[0]=="var"){
-            data.setPlaneData(cmdData);
-        } else {
-            data.setSimulatorData(cmdData);
+        simulatorCommand commandClass = CMD_DICTIONARY[cmdData[0]];//TODO: add the switch case issues to function
+        CommandExpression* ce;
+        switch(commandClass)
+        {
+            case OPEN_DATA_SERVER: {
+                ce = new CommandExpression(new OpenDataServer(stod(cmdData[1]),stod(cmdData[2])));
+                data.setSimulatorData(cmdData[0],ce);
+                break;
+            }
+            case CONNECT: {
+                data.setSimulatorData(cmdData);
+                break;
+            }
+            case VAR: {
+                data.setBinds(cmdData);
+                break;
+            }
+            case PRINT: {
+                data.setSimulatorData(cmdData);
+                break;
+            }
+            case SLEEP: {
+                data.setSimulatorData(cmdData);
+                break;
+            }
+            case INIT: {
+                data.setSimulatorData(cmdData);
+                break;
+            }
+            default:
+                data.setSimulatorData(cmdData);
         }
+//        if(cmdData[0]=="var"){
+//
+//        } else {
+//            data.setSimulatorData(cmdData);
+//        }
     }
 }

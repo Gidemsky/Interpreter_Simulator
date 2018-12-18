@@ -3,6 +3,9 @@
 //
 
 #include "Data.h"
+#include "CommandExpression.h"
+#include "Command.h"
+#include "OpenDataServer.h"
 
 //const map<string, double> &Data::getPlaneData() const {
 //    return planeData;
@@ -39,6 +42,7 @@ void Data::setPlaneData(vector<string> planeData) {
 }
 
 void Data::setSimulatorData(vector<string> cmdData) {
+    //new CommandExpression(new OpenDataServer(stod(cmdData[1]),stod(cmdData[2])));
     int size_t = static_cast<int>(cmdData.size());
     string data;
     for(int i=1;i<(size_t-1);i++){
@@ -64,4 +68,8 @@ void Data::setBinds(vector<string> binders) {
     }
     data += binders[size_t-1];
     this->binds.insert(pair<string, string>(binders[1],data));
+}
+
+void Data::setSimulatorData(string cmd, Expression *ce) {
+    this->simData.insert(pair<string, Expression*>(cmd,ce));
 }
