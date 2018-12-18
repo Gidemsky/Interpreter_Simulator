@@ -94,56 +94,56 @@ void Interpreter::DataParser(string strData, string strSpliter) {
             lineData.erase(0, pos + 1);
         }
         cmdData.push_back(lineData);
-        simulatorCommand commandClass;
-        if(CMD_DICTIONARY.find(cmdData[0]) != CMD_DICTIONARY.end()){
-            commandClass = CMD_DICTIONARY[cmdData[0]];//TODO: add the switch case issues to function
-        } else {
-            commandClass = CMD_DICTIONARY["="];
-            if(cmdData[0]=="while" || cmdData[0]=="}") {//temporary condition
-                commandClass = CMD_DICTIONARY["temp"];
-            }
+        DataCreator(cmdData);
+    }
+}
+
+void Interpreter::DataCreator(vector<string> parameters) {
+    simulatorCommand commandClass;
+    if(CMD_DICTIONARY.find(parameters[0]) != CMD_DICTIONARY.end()){
+        commandClass = CMD_DICTIONARY[parameters[0]];//TODO: add the switch case issues to function
+    } else {
+        commandClass = CMD_DICTIONARY["="];
+        if(parameters[0]=="while" || parameters[0]=="}") {//temporary condition
+            commandClass = CMD_DICTIONARY["temp"];
         }
-        CommandExpression* ce;
-        switch(commandClass)
-        {
-            case OPEN_DATA_SERVER: {
-                ce = new CommandExpression(new OpenDataServer(cmdData[1],cmdData[2]));//TODO: add calculate
-                data.setSimulatorData(cmdData[0],ce);
-                break;
-            }
-            case CONNECT: {
-                ce = new CommandExpression(new Connect(cmdData[1],cmdData[2]));
-                data.setSimulatorData(cmdData[0],ce);
-                break;
-            }
-            case VAR: {
-                data.setBinds(cmdData);
-                break;
-            }
-            case PRINT: {
-                data.setSimulatorData(cmdData);
-                break;
-            }
-            case SLEEP: {
-                data.setSimulatorData(cmdData);
-                break;
-            }
-            case INIT: {
-                //data.setAirplaneData(cmdData[0],stod(cmdData[2]));
-                data.setPlaneData(cmdData);
-                break;
-            }
-            default:
-                data.setSimulatorData(cmdData);
+    }
+    CommandExpression* ce;
+    switch(commandClass)
+    {
+        case OPEN_DATA_SERVER: {
+            ce = new CommandExpression(new OpenDataServer(parameters[1],parameters[2]));//TODO: add calculate
+            data.setSimulatorData(parameters[0],ce);
+            break;
         }
+        case CONNECT: {
+            ce = new CommandExpression(new Connect(parameters[1],parameters[2]));
+            data.setSimulatorData(parameters[0],ce);
+            break;
+        }
+        case VAR: {
+            data.setBinds(parameters);
+            break;
+        }
+        case PRINT: {
+            data.setSimulatorData(parameters);
+            break;
+        }
+        case SLEEP: {
+            data.setSimulatorData(parameters);
+            break;
+        }
+        case INIT: {
+            //data.setAirplaneData(cmdData[0],stod(cmdData[2]));
+            data.setPlaneData(parameters);
+            break;
+        }
+        default:
+            data.setSimulatorData(parameters);
+    }
 //        if(cmdData[0]=="var"){
 //
 //        } else {
 //            data.setSimulatorData(cmdData);
 //        }
-    }
-}
-
-void Interpreter::DataCreator(vector<string> data) {
-
 }
