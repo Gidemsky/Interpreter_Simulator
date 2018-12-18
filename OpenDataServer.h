@@ -6,14 +6,17 @@
 #define SIMULATOR_OPENDATASERVER_H
 
 #include "Command.h"
+#include "ShuntingYard.h"
 
 class OpenDataServer : public Command{
     double port;
     double hz;
+
 public:
-    OpenDataServer(double port, double hz);
 
     double getPort() const;
+
+    OpenDataServer(string& port, string& hz);
 
     void setPort(double port);
 

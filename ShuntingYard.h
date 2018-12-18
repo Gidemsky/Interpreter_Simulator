@@ -13,7 +13,7 @@ using namespace std;
 
 class ShuntingYard {
     map<char, int> op_dictionary = {{'(',0}, {')',0},
-                                {'-',1}, {'+',0},
+                                {'-',1}, {'+',1},
                                 {'*',2}, {'/',2}
     };
 

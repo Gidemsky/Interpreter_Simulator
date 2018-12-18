@@ -7,8 +7,7 @@
 /**
  * Constructor.
  */
-Mult::Mult(Expression* left, Expression* right):
-        BinaryExpression(left, right) {
+Mult::Mult(Expression* left, Expression* right):BinaryExpression(left, right) {
 }
 
 /**

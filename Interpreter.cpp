@@ -106,7 +106,7 @@ void Interpreter::DataParser(string strData, string strSpliter) {
         switch(commandClass)
         {
             case OPEN_DATA_SERVER: {
-                ce = new CommandExpression(new OpenDataServer(stod(cmdData[1]),stod(cmdData[2])));
+                ce = new CommandExpression(new OpenDataServer(cmdData[1],cmdData[2]));
                 data.setSimulatorData(cmdData[0],ce);
                 break;
             }
