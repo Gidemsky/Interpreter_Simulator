@@ -36,7 +36,7 @@ string Interpreter::fileReader(fstream *dataFile, bool isLoaded, string& fileNam
     dataFile->open(fileName);
     //checks if the file has been opened successfully
     if (!dataFile->is_open()) {
-        throw "ERROR: CAN'T OPEN THE FILE";
+        throw "ERROR: CAN'T OPEN THE FILE";//TODO:check try and catch
     }
         //run the lexer functions as far as there is a non empty line
         while (getline(*dataFile, line)) {
@@ -89,10 +89,10 @@ void Interpreter::DataParser(string strData, string strSpliter) {
             lineData.erase(0, pos + 1);
         }
         cmdData.push_back(lineData);
-        if(cmdData[0]!="var"){
-            data.setSimulatorData(cmdData);
-        } else {
+        if(cmdData[0]=="var"){
             data.setPlaneData(cmdData);
+        } else {
+            data.setSimulatorData(cmdData);
         }
     }
 }

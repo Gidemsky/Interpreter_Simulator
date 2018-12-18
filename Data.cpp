@@ -47,3 +47,21 @@ void Data::setSimulatorData(vector<string> cmdData) {
     data += cmdData[size_t-1];
     this->simulatorData.insert(pair<string, string>(cmdData[0],data));
 }
+
+const map<string, string> &Data::getBinds() const {
+    return binds;
+}
+
+void Data::setBinds(const map<string, string> &binds) {
+    Data::binds = binds;
+}
+
+void Data::setBinds(vector<string> binders) {
+    int size_t = static_cast<int>(binders.size());
+    string data;
+    for(int i=2;i<(size_t-1);i++){
+        data += binders[i] + " ";
+    }
+    data += binders[size_t-1];
+    this->binds.insert(pair<string, string>(binders[1],data));
+}

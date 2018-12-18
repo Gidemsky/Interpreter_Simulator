@@ -3,8 +3,7 @@
 //
 
 #include "ShuntingYard.h"
-// expression where tokens are
-// separated by space.
+// expression where tokens are separated by space.
 #include <bits/stdc++.h>
 using namespace std;
 

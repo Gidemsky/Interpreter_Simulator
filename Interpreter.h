@@ -12,12 +12,22 @@
 using namespace std;
 
 class Interpreter {
+    enum simulatorCommand{
+        OPEN_DATA_SERVER, CONNECT,
+        VAR, PRINT, SLEEP, INIT
+    };
+    map<string,simulatorCommand> CMD_DICTIONARY = {
+            {"openDataServer", OPEN_DATA_SERVER},
+            {"connect", CONNECT},
+            {"var", VAR},
+            {"print", PRINT},
+            {"sleep", SLEEP},
+            {"=", INIT}
+    };
     bool isFileLoaded;
     fstream simulatorUserFile;
     string flightUserInput;
     Data data;
-    //enum
-
 public:
     Interpreter();
     explicit Interpreter(string userFileName);
