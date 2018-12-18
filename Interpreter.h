@@ -14,7 +14,7 @@ using namespace std;
 class Interpreter {
     enum simulatorCommand{
         OPEN_DATA_SERVER, CONNECT,
-        VAR, PRINT, SLEEP, INIT
+        VAR, PRINT, SLEEP, INIT, TEMP
     };
     map<string,simulatorCommand> CMD_DICTIONARY = {
             {"openDataServer", OPEN_DATA_SERVER},
@@ -22,7 +22,8 @@ class Interpreter {
             {"var", VAR},
             {"print", PRINT},
             {"sleep", SLEEP},
-            {"=", INIT}
+            {"=", INIT},
+            {"temp", TEMP}//temporary enum
     };
     bool isFileLoaded;
     fstream simulatorUserFile;
@@ -34,6 +35,7 @@ public:
     string fileReader(fstream *dataFile, bool isLoaded, string& userFileName);
     string lexer(string line, string split);
     void DataParser(string strData, string strSpliter);
+    void DataCreator(vector<string> data);
 };
 
 #endif //SIMULATOR_INTERPRETER_H

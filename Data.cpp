@@ -34,11 +34,11 @@ void Data::setSimulatorData(string cmd, string expression) {
 void Data::setPlaneData(vector<string> planeData) {
     int size_t = static_cast<int>(planeData.size());
     string data;
-    for(int i=1;i<(size_t-1);i++){
-        data += planeData[i] + " ";
+    for(int i=2;i<(size_t-1);i++){
+        data += planeData[i];
     }
     data += planeData[size_t-1];
-    this->planeData.insert(pair<string, string>(planeData[1],data));
+    this->planeData.insert(pair<string, string>(planeData[0],data));
 }
 
 void Data::setSimulatorData(vector<string> cmdData) {
@@ -72,4 +72,12 @@ void Data::setBinds(vector<string> binders) {
 
 void Data::setSimulatorData(string cmd, Expression *ce) {
     this->simData.insert(pair<string, Expression*>(cmd,ce));
+}
+
+const map<string, double> &Data::getAirplaneData() const {
+    return airplaneData;
+}
+
+void Data::setAirplaneData(string symbol, double value) {
+    this->airplaneData.insert(pair<string, double>(symbol,value));
 }

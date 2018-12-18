@@ -6,6 +6,7 @@
 #include "CommandExpression.h"
 #include "Command.h"
 #include "OpenDataServer.h"
+#include "Connect.h"
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
@@ -92,7 +93,15 @@ void Interpreter::DataParser(string strData, string strSpliter) {
             lineData.erase(0, pos + 1);
         }
         cmdData.push_back(lineData);
-        simulatorCommand commandClass = CMD_DICTIONARY[cmdData[0]];//TODO: add the switch case issues to function
+        simulatorCommand commandClass;
+        if(CMD_DICTIONARY.find(cmdData[0]) != CMD_DICTIONARY.end()){
+            commandClass = CMD_DICTIONARY[cmdData[0]];//TODO: add the switch case issues to function
+        } else {
+            commandClass = CMD_DICTIONARY["="];
+            if(cmdData[0]=="while" || cmdData[0]=="}") {//temporary condition
+                commandClass = CMD_DICTIONARY["temp"];
+            }
+        }
         CommandExpression* ce;
         switch(commandClass)
         {
@@ -102,7 +111,8 @@ void Interpreter::DataParser(string strData, string strSpliter) {
                 break;
             }
             case CONNECT: {
-                data.setSimulatorData(cmdData);
+                ce = new CommandExpression(new Connect(cmdData[1],cmdData[2]));
+                data.setSimulatorData(cmdData[0],ce);
                 break;
             }
             case VAR: {
@@ -118,7 +128,8 @@ void Interpreter::DataParser(string strData, string strSpliter) {
                 break;
             }
             case INIT: {
-                data.setSimulatorData(cmdData);
+                //data.setAirplaneData(cmdData[0],stod(cmdData[2]));
+                data.setPlaneData(cmdData);
                 break;
             }
             default:
@@ -130,4 +141,8 @@ void Interpreter::DataParser(string strData, string strSpliter) {
 //            data.setSimulatorData(cmdData);
 //        }
     }
+}
+
+void Interpreter::DataCreator(vector<string> data) {
+
 }

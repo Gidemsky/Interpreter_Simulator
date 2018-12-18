@@ -7,3 +7,7 @@
 CommandExpression::CommandExpression(Command* cmd) {
     this->cmd = cmd;
 }
+
+double CommandExpression::calculate() {
+
+}

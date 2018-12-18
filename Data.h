@@ -16,14 +16,16 @@ class Data {
     //map<string,double> planeData;
     map<string,string> planeData;
     map<string,string> simulatorData;
-    map<string,Expression*> simData;
-    map<string,string> binds;
+    map<string,Expression*> simData;//the final map
+    map<string,double> airplaneData;//the final map
+    map<string,string> binds;//maybe the final map
 public:
     const map<string, string> &getBinds() const;
-
+    const map<string, double> &getAirplaneData() const;
+    void setAirplaneData(string symbol, double value);
     void setBinds(const map<string, string> &binds);
     void setBinds(vector<string> binders);
-    //void setPlaneData(string symbol, string value);
+    void setPlaneData(string symbol, string value);
     void setPlaneData(vector<string> planeData);
     void setSimulatorData(string cmd, string expression);
     void setSimulatorData(string cmd,  Expression* ce);
