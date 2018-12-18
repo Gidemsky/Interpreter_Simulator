@@ -22,6 +22,7 @@ void OpenDataServer::setHz(double hz) {
     OpenDataServer::hz = hz;
 }
 
-void OpenDataServer::execute() {
+double OpenDataServer::execute() {
     std::cout<<"to something"<<std::endl;
+    return 0;
 }

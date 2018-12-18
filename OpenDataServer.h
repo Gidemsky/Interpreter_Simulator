@@ -7,7 +7,6 @@
 
 #include "Command.h"
 
-
 class OpenDataServer : public Command{
     double port;
     double hz;
@@ -22,8 +21,7 @@ public:
 
     void setHz(double hz);
 
-    void execute();
+    double execute();
 };
-
 
 #endif //SIMULATOR_OPENDATASERVER_H
