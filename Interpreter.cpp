@@ -2,11 +2,13 @@
 // Created by gideon on 14/12/18.
 //
 
+#include <algorithm>
 #include "Interpreter.h"
 #include "CommandExpression.h"
 #include "Command.h"
 #include "OpenDataServer.h"
 #include "Connect.h"
+#include "DefineVarCommand.h"
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
@@ -69,7 +71,7 @@ string Interpreter::lexer(string line, string split) {
     //adds the last string left in the line
     //deletes the number in the begging of the line
     dataTaken += line.substr(0, pos) + CMD_SPLIT;
-    pos = dataTaken.find(".") + 1;
+    pos = dataTaken.find('.') + 1;
     dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
     return dataTaken;
 }
@@ -83,7 +85,6 @@ void Interpreter::DataParser(string strData, string strSpliter) {
         while ((pos = lineData.find(strSpliter)) != string::npos) {
             cmdParameters = lineData.substr(0, pos);
             DataParser(cmdParameters,CMD_PARAMETER);
-            //cmdData.push_back(cmdParameters);
             lineData.erase(0, pos + 1);
         }
         cmdData.push_back(lineData);
@@ -99,13 +100,19 @@ void Interpreter::DataParser(string strData, string strSpliter) {
 }
 
 void Interpreter::DataCreator(vector<string> parameters) {
-    simulatorCommand commandClass;
-    if(CMD_DICTIONARY.find(parameters[0]) != CMD_DICTIONARY.end()){
+    simulatorCommand commandClass = VAR;
+    if (find(parameters.begin(), parameters.end(),"=")!=parameters.end()){
+        commandClass = VAR;
+        if (find(parameters.begin(), parameters.end(),"bind")!=parameters.end()){
+            commandClass = INIT;
+        }
+    }
+    else if(CMD_DICTIONARY.find(parameters[0]) != CMD_DICTIONARY.end()){
         commandClass = CMD_DICTIONARY[parameters[0]];//TODO: add the switch case issues to function
     } else {
         commandClass = CMD_DICTIONARY["="];
         if(parameters[0]=="while" || parameters[0]=="}") {//temporary condition
-            commandClass = CMD_DICTIONARY["temp"];
+            commandClass = CMD_DICTIONARY["temp"];//temporary condition
         }
     }
     CommandExpression* ce;
@@ -113,6 +120,7 @@ void Interpreter::DataCreator(vector<string> parameters) {
     {
         case OPEN_DATA_SERVER: {
             ce = new CommandExpression(new OpenDataServer(parameters[1],parameters[2]));//TODO: add calculate
+            ce->calculate();
             data.setSimulatorData(parameters[0],ce);
             break;
         }
@@ -122,6 +130,7 @@ void Interpreter::DataCreator(vector<string> parameters) {
             break;
         }
         case VAR: {
+            ce = new CommandExpression(new DefineVarCommand(parameters));
             data.setBinds(parameters);
             break;
         }
@@ -141,9 +150,4 @@ void Interpreter::DataCreator(vector<string> parameters) {
         default:
             data.setSimulatorData(parameters);
     }
-//        if(cmdData[0]=="var"){
-//
-//        } else {
-//            data.setSimulatorData(cmdData);
-//        }
 }
