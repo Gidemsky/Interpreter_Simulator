@@ -7,7 +7,7 @@
 
 DefineVarCommand::DefineVarCommand(vector<string> parameters) {
     if (find(parameters.begin(), parameters.end(),"=")!=parameters.end()){
-        if (find(parameters.begin(), parameters.end(),"bind")!=parameters.end()){
+        if (find(parameters.begin(), parameters.end(),"bind")!=parameters.end()){//check
             this->left = parameters[1];
             this->right = parameters[4];
         } else {
