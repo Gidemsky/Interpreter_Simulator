@@ -14,12 +14,6 @@ ShuntingYard::ShuntingYard() {
 }
 
 void ShuntingYard::initializeMap() {
-//    this->prcedence.insert(pair<char, int>('/', 2));
-//    this->prcedence.insert(pair<char, int>('*', 2));
-//    this->prcedence.insert(pair<char, int>('+', 1));
-//    this->prcedence.insert(pair<char, int>('-', 1));
-//    this->prcedence.insert(pair<char, int>(')', 0));
-//    this->prcedence.insert(pair<char, int>('(', 0));
 }
 
 int ShuntingYard::precedence(char operation) {

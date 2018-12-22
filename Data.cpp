@@ -60,14 +60,15 @@ void Data::setBinds(const map<string, string> &binds) {
     Data::binds = binds;
 }
 
-void Data::setBinds(vector<string> binders) {
-    int size_t = static_cast<int>(binders.size());
-    string data;
-    for(int i=2;i<(size_t-1);i++){
-        data += binders[i] + " ";
-    }
-    data += binders[size_t-1];
-    this->binds.insert(pair<string, string>(binders[1],data));
+void Data::setBinds(string var_name, string path) {
+    this->binds.insert(pair<string, string>(var_name,path));
+//    int size_t = static_cast<int>(binders.size());
+//    string data;
+//    for(int i=2;i<(size_t-1);i++){
+//        data += binders[i] + " ";
+//    }
+//    data += binders[size_t-1];
+//    this->binds.insert(pair<string, string>(binders[1],data));
 }
 
 void Data::setSimulatorData(string cmd, Expression *ce) {
@@ -81,3 +82,12 @@ const map<string, double> &Data::getAirplaneData() const {
 void Data::setAirplaneData(string symbol, double value) {
     this->airplaneData.insert(pair<string, double>(symbol,value));
 }
+
+const map<string, string> &Data::getLocal_var() const {
+    return local_var;
+}
+
+void Data::setLocal_var(string var_name, string value) {
+    this->local_var.insert(pair<string, string>(var_name,value));
+}
+

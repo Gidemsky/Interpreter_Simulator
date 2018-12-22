@@ -9,6 +9,7 @@
 #include "OpenDataServer.h"
 #include "Connect.h"
 #include "DefineVarCommand.h"
+#include "Assign.h"
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
@@ -102,9 +103,9 @@ void Interpreter::DataParser(string strData, string strSpliter) {
 void Interpreter::DataCreator(vector<string> parameters) {
     simulatorCommand commandClass = VAR;
     if (find(parameters.begin(), parameters.end(),"=")!=parameters.end()){
-        commandClass = VAR;
-        if (find(parameters.begin(), parameters.end(),"bind")!=parameters.end()){
-            commandClass = INIT;
+        commandClass = INIT;
+        if (find(parameters.begin(), parameters.end(),"var")!=parameters.end()){
+            commandClass = VAR;
         }
     }
     else if(CMD_DICTIONARY.find(parameters[0]) != CMD_DICTIONARY.end()){
@@ -131,7 +132,8 @@ void Interpreter::DataCreator(vector<string> parameters) {
         }
         case VAR: {
             ce = new CommandExpression(new DefineVarCommand(parameters));
-            data.setBinds(parameters);
+            ce->calculate();
+            //data.setBinds(parameters);
             break;
         }
         case PRINT: {
@@ -143,8 +145,9 @@ void Interpreter::DataCreator(vector<string> parameters) {
             break;
         }
         case INIT: {
-            //data.setAirplaneData(cmdData[0],stod(cmdData[2]));
-            data.setPlaneData(parameters);
+            ce = new CommandExpression(new Assign(parameters));
+            ce->calculate();
+            //data.setPlaneData(parameters);
             break;
         }
         default:

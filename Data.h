@@ -19,12 +19,18 @@ class Data {
     map<string,Expression*> simData;//the final map
     map<string,double> airplaneData;//the final map
     map<string,string> binds;//maybe the final map
+    map<string,string> local_var;//TODO: check changing the value to double
 public:
     const map<string, string> &getBinds() const;
     const map<string, double> &getAirplaneData() const;
     void setAirplaneData(string symbol, double value);
     void setBinds(const map<string, string> &binds);
-    void setBinds(vector<string> binders);
+    void setBinds(string var_name, string path);
+
+    const map<string, string> &getLocal_var() const;
+
+    void setLocal_var(string var_name, string value);
+
     void setPlaneData(string symbol, string value);
     void setPlaneData(vector<string> planeData);
     void setSimulatorData(string cmd, string expression);

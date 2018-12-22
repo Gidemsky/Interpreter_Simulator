@@ -12,10 +12,11 @@
 class DefineVarCommand : public Command {
     Data data;
     string left, right;
-    enum ASSIGN_TYPE {BIND, VAR, UPDATE};
+    //enum VAR_TYPE {BIND, LCL_VAR};
+    bool is_local_var;
 public:
     DefineVarCommand(vector<string> parameters);
-    double execute();
+    double execute() override;
 };
 
 #endif //SIMULATOR_DEFINEVARCOMMAND_H

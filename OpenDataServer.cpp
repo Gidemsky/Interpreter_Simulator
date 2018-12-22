@@ -26,7 +26,7 @@ void OpenDataServer::setHz(double hz) {
 }
 
 double OpenDataServer::execute() {
-    return 0;//temporary
+    return 0;//temporary - remove for execute open data server
     while (true) {
         int server_fd, new_socket, valread;
         char buffer[5000];

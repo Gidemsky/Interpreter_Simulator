@@ -13,7 +13,7 @@ class Assign : public Command {
     Data data;
     string left, right;
 public:
-    //data()
+    Assign(vector<string> parameters);
     double execute();
 };
 
