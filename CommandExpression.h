@@ -13,7 +13,8 @@ class CommandExpression : public Expression {
     Command* cmd;
 public:
     CommandExpression(Command* cmd);
-    double calculate();//TODO
+    double calculate();
+    Command* getCommand();
 };
 
 

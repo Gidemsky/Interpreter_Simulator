@@ -11,3 +11,11 @@ CommandExpression::CommandExpression(Command* cmd) {
 double CommandExpression::calculate() {
     cmd->execute();
 }
+
+/**
+ * Getter of the command.
+ * @return the command.
+ */
+Command* CommandExpression::getCommand() {
+    return this->cmd;
+}
