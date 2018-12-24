@@ -9,6 +9,9 @@
 #include "Minus.h"
 #include "Plus.h"
 
+//TODO: evaluate var's value
+//TODO: decimal numbers
+
 ShuntingYard::ShuntingYard() {
     initializeMap();
 }

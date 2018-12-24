@@ -90,4 +90,3 @@ const map<string, string> &Data::getLocal_var() const {
 void Data::setLocal_var(string var_name, string value) {
     this->local_var.insert(pair<string, string>(var_name,value));
 }
-

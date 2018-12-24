@@ -26,7 +26,7 @@ void OpenDataServer::setHz(double hz) {
 }
 
 double OpenDataServer::execute() {
-    return 0;//temporary - remove for execute open data server
+    return 0;//temporary
     while (true) {
         int server_fd, new_socket, valread;
         char buffer[5000];
@@ -55,6 +55,6 @@ double OpenDataServer::execute() {
 
 OpenDataServer::OpenDataServer(string& port, string& hz) {
     ShuntingYard shuntingYard;
-    this->port=shuntingYard.createExpression(port)->calculate();
-    this->hz=shuntingYard.createExpression(hz)->calculate();
+    this->port = shuntingYard.createExpression(port)->calculate();
+    this->hz = shuntingYard.createExpression(hz)->calculate();
 }
