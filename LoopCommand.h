@@ -24,4 +24,3 @@ public:
 };
 
 #endif //SIMULATOR_LOOPCOMMAND_H
-
