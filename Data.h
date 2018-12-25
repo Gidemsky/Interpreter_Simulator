@@ -9,10 +9,12 @@
 #include <string>
 #include <vector>
 #include "Expression.h"
+#include "Interpreter.h"
 
 using namespace std;
 
 class Data {
+    Interpreter interpreter;
     //map<string,double> planeData;
     map<string,string> planeData;
     map<string,string> simulatorData;
@@ -20,6 +22,9 @@ class Data {
     map<string,double> airplaneData;//the final map
     map<string,string> binds;//maybe the final map
     map<string,string> local_var;//TODO: check changing the value to double
+    vector<string> paths;
+    map<string, double> path_values;
+
 public:
     const map<string, string> &getBinds() const;
     const map<string, double> &getAirplaneData() const;
@@ -44,7 +49,13 @@ public:
     const map <string, string> &getSimulatorData() const;
 
     void setSimulatorData(const map <string, string> &simulatorData);
-};
 
+
+    void initializePaths();
+    vector<string> getPaths();
+    void initializePathValues();
+    void setPathValues(string values);
+
+};
 
 #endif //SIMULATOR_DATA_H

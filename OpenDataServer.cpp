@@ -26,7 +26,6 @@ void OpenDataServer::setHz(double hz) {
 }
 
 double OpenDataServer::execute() {
-    return 0;//temporary
     while (true) {
         int server_fd, new_socket, valread;
         char buffer[5000];
@@ -45,12 +44,14 @@ double OpenDataServer::execute() {
             perror("accept");
             exit(EXIT_FAILURE);
         }
+
+        //TODO: open pthread
+
         while(true) {
             ssize_t erez = read(new_socket, buffer, 5000);
             printf("%s\n", buffer);
         }
     }
-    return 0;
 }
 
 OpenDataServer::OpenDataServer(string& port, string& hz) {

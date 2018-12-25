@@ -7,6 +7,7 @@
 #include "Command.h"
 #include "OpenDataServer.h"
 
+
 //const map<string, double> &Data::getPlaneData() const {
 //    return planeData;
 //}
@@ -89,4 +90,45 @@ const map<string, string> &Data::getLocal_var() const {
 
 void Data::setLocal_var(string var_name, string value) {
     this->local_var.insert(pair<string, string>(var_name,value));
+}
+
+void Data::initializePaths() {
+   this->paths = {"/instrumentation/airspeed-indicator/indicated-speed-kt",
+                "/instrumentation/altimeter/indicated-altitude-ft",
+                "/instrumentation/altimeter/pressure-alt-ft",
+                "/instrumentation/attitude-indicator/indicated-pitch-deg",
+                "/instrumentation/attitude-indicator/indicated-roll-deg",
+                "/instrumentation/attitude-indicator/internal-pitch-deg",
+                "/instrumentation/attitude-indicator/internal-roll-deg",
+                "/instrumentation/encoder/indicated-altitude-ft",
+                "/instrumentation/encoder/pressure-alt-ft",
+                "/instrumentation/gps/indicated-altitude-ft",
+                "/instrumentation/gps/indicated-ground-speed-kt",
+                "/instrumentation/gps/indicated-vertical-speed",
+                "/instrumentation/heading-indicator/indicated-heading-deg",
+                "/instrumentation/magnetic-compass/indicated-heading-deg",
+                "/instrumentation/slip-skid-ball/indicated-slip-skid",
+                "/instrumentation/turn-indicator/indicated-turn-rate",
+                "/instrumentation/vertical-speed-indicator/indicated-speed-fpm",
+                "/controls/flight/aileron",
+                "/controls/flight/elevator",
+                "/controls/flight/rudder",
+                "/controls/flight/flaps",
+                "/controls/engines/engine/throttle",
+                "/engines/engine/rpm"};
+}
+
+vector<string> Data::getPaths() {
+    return this->paths;
+}
+
+void Data::initializePathValues() {
+    // initialize all the paths with 0
+    for (string path : this->getPaths()) {
+        this->path_values.insert(pair<string, double>(path, 0));
+    }
+}
+
+void Data::setPathValues(string values) {
+    this->interpreter.
 }
