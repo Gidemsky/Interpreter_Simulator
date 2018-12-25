@@ -3,7 +3,7 @@
 //
 
 #include "IfCommand.h"
-//
+///
 IfCommand::IfCommand(vector<CommandExpression*> commands,
         string condition, Data* data):ConditionParser(
                 commands, condition) {

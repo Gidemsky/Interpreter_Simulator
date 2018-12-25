@@ -8,7 +8,7 @@
 #include "Expression.h"
 #include "Command.h"
 
-//
+///
 class CommandExpression : public Expression {
     Command* cmd;
 public:
