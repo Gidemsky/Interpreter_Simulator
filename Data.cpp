@@ -129,6 +129,7 @@ void Data::initializePathValues() {
     }
 }
 
-void Data::setPathValues(string values) {
-    this->interpreter. a
+void Data::setPathValues(string data) {
+    vector<double> values = this->interpreter.simLexer(data, ",");
+
 }
