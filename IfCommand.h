@@ -6,16 +6,19 @@
 #define SIMULATOR_IFCOMMAND_H
 
 #include "ConditionParser.h"
+#include "CommandExpression.h"
 #include "Expression.h"
 #include "string"
+#include "Condition.h"
 
 class IfCommand : public ConditionParser {
+    Data* data;
 public:
     // ctor
-    IfCommand(list<Command*> commands, string condition);
+    IfCommand(list<CommandExpression*> commands,
+            string condition, Data* data);
     // methods
     virtual double execute();
 };
-
 
 #endif //SIMULATOR_IFCOMMAND_H

@@ -13,15 +13,15 @@
 #define RIGHT_ARG 3 */
 
 
-ConditionParser::ConditionParser(list<Command*> commands,
-        string condition) {
+ConditionParser::ConditionParser(
+        list<CommandExpression*> commands, string condition) {
     this->commands = commands;
     this->condition;
 }
 
 double ConditionParser::execute() {
-    for (Command* cmd : this->commands) {
-        cmd->execute();
+    for (CommandExpression* cmd : this->commands) {
+        cmd->calculate();
     }
 }
 

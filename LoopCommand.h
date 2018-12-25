@@ -7,16 +7,23 @@
 
 
 #include "ConditionParser.h"
-#include "IfCommand.h"
+#include "CommandExpression.h"
+#include "Data.h"
+#include "Condition.h"
 
 class LoopCommand : public ConditionParser {
     // members
-    IfCommand if_cmd;
+    list<CommandExpression*> commands;
+    string condition;
+    Data* data;
 
 public:
+    // ctor
+    LoopCommand(list<CommandExpression*> commands,
+            string condition, Data* data);
     // methods
     virtual double execute();
 };
 
-
 #endif //SIMULATOR_LOOPCOMMAND_H
+

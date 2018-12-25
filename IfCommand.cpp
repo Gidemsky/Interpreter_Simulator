@@ -4,12 +4,16 @@
 
 #include "IfCommand.h"
 
-//IfCommand::IfCommand(list<Command*> commands,
-//        string condition):ConditionParser(
-//                commands, condition) {}
+IfCommand::IfCommand(list<CommandExpression*> commands,
+        string condition, Data* data):ConditionParser(
+                commands, condition) {
+    this->data = data;
+}
 
-//double IfCommand::execute() {
-//    if (evaluate(condition)) {
-//        ConditionParser::execute();
-//    }
-//}
+double IfCommand::execute() {
+    Condition* cond = new Condition(
+            this->condition, this->data);
+    if (cond->evaluate()) {
+        ConditionParser::execute();
+    }
+}

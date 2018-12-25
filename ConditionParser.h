@@ -6,17 +6,18 @@
 #define SIMULATOR_CONDITIONPARSER_H
 
 #include "Command.h"
+#include "CommandExpression.h"
 #include "list"
 #include "string"
 
 class ConditionParser : public Command {
 public:
     // members
-    list<Command*> commands;
+    list<CommandExpression*> commands;
     string condition;
 
     // ctor
-    ConditionParser(list<Command*> commands,
+    ConditionParser(list<CommandExpression*> commands,
             string condition);
 
     // methods
