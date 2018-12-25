@@ -71,7 +71,7 @@ void Data::setBinds(string var_name, string path) {
 //    this->binds.insert(pair<string, string>(binders[1],data));
 }
 
-void Data::setSimulatorData(string cmd, Expression *ce) {
+void Data::setSimData(string cmd, Expression *ce) {
     this->simData.insert(pair<string, Expression*>(cmd,ce));
 }
 

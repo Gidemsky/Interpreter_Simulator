@@ -15,7 +15,9 @@ class DefineVarCommand : public Command {
     //enum VAR_TYPE {BIND, LCL_VAR};
     bool is_local_var;
 public:
-    DefineVarCommand(vector<string> parameters);
+    DefineVarCommand(vector<string> parameters,Data* data);
+    string getLeft();
+    string getRight();
     double execute() override;
 };
 

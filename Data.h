@@ -34,7 +34,7 @@ public:
     void setPlaneData(string symbol, string value);
     void setPlaneData(vector<string> planeData);
     void setSimulatorData(string cmd, string expression);
-    void setSimulatorData(string cmd,  Expression* ce);
+    void setSimData(string cmd,  Expression* ce);
     void setSimulatorData(vector<string> cmdData);
 
     const map<string,double> &getPlaneData() const;

@@ -11,14 +11,14 @@ Assign::Assign(vector<string> parameters) {
 }
 
 double Assign::execute() {
-    if(data.getLocal_var().find(left) !=
-            data.getLocal_var().end()){
-        data.setLocal_var(left,right);
-    } else if (data.getBinds().find(left) !=
-                data.getBinds().end()){
-        std::cout<<"to enter the value to the simulator or map"<<endl;
-    } else {
-        throw "no variabel has defined";
-    }
+//    if(data.getLocal_var().find(left) !=
+//            data.getLocal_var().end()){
+//        data.setLocal_var(left,right);
+//    } else if (data.getBinds().find(left) !=
+//                data.getBinds().end()){
+//        std::cout<<"to enter the value to the simulator or map"<<endl;
+//    } else {
+//        throw "no variabel has defined";
+//    }
     return 0;
 }

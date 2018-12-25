@@ -13,6 +13,7 @@
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
+#define SIM_INPUT_SPLIT ","
 #define FILE_SPACE " "
 
 /**
@@ -26,10 +27,13 @@ Interpreter::Interpreter(){
  * @param userFileName - the name of the user's flights commands
  */
 Interpreter::Interpreter(string userFileName){
+    this->scope_count=0;
     isFileLoaded = false;//TODO:check if necessary
+    this->scope_started = false;
     this->flightUserInput = fileReader(&simulatorUserFile, this->isFileLoaded, userFileName);
     cout<<flightUserInput<<endl;//TODO:for debuging reasons
     DataParser(this->flightUserInput,CMD_SPLIT);
+    CommandCreator(this->victor);
 }
 /**
  * Function Name: FileReader
@@ -61,6 +65,7 @@ string Interpreter::fileReader(fstream *dataFile, bool isLoaded, string& fileNam
  * @param split - the split sign between the commands
  * @return - a string that ready to be add to all commands string (commandsFileLine)
  */
+//template <class T>TODO:check generics
 string Interpreter::lexer(string line, string split) {
     size_t pos = 0;
     string dataTaken;
@@ -76,6 +81,40 @@ string Interpreter::lexer(string line, string split) {
     dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
     return dataTaken;
 }
+
+vector<double> Interpreter::simLexer(string line, string split) {
+    size_t pos = 0;
+    vector<double> dataTaken;
+    //run the loop as far as it has space bars
+    while ((pos = line.find(split)) != string::npos) {
+        //dataTaken += line.substr(0, pos) + CMD_PARAMETER;
+        dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
+        line.erase(0, pos + split.length());
+    }
+    //adds the last string left in the line
+    //deletes the number in the begging of the line
+//    dataTaken += line.substr(0, pos) + CMD_SPLIT;
+//    pos = dataTaken.find('.') + 1;
+    //dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
+    dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
+    return dataTaken;
+}
+
+//vector<string> Interpreter::outLexer(string line, string split) {
+//    size_t pos = 0;
+//    string dataTaken;
+//    //run the loop as far as it has space bars
+//    while ((pos = line.find(split)) != string::npos) {
+//        dataTaken += line.substr(0, pos) + CMD_PARAMETER;
+//        line.erase(0, pos + split.length());
+//    }
+//    //adds the last string left in the line
+//    //deletes the number in the begging of the line
+//    dataTaken += line.substr(0, pos) + CMD_SPLIT;
+//    pos = dataTaken.find('.') + 1;
+//    dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
+//    return dataTaken;
+//}
 
 void Interpreter::DataParser(string strData, string strSpliter) {
     vector<string> cmdData;
@@ -96,61 +135,79 @@ void Interpreter::DataParser(string strData, string strSpliter) {
             lineData.erase(0, pos + 1);
         }
         cmdData.push_back(lineData);
-        DataCreator(cmdData);
+        this->victor.push_back(cmdData);
+        //DataCreator(cmdData);
     }
 }
 
-void Interpreter::DataCreator(vector<string> parameters) {
-    simulatorCommand commandClass = VAR;
-    if (find(parameters.begin(), parameters.end(),"=")!=parameters.end()){
-        commandClass = INIT;
-        if (find(parameters.begin(), parameters.end(),"var")!=parameters.end()){
-            commandClass = VAR;
+void* Interpreter::CommandCreator(vector<vector<string>> parameters) {
+    while (!parameters.empty()){//parameter not empty
+        vector<string> param;
+        param = parameters.at(0);
+        //parameters.pop_back();
+        parameters.erase(parameters.begin());
+        simulatorCommand commandClass = VAR;
+        if (find(param.begin(), param.end(),"=")!=param.end()){
+            commandClass = INIT;
+            if (find(param.begin(), param.end(),"var")!=param.end()){
+                commandClass = VAR;
+            }
         }
-    }
-    else if(CMD_DICTIONARY.find(parameters[0]) != CMD_DICTIONARY.end()){
-        commandClass = CMD_DICTIONARY[parameters[0]];//TODO: add the switch case issues to function
-    } else {
-        commandClass = CMD_DICTIONARY["="];
-        if(parameters[0]=="while" || parameters[0]=="}") {//temporary condition
-            commandClass = CMD_DICTIONARY["temp"];//temporary condition
+        else if(CMD_DICTIONARY.find(param[0]) != CMD_DICTIONARY.end()){
+            commandClass = CMD_DICTIONARY[param[0]];//TODO: add the switch case issues to function
+        } else {
+            commandClass = CMD_DICTIONARY["="];
+            if(param[0]=="while" || param[0]=="}") {//temporary condition
+                commandClass = CMD_DICTIONARY["temp"];//temporary condition
+            }
         }
-    }
-    CommandExpression* ce;
-    switch(commandClass)
-    {
-        case OPEN_DATA_SERVER: {
-            ce = new CommandExpression(new OpenDataServer(parameters[1],parameters[2]));//TODO: add calculate
-            ce->calculate();
-            data.setSimulatorData(parameters[0],ce);
-            break;
+        CommandExpression* ce;
+        switch(commandClass)
+        {
+            case OPEN_DATA_SERVER: {
+                ce = new CommandExpression(new OpenDataServer(param[1],param[2]));//TODO: add calculate
+                ce->calculate();
+                data.setSimData(param[0],ce);
+                //return ce;
+                break;
+            }
+            case CONNECT: {
+                ce = new CommandExpression(new Connect(param[1],param[2]));
+                //ce->calculate();
+                data.setSimData(param[0],ce);
+                //return ce;
+                break;
+            }
+            case VAR: {
+                ce = new CommandExpression(new DefineVarCommand(param, &data));
+                //ce->calculate();
+                //return ce;
+                break;
+            }
+            case CONDITIONAL: {
+                int x = 3;
+            if(!this->scope_started){
+            }
+            //data.setSimulatorData(parameters);
+                break;
+            }
+//            case PRINT: {
+//                data.setSimulatorData(parameters);
+//                break;
+//            }
+//            case SLEEP: {
+//                data.setSimulatorData(parameters);
+//                break;
+//            }
+//            case INIT: {
+//                ce = new CommandExpression(new Assign(parameters));
+//                //ce->calculate();
+//                return ce;
+//                //data.setPlaneData(parameters);
+//                break;
+//            }
+//            default:
+//                data.setSimulatorData(parameters);
         }
-        case CONNECT: {
-            ce = new CommandExpression(new Connect(parameters[1],parameters[2]));
-            data.setSimulatorData(parameters[0],ce);
-            break;
-        }
-        case VAR: {
-            ce = new CommandExpression(new DefineVarCommand(parameters));
-            ce->calculate();
-            //data.setBinds(parameters);
-            break;
-        }
-        case PRINT: {
-            data.setSimulatorData(parameters);
-            break;
-        }
-        case SLEEP: {
-            data.setSimulatorData(parameters);
-            break;
-        }
-        case INIT: {
-            ce = new CommandExpression(new Assign(parameters));
-            ce->calculate();
-            //data.setPlaneData(parameters);
-            break;
-        }
-        default:
-            data.setSimulatorData(parameters);
     }
 }
