@@ -12,7 +12,7 @@
 #define CONDITION_OPERATOR 2
 #define RIGHT_ARG 3 */
 
-
+//
 ConditionParser::ConditionParser(
         list<CommandExpression*> commands, string condition) {
     this->commands = commands;

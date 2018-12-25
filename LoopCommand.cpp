@@ -4,7 +4,7 @@
 
 #include "LoopCommand.h"
 
-
+//
 LoopCommand::LoopCommand(
         list <CommandExpression*> commands,
         string condition, Data* data) :
