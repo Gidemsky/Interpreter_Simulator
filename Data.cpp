@@ -130,5 +130,5 @@ void Data::initializePathValues() {
 }
 
 void Data::setPathValues(string values) {
-    this->interpreter.
+    this->interpreter. a
 }
