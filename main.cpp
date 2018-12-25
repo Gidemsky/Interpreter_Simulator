@@ -31,7 +31,6 @@ int mainSave() {
 }
 
 int mainSave2() {
-    //Interpreter* check = new Interpreter("CommandTestFile.txt");
     Expression *exp = new Plus(new Neg(new Number(3.0)),
                                new Number(5.0));
 //    void* thread_func(void* arg) {
@@ -55,8 +54,9 @@ int mainSave2() {
 }
 
 
-int main() {
-    Data* data = new Data();
+int mainSave3() {
+
+    Data *data = new Data();
     data->initializePaths();
     vector<string> paths = data->getPaths();
 
@@ -69,4 +69,10 @@ int main() {
     int a = 3;
 
     return 0;
+
+
+}
+
+int main() {
+    Interpreter* check = new Interpreter("CommandTestFile.txt");
 }

@@ -10,6 +10,7 @@
 #include "Connect.h"
 #include "DefineVarCommand.h"
 #include "Assign.h"
+#include "LoopCommand.h"
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
@@ -140,7 +141,7 @@ void Interpreter::DataParser(string strData, string strSpliter) {
     }
 }
 
-void* Interpreter::CommandCreator(vector<vector<string>> parameters) {
+CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters) {
     while (!parameters.empty()){//parameter not empty
         vector<string> param;
         param = parameters.at(0);
@@ -156,6 +157,9 @@ void* Interpreter::CommandCreator(vector<vector<string>> parameters) {
         else if(CMD_DICTIONARY.find(param[0]) != CMD_DICTIONARY.end()){
             commandClass = CMD_DICTIONARY[param[0]];//TODO: add the switch case issues to function
         } else {
+            if(param[0]=="}"){
+                return 0;
+            }
             commandClass = CMD_DICTIONARY["="];
             if(param[0]=="while" || param[0]=="}") {//temporary condition
                 commandClass = CMD_DICTIONARY["temp"];//temporary condition
@@ -185,7 +189,19 @@ void* Interpreter::CommandCreator(vector<vector<string>> parameters) {
                 break;
             }
             case CONDITIONAL: {
-                int x = 3;
+                bool is_scope_started = true;
+                this->scope_started=true;
+                //vector<void*> loop;
+                list<CommandExpression*> loop_ce;
+                while (is_scope_started!=false){
+                    loop_ce.push_back(CommandCreator(parameters));
+                    parameters.erase(parameters.begin());
+                    if(loop_ce.back()== nullptr){
+                        is_scope_started=false;
+                    }
+                }
+                ce = new CommandExpression(new LoopCommand(loop_ce,"check"));
+                //ce->calculate();
             if(!this->scope_started){
             }
             //data.setSimulatorData(parameters);
@@ -199,13 +215,15 @@ void* Interpreter::CommandCreator(vector<vector<string>> parameters) {
 //                data.setSimulatorData(parameters);
 //                break;
 //            }
-//            case INIT: {
-//                ce = new CommandExpression(new Assign(parameters));
-//                //ce->calculate();
-//                return ce;
-//                //data.setPlaneData(parameters);
-//                break;
-//            }
+            case INIT: {
+                ce = new CommandExpression(new Assign(param));
+                ce->calculate();
+                if(this->scope_started==true){
+                    return ce;
+                }
+                //data.setPlaneData(parameters);
+                break;
+            }
 //            default:
 //                data.setSimulatorData(parameters);
         }

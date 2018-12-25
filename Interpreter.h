@@ -44,7 +44,7 @@ public:
     string lexer(string line, string split);
     vector<double> simLexer(string line, string split);
     void DataParser(string strData, string strSpliter);
-    void* CommandCreator(vector<vector<string>> data);
+    CommandExpression* CommandCreator(vector<vector<string>> data);
 };
 
 #endif //SIMULATOR_INTERPRETER_H
