@@ -13,13 +13,11 @@
 
 class LoopCommand : public ConditionParser {
     // members
-    list<CommandExpression*> commands;
-    string condition;
     Data* data;
 
 public:
     // ctor
-    LoopCommand(list<CommandExpression*> commands,
+    LoopCommand(vector<CommandExpression*> commands,
             string condition, Data* data);
     // methods
     virtual double execute();

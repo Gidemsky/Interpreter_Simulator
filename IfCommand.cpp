@@ -4,7 +4,7 @@
 
 #include "IfCommand.h"
 //
-IfCommand::IfCommand(list<CommandExpression*> commands,
+IfCommand::IfCommand(vector<CommandExpression*> commands,
         string condition, Data* data):ConditionParser(
                 commands, condition) {
     this->data = data;

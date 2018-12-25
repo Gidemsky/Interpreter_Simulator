@@ -14,7 +14,7 @@
 
 //
 ConditionParser::ConditionParser(
-        list<CommandExpression*> commands, string condition) {
+        vector<CommandExpression*> commands, string condition) {
     this->commands = commands;
     this->condition;
 }

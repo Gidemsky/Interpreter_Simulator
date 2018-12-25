@@ -6,7 +6,7 @@
 
 //
 LoopCommand::LoopCommand(
-        list <CommandExpression*> commands,
+        vector <CommandExpression*> commands,
         string condition, Data* data) :
         ConditionParser(commands, condition) {
     this->data = data;

@@ -15,7 +15,7 @@ class IfCommand : public ConditionParser {
     Data* data;
 public:
     // ctor
-    IfCommand(list<CommandExpression*> commands,
+    IfCommand(vector<CommandExpression*> commands,
             string condition, Data* data);
     // methods
     virtual double execute();

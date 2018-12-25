@@ -3,6 +3,7 @@
 //
 
 #include <algorithm>
+#include <list>
 #include "Interpreter.h"
 #include "CommandExpression.h"
 #include "Command.h"
@@ -101,22 +102,6 @@ vector<double> Interpreter::simLexer(string line, string split) {
     return dataTaken;
 }
 
-//vector<string> Interpreter::outLexer(string line, string split) {
-//    size_t pos = 0;
-//    string dataTaken;
-//    //run the loop as far as it has space bars
-//    while ((pos = line.find(split)) != string::npos) {
-//        dataTaken += line.substr(0, pos) + CMD_PARAMETER;
-//        line.erase(0, pos + split.length());
-//    }
-//    //adds the last string left in the line
-//    //deletes the number in the begging of the line
-//    dataTaken += line.substr(0, pos) + CMD_SPLIT;
-//    pos = dataTaken.find('.') + 1;
-//    dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
-//    return dataTaken;
-//}
-
 void Interpreter::DataParser(string strData, string strSpliter) {
     vector<string> cmdData;
     string lineData = strData;
@@ -191,8 +176,8 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
             case CONDITIONAL: {
                 bool is_scope_started = true;
                 this->scope_started=true;
-                //vector<void*> loop;
-                list<CommandExpression*> loop_ce;
+                vector<CommandExpression*> loop_ce;
+                //list<CommandExpression*> loop_ce;
                 while (is_scope_started!=false){
                     loop_ce.push_back(CommandCreator(parameters));
                     parameters.erase(parameters.begin());
@@ -200,17 +185,20 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
                         is_scope_started=false;
                     }
                 }
-                ce = new CommandExpression(new LoopCommand(loop_ce,"check"));
+                loop_ce.pop_back();
+                string str="check";
+                //vector<CommandExpression*> loop_check = loop_ce;
+                ce = new CommandExpression(new LoopCommand(loop_ce,str, &data));
                 //ce->calculate();
             if(!this->scope_started){
             }
             //data.setSimulatorData(parameters);
                 break;
             }
-//            case PRINT: {
-//                data.setSimulatorData(parameters);
-//                break;
-//            }
+////            case PRINT: {
+////                data.setSimulatorData(parameters);
+////                break;
+////            }
 //            case SLEEP: {
 //                data.setSimulatorData(parameters);
 //                break;
