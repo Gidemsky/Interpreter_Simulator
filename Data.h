@@ -14,7 +14,7 @@
 using namespace std;
 
 class Data {
-    Interpreter interpreter;
+    //Interpreter interpreter;
     //map<string,double> planeData;
     map<string,string> planeData;
     map<string,string> simulatorData;
