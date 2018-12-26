@@ -13,9 +13,10 @@
 #include "Assign.h"
 #include "LoopCommand.h"
 #include "Sleep.h"
-
+#include "Data.h"
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
+extern Data data;
 //#define SIM_INPUT_SPLIT ","
 //#define FILE_SPACE " "
 
@@ -30,7 +31,7 @@ Interpreter::Interpreter(){
  * @param userFileName - the name of the user's flights commands
  */
 Interpreter::Interpreter(string userFileName) {
-    this->data=new Data;
+//    this->data=new Data();
     this->scope_count=0;
     isFileLoaded = false;//TODO:check if necessary
     this->scope_started = false;
@@ -151,7 +152,7 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
         switch(commandClass)
         {
             case OPEN_DATA_SERVER: {
-                ce = new CommandExpression(new OpenDataServer(param[1],param[2], this->data));//TODO: add calculate
+                ce = new CommandExpression(new OpenDataServer(param[1],param[2]));//TODO: add calculate
                 ce->calculate();
                 data.setSimData(param[0],ce);
                 //return ce;
@@ -165,7 +166,7 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
                 break;
             }
             case VAR: {
-                ce = new CommandExpression(new DefineVarCommand(param, &data));
+                ce = new CommandExpression(new DefineVarCommand(param));
                 //ce->calculate();
                 //return ce;
                 break;
@@ -186,7 +187,7 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
                 string str="check";
                 vector<CommandExpression *> temp1 = loop_ce;
                 //vector<CommandExpression*> loop_check = loop_ce;
-                ce = new CommandExpression(new LoopCommand(loop_ce,"check",&data));
+                ce = new CommandExpression(new LoopCommand(loop_ce,"check"));
                 data.setSimData(param[0],ce);
                 //ce->calculate();
             if(!this->scope_started){

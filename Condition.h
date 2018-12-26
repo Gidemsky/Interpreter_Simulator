@@ -8,15 +8,15 @@
 #include "string"
 #include "Data.h"
 #include "ShuntingYard.h"
-
+extern Data data;
 using namespace std;
 
 class Condition {
     string condition;
-    Data* data;
+
 
 public:
-    Condition(string condition, Data* data);
+    Condition(string condition);
     int findOperatorIndex();
     string getOperatorStr(int index);
     bool evaluate();

@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Assign.h"
 
-Assign::Assign(vector<string> parameters) : data(Lexer(__cxx11::basic_string())) {
+Assign::Assign(vector<string> parameters){
     this->left=parameters[0];
     this->right=parameters[2];
 }

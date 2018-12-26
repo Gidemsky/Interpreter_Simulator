@@ -6,13 +6,13 @@
 
 /////
 LoopCommand::LoopCommand(vector <CommandExpression*> commands,
-                         string condition, Data* data) :
+                         string condition) :
         ConditionParser(commands, condition) {
-    this->data = data;
+    //this->data = data;
 }
 
 double LoopCommand::execute() {
-    Condition* cond = new Condition(this->condition, data);
+    Condition* cond = new Condition(this->condition);
     while (cond->evaluate()) {
         ConditionParser::execute();
     }

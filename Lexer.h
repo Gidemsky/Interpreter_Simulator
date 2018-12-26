@@ -4,19 +4,12 @@
 
 #ifndef SIMULATOR_LEXER_H
 #define SIMULATOR_LEXER_H
-
-#include "Lexer.h"
 #include <algorithm>
 #include <list>
-#include "Interpreter.h"
-#include "CommandExpression.h"
-#include "Command.h"
-#include "OpenDataServer.h"
-#include "Connect.h"
-#include "DefineVarCommand.h"
-#include "Assign.h"
-#include "LoopCommand.h"
-#include "Sleep.h"
+#include "string"
+#include "fstream"
+#include <vector>
+using namespace std;
 
 class Lexer {
     string flightUserInput;
