@@ -77,7 +77,8 @@ Data data;
 //}
 
 int main() {
-    Lexer* lexer = new Lexer("CommandTestFile.txt");
-    string lexered_file = lexer->getFlightUserInput();
-
+    string port = "5400";
+    string hrz = "10";
+    OpenDataServer c = OpenDataServer(port, hrz);
+    c.execute();
 }

@@ -53,12 +53,11 @@ public:
 
     void setSimulatorData(const map <string, string> &simulatorData);
 
-
     void initializePaths();
     vector<string> getPaths();
     void initializePathValues();
     void setPathValues(string values);
-
+    map<string, double> getPathValues();
 };
 
 #endif //SIMULATOR_DATA_H

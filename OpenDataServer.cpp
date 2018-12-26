@@ -57,7 +57,6 @@ double OpenDataServer::execute() {
             data.setPathValues(buffer);
             printf("%s\n", buffer);
 
-
         }
     }
 }
@@ -66,5 +65,4 @@ OpenDataServer::OpenDataServer(string port, string hz){
     ShuntingYard shuntingYard;
     this->port = shuntingYard.createExpression(port)->calculate();
     this->hz = shuntingYard.createExpression(hz)->calculate();
-   // this->data = data;
 }

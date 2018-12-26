@@ -6,6 +6,7 @@
 #include "CommandExpression.h"
 #include "Command.h"
 #include "OpenDataServer.h"
+#include "iostream"
 
 //const map<string, double> &Data::getPlaneData() const {
 //    return planeData;
@@ -131,7 +132,6 @@ void Data::initializePathValues() {
 void Data::setPathValues(string data) {
     // get the values from the xml
     vector<double> values = this->lexer.simLexer(data, ",");
-
     map<string, double>::iterator it;
 
     // set the data
@@ -144,3 +144,7 @@ void Data::setPathValues(string data) {
 }
 
 Data::Data() {}
+
+map<string, double> Data::getPathValues() {
+    return this->path_values;
+}
