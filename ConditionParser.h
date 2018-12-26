@@ -18,8 +18,8 @@ public:
     string condition;
 
     // ctor
-    ConditionParser(vector<CommandExpression*> commands,
-            string condition);
+    ConditionParser(
+            vector<CommandExpression*> commands, string condition );
 
     // methods
     virtual double execute();

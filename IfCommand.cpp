@@ -6,7 +6,7 @@
 ///
 IfCommand::IfCommand(vector<CommandExpression*> commands,
         string condition, Data* data):ConditionParser(
-                commands, condition) {
+        commands, condition) {
     this->data = data;
 }
 

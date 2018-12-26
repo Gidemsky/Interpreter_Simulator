@@ -17,8 +17,8 @@ class LoopCommand : public ConditionParser {
 
 public:
     // ctor
-    LoopCommand(vector<CommandExpression*> commands,
-            string condition, Data* data);
+    LoopCommand(
+            vector<CommandExpression*> commands, string condition,Data* data);
     // methods
     virtual double execute();
 };

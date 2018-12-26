@@ -16,7 +16,7 @@
 ConditionParser::ConditionParser(
         vector<CommandExpression*> commands, string condition) {
     this->commands = commands;
-    this->condition;
+    this->condition = condition;
 }
 
 double ConditionParser::execute() {

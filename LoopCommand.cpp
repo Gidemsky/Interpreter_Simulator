@@ -5,9 +5,8 @@
 #include "LoopCommand.h"
 
 ///
-LoopCommand::LoopCommand(
-        vector <CommandExpression*> commands,
-        string condition, Data* data) :
+LoopCommand::LoopCommand(vector <CommandExpression*> commands,
+                         string condition, Data* data) :
         ConditionParser(commands, condition) {
     this->data = data;
 }

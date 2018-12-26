@@ -187,8 +187,9 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
                 }
                 loop_ce.pop_back();
                 string str="check";
+                vector<CommandExpression *> temp1 = loop_ce;
                 //vector<CommandExpression*> loop_check = loop_ce;
-                ce = new CommandExpression(new LoopCommand(loop_ce,str, &data));
+                ce = new CommandExpression(new LoopCommand(loop_ce,"check",&data));
                 //ce->calculate();
             if(!this->scope_started){
             }
