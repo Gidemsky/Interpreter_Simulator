@@ -16,42 +16,27 @@ using namespace std;
 class Data {
     Lexer lexer;
     //map<string,double> planeData;
-    map<string,string> planeData;
-    map<string,string> simulatorData;
-    map<string,Expression*> simData;//the final map
-    map<string,double> airplaneData;//the final map
-    map<string,string> binds;//maybe the final map
-    map<string,string> local_var;//TODO: check changing the value to double
-
+    map<string,Expression*> simulator_data;//the final map - <string,CommandExpression>
+    map<string,string> binds;//the final map - <string,bind>
+    map<string,string> local_var;//TODO: delete
+    map<string,double> symbol_table;
     /* data from the xml: */
     vector<string> paths;
     map<string, double> path_values;
 
 public:
-    Data();
-    const map<string, string> &getBinds() const;
-    const map<string, double> &getAirplaneData() const;
-    void setAirplaneData(string symbol, double value);
-    void setBinds(const map<string, string> &binds);
+    //setter and getter to simData
+    void setSimulatorData(string cmd,  Expression* ce);
+
+    //setter and getter to setBind
     void setBinds(string var_name, string path);
+    const map<string, string> &getBinds() const;
 
-    const map<string, string> &getLocal_var() const;
+    //setter and getter to symbol table
+    void setSymbolTable(string symbol, double value);
+    const map<string, double> &getSymbolTable() const;
 
-    void setLocal_var(string var_name, string value);
-
-    void setPlaneData(string symbol, string value);
-    void setPlaneData(vector<string> planeData);
-    void setSimulatorData(string cmd, string expression);
-    void setSimData(string cmd,  Expression* ce);
-    void setSimulatorData(vector<string> cmdData);
-
-    const map<string,double> &getPlaneData() const;
-
-    //void setPlaneData(const map<string,string> &planeData);
-
-    const map <string, string> &getSimulatorData() const;
-
-    void setSimulatorData(const map <string, string> &simulatorData);
+    //void setLocal_var(string var_name, string value);
 
     void initializePaths();
     vector<string> getPaths();

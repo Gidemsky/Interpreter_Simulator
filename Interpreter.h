@@ -32,17 +32,13 @@ class Interpreter {
     };
     bool isFileLoaded, scope_started;
     vector<vector<string>> victor; //my father's name
-    int scope_count;
+    int scope_count, expression_count;
     fstream simulatorUserFile;
     string flightUserInput;
 
 public:
     Interpreter();
-    explicit Interpreter(string userFileName);
-    string fileReader(fstream *dataFile, bool isLoaded, string& userFileName);
-    //template <class T>
-    string lexer(string line, string split);
-    vector<double> simLexer(string line, string split);
+    Interpreter(string simulator_data);
     void DataParser(string strData, string strSpliter);
     CommandExpression* CommandCreator(vector<vector<string>> data);
 };

@@ -14,91 +14,34 @@
 #include "LoopCommand.h"
 #include "Sleep.h"
 #include "Data.h"
+#include "PrintCommand.h"
+
+
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
+#define SIM_INPUT_SPLIT ","
+#define FILE_SPACE " "
+
 extern Data data;
-//#define SIM_INPUT_SPLIT ","
-//#define FILE_SPACE " "
 
 /**
  * Interpreter's Constructor
  */
 Interpreter::Interpreter(){
     isFileLoaded = false;//TODO:add the flight user data from the Cin?
-}
-/**
- * Interpreter's Constructor
- * @param userFileName - the name of the user's flights commands
- */
-Interpreter::Interpreter(string userFileName) {
-//    this->data=new Data();
     this->scope_count=0;
     isFileLoaded = false;//TODO:check if necessary
     this->scope_started = false;
-    //this->flightUserInput = fileReader(&simulatorUserFile, this->isFileLoaded, userFileName);
-    cout<<flightUserInput<<endl;//TODO:for debuging reasons
-    DataParser(this->flightUserInput,CMD_SPLIT);
+}
+
+Interpreter::Interpreter(string simulator_data){
+    isFileLoaded = false;//TODO:add the flight user data from the Cin?
+    this->scope_count=0;
+    isFileLoaded = false;//TODO:check if necessary
+    this->scope_started = false;
+    DataParser(simulator_data,CMD_SPLIT);
     CommandCreator(this->victor);
 }
-///**
-// * Function Name: FileReader
-// * @param dataFile - A pointer to the user's flight commands file
-// * @param isLoaded - TODO:check if necessary
-// * @param fileName - The user's flight commands file name as.txt. sends via the register
-// * @return all the commands as one string splited by the sign '|'
-// */
-//string Interpreter::fileReader(fstream *dataFile, bool isLoaded, string& fileName) {
-//    string line, commandsFileLine;
-//    dataFile->open(fileName);
-//    //checks if the file has been opened successfully
-//    if (!dataFile->is_open()) {
-//        throw "ERROR: CAN'T OPEN THE FILE";//TODO:check try and catch
-//    }
-//        //run the lexer functions as far as there is a non empty line
-//        while (getline(*dataFile, line)) {
-//            commandsFileLine += lexer(line, FILE_SPACE);
-//            //enterObjData(lineFilds, section);//TODO:check if needed for the map
-//        }
-//        cout<<commandsFileLine<<endl;//TODO:for debuging reasons
-//        //*isLoaded = true;TODO:check if necessary
-//    dataFile->close();
-//    return(commandsFileLine);
-//}
-///**
-// * Function Name: lexer
-// * @param line - the line for lexing
-// * @param split - the split sign between the commands
-// * @return - a string that ready to be add to all commands string (commandsFileLine)
-// */
-////template <class T>TODO:check generics
-//string Interpreter::lexer(string line, string split) {
-//    size_t pos = 0;
-//    string dataTaken;
-//    //run the loop as far as it has space bars
-//    while ((pos = line.find(split)) != string::npos) {
-//        dataTaken += line.substr(0, pos) + CMD_PARAMETER;
-//        line.erase(0, pos + split.length());
-//    }
-//    //adds the last string left in the line
-//    //deletes the number in the begging of the line
-//    dataTaken += line.substr(0, pos) + CMD_SPLIT;
-//    pos = dataTaken.find('.') + 1;
-//    dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
-//    return dataTaken;
-//}
-//
-//vector<double> Interpreter::simLexer(string line, string split) {//TODO:check if generic is possiable
-//    size_t pos = 0;
-//    vector<double> dataTaken;
-//    //run the loop as far as it has space bars
-//    while ((pos = line.find(split)) != string::npos) {
-//        //dataTaken += line.substr(0, pos) + CMD_PARAMETER;
-//        dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
-//        line.erase(0, pos + split.length());
-//    }
-//    dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
-//    return dataTaken;
-//}
 
 void Interpreter::DataParser(string strData, string strSpliter) {
     vector<string> cmdData;
@@ -120,7 +63,6 @@ void Interpreter::DataParser(string strData, string strSpliter) {
         }
         cmdData.push_back(lineData);
         this->victor.push_back(cmdData);
-        //DataCreator(cmdData);
     }
 }
 
@@ -128,7 +70,6 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
     while (!parameters.empty()){//parameter not empty
         vector<string> param;
         param = parameters.at(0);
-        //parameters.pop_back();
         parameters.erase(parameters.begin());
         simulatorCommand commandClass = VAR;
         if (find(param.begin(), param.end(),"=")!=param.end()){
@@ -142,6 +83,7 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
         } else {
             if(param[0]=="}"){
                 return 0;
+            } else if (this->scope_count==0) {
             }
             commandClass = CMD_DICTIONARY["="];
             if(param[0]=="while" || param[0]=="}") {//temporary condition
@@ -153,56 +95,66 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
         {
             case OPEN_DATA_SERVER: {
                 ce = new CommandExpression(new OpenDataServer(param[1],param[2]));//TODO: add calculate
-                ce->calculate();
-                data.setSimData(param[0],ce);
+                data.setSimulatorData(param[0],ce);
                 //return ce;
                 break;
             }
             case CONNECT: {
                 ce = new CommandExpression(new Connect(param[1],param[2]));
-                //ce->calculate();
-                data.setSimData(param[0],ce);
+                data.setSimulatorData(param[0],ce);
                 //return ce;
                 break;
             }
             case VAR: {
-                ce = new CommandExpression(new DefineVarCommand(param));
+                ce = new CommandExpression(new DefineVarCommand(param));//TODO:check if needed
                 //ce->calculate();
-                //return ce;
                 break;
             }
             case CONDITIONAL: {
                 bool is_scope_started = true;
                 this->scope_started=true;
+                this->scope_count+=1;
                 vector<CommandExpression*> loop_ce;
-                //list<CommandExpression*> loop_ce;
                 while (is_scope_started!=false){
                     loop_ce.push_back(CommandCreator(parameters));
                     parameters.erase(parameters.begin());
                     if(loop_ce.back()== nullptr){
                         is_scope_started=false;
+                        parameters.erase(parameters.begin(),parameters.begin()+this->expression_count+1);
                     }
                 }
+                this->scope_count-=1;
+                param.pop_back();
+                string cmd_condition_name = param.front();
+                string condition;
+                param.erase(param.begin());
+                while(param.size()!=0){
+                    condition+=param.front();
+                    param.erase(param.begin());
+                }
                 loop_ce.pop_back();
-                string str="check";
-                vector<CommandExpression *> temp1 = loop_ce;
-                //vector<CommandExpression*> loop_check = loop_ce;
-                ce = new CommandExpression(new LoopCommand(loop_ce,"check"));
-                data.setSimData(param[0],ce);
-                //ce->calculate();
-            if(!this->scope_started){
+                this->expression_count=loop_ce.size();
+                if(cmd_condition_name=="while"){
+                    ce = new CommandExpression(new LoopCommand(loop_ce,condition));
+                } else {
+                    ce = new CommandExpression(new LoopCommand(loop_ce,condition));
+                }
+                if(this->scope_count==0){
+                    data.setSimulatorData(cmd_condition_name,ce);
+                    continue;
+                } else {
+                    return ce;
+                }
             }
-            //data.setSimulatorData(parameters);
-                break;
+            case PRINT: {
+                ce = new CommandExpression(new PrintCommand(param[1]));
+                data.setSimulatorData(param[0],ce);
+                return ce;
             }
-//            case PRINT: {
-//                data.setSimulatorData(parameters);
-//                break;
-//            }
             case SLEEP: {
                 ce = new CommandExpression(new Sleep(param[1]));
-                data.setSimData(param[0],ce);
-                break;
+                data.setSimulatorData(param[0],ce);
+                return ce;
             }
             case INIT: {
                 ce = new CommandExpression(new Assign(param));
@@ -210,11 +162,8 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
                 if(this->scope_started==true){
                     return ce;
                 }
-                //data.setPlaneData(parameters);
                 break;
             }
-//            default:
-//                data.setSimulatorData(parameters);
         }
     }
 }

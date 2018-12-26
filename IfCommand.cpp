@@ -5,7 +5,7 @@
 #include "IfCommand.h"
 #include "Data.h"
 extern Data data;
-///
+//
 IfCommand::IfCommand(vector<CommandExpression*> commands,
         string condition):ConditionParser(
         commands, condition) {
