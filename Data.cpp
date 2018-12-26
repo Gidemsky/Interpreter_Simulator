@@ -129,7 +129,18 @@ void Data::initializePathValues() {
     }
 }
 
-//void Data::setPathValues(string data) {
-//    vector<double> values = this->interpreter.simLexer(data, ",");
-//
-//}
+void Data::setPathValues(string data) {
+    // get the values from the xml
+    vector<double> values = this->lexer.simLexer(data, ",");
+
+    map<string, double>::iterator it;
+
+    // set the data
+    for (int i = 0; i < this->paths.size(); i++) {
+        it = this->path_values.find(this->paths[i]);
+        if (it != this->path_values.end()) {
+            it->second = values[i];
+        }
+    }
+
+}

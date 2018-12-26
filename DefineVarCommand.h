@@ -10,7 +10,7 @@
 #include "Data.h"
 
 class DefineVarCommand : public Command {
-    Data data;
+    Data* data;
     string left, right;
     //enum VAR_TYPE {BIND, LCL_VAR};
     bool is_local_var;

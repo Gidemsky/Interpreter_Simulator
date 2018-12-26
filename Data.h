@@ -9,12 +9,12 @@
 #include <string>
 #include <vector>
 #include "Expression.h"
-//#include "Interpreter.h"
+#include "Lexer.h"
 
 using namespace std;
 
 class Data {
-    //Interpreter interpreter;
+    Lexer lexer;
     //map<string,double> planeData;
     map<string,string> planeData;
     map<string,string> simulatorData;
@@ -22,6 +22,8 @@ class Data {
     map<string,double> airplaneData;//the final map
     map<string,string> binds;//maybe the final map
     map<string,string> local_var;//TODO: check changing the value to double
+
+    /* data from the xml: */
     vector<string> paths;
     map<string, double> path_values;
 

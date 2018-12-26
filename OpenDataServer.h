@@ -7,16 +7,19 @@
 
 #include "Command.h"
 #include "ShuntingYard.h"
+#include "Data.h"
 
 class OpenDataServer : public Command{
     double port;
     double hz;
+    Data* data;
 
 public:
 
+    OpenDataServer(string& port, string& hz, Data* data);
+
     double getPort() const;
 
-    OpenDataServer(string& port, string& hz);
 
     void setPort(double port);
 
