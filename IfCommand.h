@@ -12,11 +12,11 @@
 #include "Condition.h"
 ///
 class IfCommand : public ConditionParser {
-    Data* data;
+
 public:
     // ctor
     IfCommand(vector<CommandExpression*> commands,
-            string condition, Data* data);
+            string condition);
     // methods
     virtual double execute();
 };

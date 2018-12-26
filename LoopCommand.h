@@ -10,15 +10,15 @@
 #include "CommandExpression.h"
 #include "Data.h"
 #include "Condition.h"
-
+extern Data data;
 class LoopCommand : public ConditionParser {
     // members
-    Data* data;
+
 
 public:
     // ctor
     LoopCommand(
-            vector<CommandExpression*> commands, string condition,Data* data);
+            vector<CommandExpression*> commands, string condition);
     // methods
     virtual double execute();
 };

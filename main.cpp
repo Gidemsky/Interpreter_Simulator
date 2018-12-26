@@ -11,6 +11,8 @@
 #include "algorithm"
 #include "ShuntingYard.h"
 #include "Lexer.h"
+#include "Data.h"
+Data data;
 
 //int mainSave() {
 //

@@ -8,6 +8,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include "OpenDataServer.h"
+#include "Data.h"
+extern Data data;
 
 double OpenDataServer::getPort() const {
     return port;
@@ -45,14 +47,14 @@ double OpenDataServer::execute() {
             exit(EXIT_FAILURE);
         }
 
-        this->data.initializePaths();
-        this->data.initializePathValues();
+        data.initializePaths();
+        data.initializePathValues();
 
         //TODO: open pthread
 
         while(true) {
             ssize_t erez = read(new_socket, buffer, 5000);
-            this->data.setPathValues(buffer);
+            data.setPathValues(buffer);
             printf("%s\n", buffer);
 
 
@@ -60,9 +62,9 @@ double OpenDataServer::execute() {
     }
 }
 //
-OpenDataServer::OpenDataServer(string port, string hz, Data* data){
+OpenDataServer::OpenDataServer(string port, string hz){
     ShuntingYard shuntingYard;
     this->port = shuntingYard.createExpression(port)->calculate();
     this->hz = shuntingYard.createExpression(hz)->calculate();
-    this->data = data;
+   // this->data = data;
 }

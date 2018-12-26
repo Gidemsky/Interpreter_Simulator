@@ -8,9 +8,9 @@
 #include "Command.h"
 #include "Data.h"
 
-
+extern Data data;
 class Assign : public Command {
-    Data data;
+
     string left, right;
 public:
     Assign(vector<string> parameters);

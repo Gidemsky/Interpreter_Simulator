@@ -11,14 +11,22 @@
 #include "OpenDataServer.h"
 #include "Connect.h"
 #include "DefineVarCommand.h"
-#include "Assign.h"
-#include "LoopCommand.h"
-#include "Sleep.h"
+
 
 #define SIM_INPUT_SPLIT ","
 #define FILE_SPACE " "
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
+
+#include "Interpreter.h"
+#include "CommandExpression.h"
+#include "Command.h"
+#include "OpenDataServer.h"
+#include "Connect.h"
+#include "DefineVarCommand.h"
+#include "Assign.h"
+#include "LoopCommand.h"
+#include "Sleep.h"
 
 Lexer::Lexer(){}
 Lexer::Lexer(string userFileName) {

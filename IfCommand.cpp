@@ -3,16 +3,18 @@
 //
 
 #include "IfCommand.h"
+#include "Data.h"
+extern Data data;
 ///
 IfCommand::IfCommand(vector<CommandExpression*> commands,
-        string condition, Data* data):ConditionParser(
+        string condition):ConditionParser(
         commands, condition) {
-    this->data = data;
+   // this->data = data;
 }
 
 double IfCommand::execute() {
     Condition* cond = new Condition(
-            this->condition, this->data);
+            this->condition);
     if (cond->evaluate()) {
         ConditionParser::execute();
     }

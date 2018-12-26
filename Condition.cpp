@@ -12,9 +12,9 @@
  * Ctor.
  * @param condition
  */
-Condition::Condition(string condition, Data *data) {
+Condition::Condition(string condition) {
     this->condition = condition;
-    this->data = data;
+    //this->data = data;
 }
 
 /**

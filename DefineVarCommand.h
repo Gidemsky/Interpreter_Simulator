@@ -7,15 +7,13 @@
 
 #include <vector>
 #include "Command.h"
-#include "Data.h"
 
 class DefineVarCommand : public Command {
-    Data* data;
+    //Data* data;
     string left, right;
-    //enum VAR_TYPE {BIND, LCL_VAR};
     bool is_local_var;
 public:
-    DefineVarCommand(vector<string> parameters,Data* data);
+    DefineVarCommand(vector<string> parameters);
     string getLeft();
     string getRight();
     double execute() override;

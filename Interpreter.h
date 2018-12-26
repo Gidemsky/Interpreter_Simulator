@@ -35,7 +35,7 @@ class Interpreter {
     int scope_count;
     fstream simulatorUserFile;
     string flightUserInput;
-    Data* data;
+
 public:
     Interpreter();
     explicit Interpreter(string userFileName);
