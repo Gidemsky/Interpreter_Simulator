@@ -11,7 +11,7 @@
 #include "ShuntingYard.h"
 
 
-class Sleep {
+class Sleep : public Command{
     int millisec;
 public:
     Sleep(string& millisec);

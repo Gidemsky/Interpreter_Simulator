@@ -12,11 +12,12 @@
 #include "DefineVarCommand.h"
 #include "Assign.h"
 #include "LoopCommand.h"
+#include "Sleep.h"
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
-#define SIM_INPUT_SPLIT ","
-#define FILE_SPACE " "
+//#define SIM_INPUT_SPLIT ","
+//#define FILE_SPACE " "
 
 /**
  * Interpreter's Constructor
@@ -32,75 +33,70 @@ Interpreter::Interpreter(string userFileName){
     this->scope_count=0;
     isFileLoaded = false;//TODO:check if necessary
     this->scope_started = false;
-    this->flightUserInput = fileReader(&simulatorUserFile, this->isFileLoaded, userFileName);
+    //this->flightUserInput = fileReader(&simulatorUserFile, this->isFileLoaded, userFileName);
     cout<<flightUserInput<<endl;//TODO:for debuging reasons
     DataParser(this->flightUserInput,CMD_SPLIT);
     CommandCreator(this->victor);
 }
-/**
- * Function Name: FileReader
- * @param dataFile - A pointer to the user's flight commands file
- * @param isLoaded - TODO:check if necessary
- * @param fileName - The user's flight commands file name as.txt. sends via the register
- * @return all the commands as one string splited by the sign '|'
- */
-string Interpreter::fileReader(fstream *dataFile, bool isLoaded, string& fileName) {
-    string line, commandsFileLine;
-    dataFile->open(fileName);
-    //checks if the file has been opened successfully
-    if (!dataFile->is_open()) {
-        throw "ERROR: CAN'T OPEN THE FILE";//TODO:check try and catch
-    }
-        //run the lexer functions as far as there is a non empty line
-        while (getline(*dataFile, line)) {
-            commandsFileLine += lexer(line, FILE_SPACE);
-            //enterObjData(lineFilds, section);//TODO:check if needed for the map
-        }
-        cout<<commandsFileLine<<endl;//TODO:for debuging reasons
-        //*isLoaded = true;TODO:check if necessary
-    dataFile->close();
-    return(commandsFileLine);
-}
-/**
- * Function Name: lexer
- * @param line - the line for lexing
- * @param split - the split sign between the commands
- * @return - a string that ready to be add to all commands string (commandsFileLine)
- */
-//template <class T>TODO:check generics
-string Interpreter::lexer(string line, string split) {
-    size_t pos = 0;
-    string dataTaken;
-    //run the loop as far as it has space bars
-    while ((pos = line.find(split)) != string::npos) {
-        dataTaken += line.substr(0, pos) + CMD_PARAMETER;
-        line.erase(0, pos + split.length());
-    }
-    //adds the last string left in the line
-    //deletes the number in the begging of the line
-    dataTaken += line.substr(0, pos) + CMD_SPLIT;
-    pos = dataTaken.find('.') + 1;
-    dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
-    return dataTaken;
-}
-
-vector<double> Interpreter::simLexer(string line, string split) {
-    size_t pos = 0;
-    vector<double> dataTaken;
-    //run the loop as far as it has space bars
-    while ((pos = line.find(split)) != string::npos) {
-        //dataTaken += line.substr(0, pos) + CMD_PARAMETER;
-        dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
-        line.erase(0, pos + split.length());
-    }
-    //adds the last string left in the line
-    //deletes the number in the begging of the line
+///**
+// * Function Name: FileReader
+// * @param dataFile - A pointer to the user's flight commands file
+// * @param isLoaded - TODO:check if necessary
+// * @param fileName - The user's flight commands file name as.txt. sends via the register
+// * @return all the commands as one string splited by the sign '|'
+// */
+//string Interpreter::fileReader(fstream *dataFile, bool isLoaded, string& fileName) {
+//    string line, commandsFileLine;
+//    dataFile->open(fileName);
+//    //checks if the file has been opened successfully
+//    if (!dataFile->is_open()) {
+//        throw "ERROR: CAN'T OPEN THE FILE";//TODO:check try and catch
+//    }
+//        //run the lexer functions as far as there is a non empty line
+//        while (getline(*dataFile, line)) {
+//            commandsFileLine += lexer(line, FILE_SPACE);
+//            //enterObjData(lineFilds, section);//TODO:check if needed for the map
+//        }
+//        cout<<commandsFileLine<<endl;//TODO:for debuging reasons
+//        //*isLoaded = true;TODO:check if necessary
+//    dataFile->close();
+//    return(commandsFileLine);
+//}
+///**
+// * Function Name: lexer
+// * @param line - the line for lexing
+// * @param split - the split sign between the commands
+// * @return - a string that ready to be add to all commands string (commandsFileLine)
+// */
+////template <class T>TODO:check generics
+//string Interpreter::lexer(string line, string split) {
+//    size_t pos = 0;
+//    string dataTaken;
+//    //run the loop as far as it has space bars
+//    while ((pos = line.find(split)) != string::npos) {
+//        dataTaken += line.substr(0, pos) + CMD_PARAMETER;
+//        line.erase(0, pos + split.length());
+//    }
+//    //adds the last string left in the line
+//    //deletes the number in the begging of the line
 //    dataTaken += line.substr(0, pos) + CMD_SPLIT;
 //    pos = dataTaken.find('.') + 1;
-    //dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
-    dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
-    return dataTaken;
-}
+//    dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
+//    return dataTaken;
+//}
+//
+//vector<double> Interpreter::simLexer(string line, string split) {//TODO:check if generic is possiable
+//    size_t pos = 0;
+//    vector<double> dataTaken;
+//    //run the loop as far as it has space bars
+//    while ((pos = line.find(split)) != string::npos) {
+//        //dataTaken += line.substr(0, pos) + CMD_PARAMETER;
+//        dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
+//        line.erase(0, pos + split.length());
+//    }
+//    dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
+//    return dataTaken;
+//}
 
 void Interpreter::DataParser(string strData, string strSpliter) {
     vector<string> cmdData;
@@ -190,20 +186,22 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
                 vector<CommandExpression *> temp1 = loop_ce;
                 //vector<CommandExpression*> loop_check = loop_ce;
                 ce = new CommandExpression(new LoopCommand(loop_ce,"check",&data));
+                data.setSimData(param[0],ce);
                 //ce->calculate();
             if(!this->scope_started){
             }
             //data.setSimulatorData(parameters);
                 break;
             }
-////            case PRINT: {
-////                data.setSimulatorData(parameters);
-////                break;
-////            }
-//            case SLEEP: {
+//            case PRINT: {
 //                data.setSimulatorData(parameters);
 //                break;
 //            }
+            case SLEEP: {
+                ce = new CommandExpression(new Sleep(param[1]));
+                data.setSimData(param[0],ce);
+                break;
+            }
             case INIT: {
                 ce = new CommandExpression(new Assign(param));
                 ce->calculate();

@@ -10,6 +10,7 @@
 #include "Condition.h"
 #include "algorithm"
 #include "ShuntingYard.h"
+#include "Lexer.h"
 
 int mainSave() {
 
@@ -74,5 +75,5 @@ int mainSave3() {
 }
 
 int main() {
-    Interpreter* check = new Interpreter("CommandTestFile.txt");
+    Lexer* lexer = new Lexer("CommandTestFile.txt");
 }
