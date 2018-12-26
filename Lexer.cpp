@@ -20,6 +20,7 @@
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
 
+Lexer::Lexer(){}
 Lexer::Lexer(string userFileName) {
     //isFileLoaded = false;//TODO:check if necessary
     //this->scope_started = false;
@@ -86,6 +87,10 @@ vector<double> Lexer::simLexer(string line, string split) {//TODO:check if gener
     }
     dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
     return dataTaken;
+}
+
+const string &Lexer::getFlightUserInput() const {
+    return flightUserInput;
 }
 
 //string Lexer::fileReader(fstream *dataFile, bool isLoaded, string &userFileName) {

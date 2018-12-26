@@ -29,7 +29,8 @@ Interpreter::Interpreter(){
  * Interpreter's Constructor
  * @param userFileName - the name of the user's flights commands
  */
-Interpreter::Interpreter(string userFileName){
+Interpreter::Interpreter(string userFileName) {
+    this->data=new Data;
     this->scope_count=0;
     isFileLoaded = false;//TODO:check if necessary
     this->scope_started = false;
@@ -150,7 +151,7 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
         switch(commandClass)
         {
             case OPEN_DATA_SERVER: {
-                ce = new CommandExpression(new OpenDataServer(param[1],param[2]));//TODO: add calculate
+                ce = new CommandExpression(new OpenDataServer(param[1],param[2], this->data));//TODO: add calculate
                 ce->calculate();
                 data.setSimData(param[0],ce);
                 //return ce;

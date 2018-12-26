@@ -23,7 +23,9 @@ class Lexer {
     fstream simulatorUserFile;
     bool isFileLoaded;
 public:
+    Lexer();
     Lexer(string userFileName);
+    const string &getFlightUserInput() const;
     string fileReader(fstream *dataFile, bool isLoaded, string& userFileName);
     string lexer(string line, string split);
     vector<double> simLexer(string line, string split);

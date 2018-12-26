@@ -45,14 +45,14 @@ double OpenDataServer::execute() {
             exit(EXIT_FAILURE);
         }
 
-        this->data->initializePaths();
-        this->data->initializePathValues();
+        this->data.initializePaths();
+        this->data.initializePathValues();
 
         //TODO: open pthread
 
         while(true) {
             ssize_t erez = read(new_socket, buffer, 5000);
-            this->data->setPathValues(buffer);
+            this->data.setPathValues(buffer);
             printf("%s\n", buffer);
 
 
@@ -60,7 +60,7 @@ double OpenDataServer::execute() {
     }
 }
 //
-OpenDataServer::OpenDataServer(string& port, string& hz, Data* data) {
+OpenDataServer::OpenDataServer(string port, string hz, Data* data){
     ShuntingYard shuntingYard;
     this->port = shuntingYard.createExpression(port)->calculate();
     this->hz = shuntingYard.createExpression(hz)->calculate();

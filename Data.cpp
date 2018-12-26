@@ -7,7 +7,6 @@
 #include "Command.h"
 #include "OpenDataServer.h"
 
-
 //const map<string, double> &Data::getPlaneData() const {
 //    return planeData;
 //}
@@ -142,5 +141,6 @@ void Data::setPathValues(string data) {
             it->second = values[i];
         }
     }
-
 }
+
+Data::Data() {}

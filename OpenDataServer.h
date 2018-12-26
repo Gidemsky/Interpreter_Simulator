@@ -16,10 +16,9 @@ class OpenDataServer : public Command{
 
 public:
 
-    OpenDataServer(string& port, string& hz, Data* data);
+    OpenDataServer(string port, string hz, Data* data);
 
     double getPort() const;
-
 
     void setPort(double port);
 

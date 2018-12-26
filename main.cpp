@@ -76,4 +76,6 @@
 
 int main() {
     Lexer* lexer = new Lexer("CommandTestFile.txt");
+    string lexered_file = lexer->getFlightUserInput();
+
 }

@@ -28,6 +28,7 @@ class Data {
     map<string, double> path_values;
 
 public:
+    Data();
     const map<string, string> &getBinds() const;
     const map<string, double> &getAirplaneData() const;
     void setAirplaneData(string symbol, double value);
