@@ -59,7 +59,7 @@ double OpenDataServer::execute() {
         }
     }
 }
-
+//
 OpenDataServer::OpenDataServer(string& port, string& hz, Data* data) {
     ShuntingYard shuntingYard;
     this->port = shuntingYard.createExpression(port)->calculate();
