@@ -14,11 +14,11 @@
 
 //int mainSave() {
 //
-////    ShuntingYard* sy = new ShuntingYard();
-////
-////    Expression* e = sy->createExpression("300-2");
-////
-////    cout << e->calculate() << endl;
+//    ShuntingYard* sy = new ShuntingYard();
+//
+//    Expression* e = sy->createExpression("300-2");
+//
+//    cout << e->calculate() << endl;
 //
 //    Data* data = new Data();
 //    Condition* c = new Condition("300 - 200 <= 100", data);
@@ -34,19 +34,19 @@
 //int mainSave2() {
 //    Expression *exp = new Plus(new Neg(new Number(3.0)),
 //                               new Number(5.0));
-////    void* thread_func(void* arg) {
-////        int server_fd, new_socket, valread;
-////        struct sockaddr_in address;
-////        server_fd = socket(AF_INET, SOCK_STREAM, 0);
-////        address.sin_family = AF_INET;
-////        address.sin_addr.s_addr = INADDR_ANY;
-////        address.sin_port = htons(5400);
-////        bind(server_fd, (struct sockaddr *) &address, sizeof(address));
-////        listen(server_fd, 5);
-////
-////        pthread_t trid;
-////        pthread_create(&trid, nullptr, thread_func, nullptr);
-////    }
+//    void* thread_func(void* arg) {
+//        int server_fd, new_socket, valread;
+//        struct sockaddr_in address;
+//        server_fd = socket(AF_INET, SOCK_STREAM, 0);
+//        address.sin_family = AF_INET;
+//        address.sin_addr.s_addr = INADDR_ANY;
+//        address.sin_port = htons(5400);
+//        bind(server_fd, (struct sockaddr *) &address, sizeof(address));
+//        listen(server_fd, 5);
+//
+//        pthread_t trid;
+//        pthread_create(&trid, nullptr, thread_func, nullptr);
+//    }
 //
 //    string port = "5400";
 //    string hrz = "10";
