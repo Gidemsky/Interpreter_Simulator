@@ -58,8 +58,8 @@ string Lexer::lexer(string line, string split) {
     while ((pos= dataTaken.find('-')) != string::npos){
         if(dataTaken.at(pos-1)=='*' || dataTaken.at(pos-1)=='|'
         || dataTaken.at(pos-1)=='+' || dataTaken.at(pos-1)=='/'
-        || dataTaken.at(pos-1)==NULL &&
-        (dataTaken.at(pos-1)!=')' || dataTaken.at(pos-1)!='(')){
+        || (dataTaken.at(pos-1)==' ' &&
+        (dataTaken.at(pos-1)!=')' || dataTaken.at(pos-1)!='('))){
                 dataTaken.insert(pos,"(0");
                 final_line += dataTaken.substr(0,pos+3);
                 dataTaken.erase(0, pos + 3);

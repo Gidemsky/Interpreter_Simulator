@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include "OpenDataServer.h"
 #include "Data.h"
-#include "pthread.h"
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -33,7 +33,10 @@ typedef struct Parameters Parameters;
 
 void *OpenDataServer::readFromServer(void *pparams) {
     auto *p = (struct Parameters *) pparams;
-    Parameters params = {.hz = p->hz, .port = p->port, .socket = p->socket};
+    Parameters params;
+    params.hz = p->hz;
+    params.port = p->port;
+    params.socket = p->socket;
     delete p;
 
     string buffer;
