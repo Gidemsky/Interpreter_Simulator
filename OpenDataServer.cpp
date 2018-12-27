@@ -33,14 +33,17 @@ typedef struct Parameters Parameters;
 
 void* OpenDataServer::readFromServer(void* params) {
     struct Parameters* p = (struct Parameters*) params;
-    string buffer;
+    string buffer = "";
     char c;
     int n;
 
 
     while (true) {
-        n = read(p->socket, &buffer, 5000);
-
+        n = read(p->socket, &c, 1);
+        if (n<0){
+            perror("Error reading from socket.");
+            exit(1);
+        }
         while (c != '\n') {
             if (n < 0) {
                 perror("Eroor reading from socket");
@@ -51,9 +54,9 @@ void* OpenDataServer::readFromServer(void* params) {
         }
 
         buffer += '\n';
-
         data.setPathValues(buffer);
         cout << buffer << endl;
+        buffer = "";
     }
 }
 
@@ -102,33 +105,16 @@ double OpenDataServer::execute() {
         exit(1);
     }
 
-    /* If connection is established then start communicating */
-    bzero(buffer,256);
-    n = read( newsockfd,buffer,255 );
-
-    if (n < 0) {
-        perror("ERROR reading from socket");
-        exit(1);
-    }
-
-    printf("Here is the message: %s\n",buffer);
-
-    /* Write a response to the client */
-    n = write(newsockfd,"I got your message",18);
-
-    if (n < 0) {
-        perror("ERROR writing to socket");
-        exit(1);
-    }
-
-
     auto param = new Parameters{};
+    param->socket = newsockfd;
+    param->hz = 10;
+    param->port = 5400;
 
     data.initializePaths();
-    data.initializePathValues();
+    //data.initializePathValues();
 
 
-    pthread_create(&pthread, nullptr, readFromServer, );
+    pthread_create(&pthread, nullptr, readFromServer, param);
 }
 
 //

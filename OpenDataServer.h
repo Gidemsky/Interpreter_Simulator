@@ -15,7 +15,7 @@ class OpenDataServer : public Command{
 
 public:
     OpenDataServer(string port, string hz);
-    void* readFromServer(void* params);
+    static void* readFromServer(void* params);
     double execute();
 };
 
