@@ -10,13 +10,13 @@
 #include "Data.h"
 
 class OpenDataServer : public Command{
-    double port;
-    double hz;
+    unsigned short port;
+    short hz;
 
 public:
     OpenDataServer(string port, string hz);
     static void* readFromServer(void* params);
-    double execute();
+    double execute() override;
 };
 
 #endif //SIMULATOR_OPENDATASERVER_H

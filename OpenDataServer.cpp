@@ -31,31 +31,28 @@ struct Parameters {
 
 typedef struct Parameters Parameters;
 
-void* OpenDataServer::readFromServer(void* params) {
-    struct Parameters* p = (struct Parameters*) params;
-    string buffer = "";
+void *OpenDataServer::readFromServer(void *pparams) {
+    auto *p = (struct Parameters *) pparams;
+    Parameters params = {.hz = p->hz, .port = p->port, .socket = p->socket};
+    delete p;
+
+    string buffer;
     char c;
-    int n;
+    ssize_t n = 0;
 
 
     while (true) {
-        n = read(p->socket, &c, 1);
-        if (n<0){
-            perror("Error reading from socket.");
-            exit(1);
-        }
-        while (c != '\n') {
+        do {
+            n = read(p->socket, &c, 1);
+            buffer += c;
             if (n < 0) {
                 perror("Eroor reading from socket");
                 exit(1);
             }
-            buffer += c;
-            n = read(p->socket, &c, 1);
-        }
+        } while (c != '\n');
 
-        buffer += '\n';
         data.setPathValues(buffer);
-        cout << buffer << endl;
+        // cout << buffer << endl;
         buffer = "";
     }
 }
@@ -66,7 +63,7 @@ double OpenDataServer::execute() {
     int sockfd, newsockfd, portno, clilen;
     char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
-    int  n;
+    int n;
 
     /* First call to socket() function */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -78,11 +75,10 @@ double OpenDataServer::execute() {
 
     /* Initialize socket structure */
     bzero((char *) &serv_addr, sizeof(serv_addr));
-    portno = 5001;
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_port = htons(portno);
+    serv_addr.sin_port = htons(port);
 
     /* Now bind the host address using bind() call.*/
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
@@ -94,23 +90,22 @@ double OpenDataServer::execute() {
        * go in sleep mode and will wait for the incoming connection
     */
 
-    listen(sockfd,5);
+    listen(sockfd, 5);
     clilen = sizeof(cli_addr);
 
     /* Accept actual connection from the client */
-    newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, (socklen_t*)&clilen);
+    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
 
     if (newsockfd < 0) {
         perror("ERROR on accept");
         exit(1);
     }
-
+    // A client is accepted
     auto param = new Parameters{};
     param->socket = newsockfd;
-    param->hz = 10;
-    param->port = 5400;
+    param->hz = hz;
+    param->port = port;
 
-    data.initializePaths();
     //data.initializePathValues();
 
 
@@ -118,8 +113,8 @@ double OpenDataServer::execute() {
 }
 
 //
-OpenDataServer::OpenDataServer(string port, string hz){
+OpenDataServer::OpenDataServer(string port, string hz) {
     ShuntingYard shuntingYard;
-    this->port = shuntingYard.createExpression(port)->calculate();
-    this->hz = shuntingYard.createExpression(hz)->calculate();
+    this->port = static_cast<unsigned short>(shuntingYard.createExpression(port)->calculate());
+    this->hz = static_cast<short>(shuntingYard.createExpression(hz)->calculate());
 }
