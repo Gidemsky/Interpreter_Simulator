@@ -90,6 +90,19 @@ Expression *ShuntingYard::createExpression(string tokens) {
             operators.pop();
         }
 
+        //float number
+        else if(isdigit(tokens[i])) {
+            string val = "";
+            while (i < tokens.length() && (isdigit(tokens[i])) || (tokens[i] == '.')) {
+                val += tokens[i];
+                i++;
+            }
+            i--;
+            double number = stod(val);
+            Expression *num = new Number(number);
+            value.push(num);
+        }
+
             // Current token is an operator.
         else {
             // While top of 'ops' has same or greater
