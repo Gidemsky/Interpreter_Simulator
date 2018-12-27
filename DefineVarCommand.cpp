@@ -13,7 +13,6 @@ DefineVarCommand::DefineVarCommand(vector<string> parameters) {
         this->right = parameters[4];
         data.setBinds(left,right);
         data.setSymbolTable(left,0);
-        //this->is_local_var= false;
     } else {
         this->left = parameters[1];
         this->right = parameters[3];

@@ -33,14 +33,14 @@ class Interpreter {
     bool isFileLoaded, scope_started;
     vector<vector<string>> victor; //my father's name
     int scope_count, expression_count;
-//    fstream simulatorUserFile;
-//    string flightUserInput;
+    vector<CommandExpression*> cmd_expressions;
 
 public:
     Interpreter();
     Interpreter(string simulator_data);
     void DataParser(string strData, string strSpliter);
     CommandExpression* CommandCreator(vector<vector<string>> data);
+    void Run();
 };
 //
 #endif //SIMULATOR_INTERPRETER_H

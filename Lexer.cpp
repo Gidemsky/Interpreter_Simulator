@@ -55,6 +55,11 @@ string Lexer::lexer(string line, string split) {
     //adds the last string left in the line
     //deletes the number in the begging of the line
     dataTaken += line.substr(0, pos) + CMD_SPLIT;
+
+    /*
+     * this block responsible to locolize the (-) sign and rearange
+     * the string for correct shunting yard progress
+     */
     while ((pos= dataTaken.find('-')) != string::npos){
         if(dataTaken.at(pos-1)=='*' || dataTaken.at(pos-1)=='|'
         || dataTaken.at(pos-1)=='+' || dataTaken.at(pos-1)=='/'
@@ -63,6 +68,7 @@ string Lexer::lexer(string line, string split) {
                 dataTaken.insert(pos,"(0");
                 final_line += dataTaken.substr(0,pos+3);
                 dataTaken.erase(0, pos + 3);
+                //adding the rest string to the rearanged one
                 while(dataTaken.at(0)>='0' && dataTaken.at(0)<='9'){
                     final_line += dataTaken.substr(0,1);
                     dataTaken.erase(0, 1);
@@ -70,15 +76,17 @@ string Lexer::lexer(string line, string split) {
                 final_line.insert(final_line.size(),")");
                 is_converted=true;
         } else {
+            //finish the loop
             break;
         }
     }
+    //return the converted string
     if(is_converted){
         final_line += dataTaken;
         return final_line;
     }
-    pos = dataTaken.find('.') + 1;
-    dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
+//    pos = dataTaken.find('.') + 1;
+//    dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
     return dataTaken;
 }
 

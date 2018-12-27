@@ -68,30 +68,22 @@ Data data;//Global Class
 //    }
 //
 //    data->initializePathValues();
-//
 //    int a = 3;
 //
 //    return 0;
-//
-//
 //}
 #include "Connect.h"
 
 int main() {
-//    map<string, CommandExpression*> check;
-//    Lexer* lexer = new Lexer("CommandTestFile.txt");
-//    string lexer_data = lexer->getFlightUserInput();
-//    Interpreter* parser = new Interpreter(lexer_data);
-//    data.getSimulator_data().at(0)->calculate();
-//    data.getSimulator_data().at(1)->calculate();
-//    cout<<"checking"<<endl;//TODO:for debuging reasons
-    string port = "5400";
-    string hrz = "10";
-    OpenDataServer c = OpenDataServer(port, hrz);
-    c.execute();
-    Connect ce("127.0.0.1", "5402");
-    ce.execute();//
-
+    Lexer* lexer = new Lexer("CommandTestFile.txt");
+    string lexer_data = lexer->getFlightUserInput();
+    Interpreter* parser = new Interpreter(lexer_data);
+    parser->Run();
+//    string port = "5400";
+//    string hrz = "10";
+//    OpenDataServer c = OpenDataServer(port, hrz);
+//    c.execute();
+//    Connect ce("127.0.0.1", "5402");
+//    ce.execute();
     pthread_exit(nullptr);
-
 }

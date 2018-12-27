@@ -141,13 +141,3 @@ map<string, double> Data::getPathValues() {
 const map<string, Expression *> &Data::getSimulator_data() const {
     return simulator_data;
 }
-
-// ********** added by benda: ***********
-
-/**
- * Getter of the command expressions.
- * @return vector of command expressions.
- */
-vector<CommandExpression*> Data::getCommands() {
-    return this->commands;
-}

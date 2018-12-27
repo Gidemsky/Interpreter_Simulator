@@ -94,18 +94,20 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             case OPEN_DATA_SERVER: {
                 ce = new CommandExpression(new OpenDataServer(param[1], param[2]));//TODO: add calculate
                 data.setSimulatorData(param[0], ce);
+                this->cmd_expressions.push_back(ce);
                 //return ce;
                 break;
             }
             case CONNECT: {
                 ce = new CommandExpression(new Connect(param[1], param[2]));
                 data.setSimulatorData(param[0], ce);
+                this->cmd_expressions.push_back(ce);
                 //return ce;
                 break;
             }
             case VAR: {
+                if ()
                 ce = new CommandExpression(new DefineVarCommand(param));//TODO:check if needed
-                //ce->calculate();
                 break;
             }
             case CONDITIONAL: {
@@ -131,11 +133,13 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                     param.erase(param.begin());
                 }
                 loop_ce.pop_back();
-                this->expression_count = loop_ce.size();
+                this->expression_count = static_cast<int>(loop_ce.size());
                 if (cmd_condition_name == "while") {
                     ce = new CommandExpression(new LoopCommand(loop_ce, condition));
+                    this->cmd_expressions.push_back(ce);
                 } else {
                     ce = new CommandExpression(new LoopCommand(loop_ce, condition));
+                    this->cmd_expressions.push_back(ce);
                 }
                 if (this->scope_count == 0) {
                     data.setSimulatorData(cmd_condition_name, ce);
@@ -163,5 +167,12 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                 break;
             }
         }
+    }
+}
+
+void Interpreter::Run() {
+    // execute the commands
+    for (CommandExpression* cmd : this->cmd_expressions) {
+        cmd->calculate();
     }
 }

@@ -12,13 +12,10 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <netdb.h>
 #include <unistd.h>
 #include <netinet/in.h>
-
 #include <string.h>
-
 #include <sys/socket.h>
 
 extern Data data;
@@ -38,11 +35,9 @@ void *OpenDataServer::readFromServer(void *pparams) {
     params.port = p->port;
     params.socket = p->socket;
     delete p;
-
     string buffer;
     char c;
     ssize_t n = 0;
-
 
     while (true) {
         do {
@@ -53,12 +48,10 @@ void *OpenDataServer::readFromServer(void *pparams) {
                 exit(1);
             }
         } while (c != '\n');
-
         data.setPathValues(buffer);
         buffer = "";
     }
 }
-
 
 double OpenDataServer::execute() {
     pthread_t pthread;
@@ -76,7 +69,6 @@ double OpenDataServer::execute() {
 
     /* Initialize socket structure */
     bzero((char *) &serv_addr, sizeof(serv_addr));
-
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(port);
@@ -90,7 +82,6 @@ double OpenDataServer::execute() {
     /* Now start listening for the clients, here process will
        * go in sleep mode and will wait for the incoming connection
     */
-
     listen(sockfd, 5);
     clilen = sizeof(cli_addr);
 
@@ -106,17 +97,13 @@ double OpenDataServer::execute() {
     param->socket = newsockfd;
     param->hz = hz;
     param->port = port;
-
-
     pthread_create(&pthread, nullptr, readFromServer, param);
 }
 
-//
 OpenDataServer::OpenDataServer(string port, string hz) {
     ShuntingYard shuntingYard;
     this->port = static_cast<unsigned short>(shuntingYard.createExpression(port)->calculate());
     this->hz = static_cast<short>(shuntingYard.createExpression(hz)->calculate());
-
     data.initializePaths();
     data.initializePathValues();
 }
