@@ -55,7 +55,6 @@ void *OpenDataServer::readFromServer(void *pparams) {
         } while (c != '\n');
 
         data.setPathValues(buffer);
-        cout << buffer << endl;
         buffer = "";
     }
 }
@@ -108,8 +107,6 @@ double OpenDataServer::execute() {
     param->hz = hz;
     param->port = port;
 
-    //data.initializePathValues();
-
 
     pthread_create(&pthread, nullptr, readFromServer, param);
 }
@@ -119,4 +116,7 @@ OpenDataServer::OpenDataServer(string port, string hz) {
     ShuntingYard shuntingYard;
     this->port = static_cast<unsigned short>(shuntingYard.createExpression(port)->calculate());
     this->hz = static_cast<short>(shuntingYard.createExpression(hz)->calculate());
+
+    data.initializePaths();
+    data.initializePathValues();
 }
