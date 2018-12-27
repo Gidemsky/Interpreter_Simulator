@@ -77,8 +77,13 @@ Data data;//Global Class
 //}
 
 int main() {
-    Lexer* lexer = new Lexer("CommandTestFile.txt");
-    string lexer_data = lexer->getFlightUserInput();
-    Interpreter* parser = new Interpreter(lexer_data);
-    cout<<"checking"<<endl;//TODO:for debuging reasons
+//    Lexer* lexer = new Lexer("CommandTestFile.txt");
+//    string lexer_data = lexer->getFlightUserInput();
+//    Interpreter* parser = new Interpreter(lexer_data);
+//    cout<<"checking"<<endl;//TODO:for debuging reasons
+    string port = "5400";
+    string hrz = "10";
+    OpenDataServer c = OpenDataServer(port, hrz);
+    c.execute();
+
 }
