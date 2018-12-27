@@ -90,7 +90,7 @@ int main() {
     OpenDataServer c = OpenDataServer(port, hrz);
     c.execute();
     Connect ce("127.0.0.1", "5402");
-    ce.execute();
+    ce.execute();//
 
     pthread_exit(nullptr);
 
