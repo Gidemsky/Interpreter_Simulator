@@ -21,92 +21,29 @@ Connect::Connect(string ip_address, string port) {
     this->port = shuntingYard.createExpression(port)->calculate();
 }
 
-void connect_server(const char* ip, int port)
-{
+
+double Connect::execute() {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)  {
-        // TODO
+        perror("ERROR: can not open the file!");
+        exit(1);
     }
 
     struct sockaddr_in server;
     server.sin_family = AF_INET;
-    server.sin_addr.s_addr = inet_addr(ip);
+    server.sin_addr.s_addr = inet_addr(ip_address.c_str());
     server.sin_port = htons(port);
 
     size_t server_len = sizeof(sockaddr_in);
 
     if (::connect(sock, (const sockaddr*)&server, server_len) < 0)    {
-        // TODO
+        perror("ERROR: can not connect to the");
+        exit(1);
     }
 
     // sock is the socket to the server
+    write(sock, "set /controls/flight/rudder 1\r\n", strlen("set /controls/flight/rudder 1\r\n"));
 
-}
+    close(sock);
 
-double Connect::execute() {
-    int sockfd, portno, n;
-    struct sockaddr_in serv_addr;
-    struct hostent *server;
-
-    char buffer[256];
-
-    if (argc < 3) {
-        fprintf(stderr,"usage %s hostname port\n", argv[0]);
-        exit(0);
-    }
-
-    portno = atoi(argv[2]);
-
-    /* Create a socket point */
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    if (sockfd < 0) {
-        perror("ERROR opening socket");
-        exit(1);
-    }
-
-    server = gethostbyname(argv[1]);
-
-    if (server == NULL) {
-        fprintf(stderr,"ERROR, no such host\n");
-        exit(0);
-    }
-
-    bzero((char *) &serv_addr, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
-    serv_addr.sin_port = htons(portno);
-
-    /* Now connect to the server */
-    if (connect(sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
-        perror("ERROR connecting");
-        exit(1);
-    }
-
-    /* Now ask for a message from the user, this message
-       * will be read by server
-    */
-
-    printf("Please enter the message: ");
-    bzero(buffer,256);
-    fgets(buffer,255,stdin);
-
-    /* Send message to the server */
-    n = write(sockfd, buffer, strlen(buffer));
-
-    if (n < 0) {
-        perror("ERROR writing to socket");
-        exit(1);
-    }
-
-    /* Now read server response */
-    bzero(buffer,256);
-    n = read(sockfd, buffer, 255);
-
-    if (n < 0) {
-        perror("ERROR reading from socket");
-        exit(1);
-    }
-
-    printf("%s\n",buffer);
 }

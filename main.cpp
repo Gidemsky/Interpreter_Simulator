@@ -75,15 +75,18 @@ Data data;//Global Class
 //
 //
 //}
+#include "Connect.h"
 
 int main() {
 //    Lexer* lexer = new Lexer("CommandTestFile.txt");
 //    string lexer_data = lexer->getFlightUserInput();
 //    Interpreter* parser = new Interpreter(lexer_data);
 //    cout<<"checking"<<endl;//TODO:for debuging reasons
-    string port = "5400";
-    string hrz = "10";
-    OpenDataServer c = OpenDataServer(port, hrz);
+//    string port = "5400";
+//    string hrz = "10";
+//    OpenDataServer c = OpenDataServer(port, hrz);
+//    c.execute();
+    Connect c("127.0.0.1", "5432");
     c.execute();
 
     pthread_exit(nullptr);
