@@ -23,7 +23,6 @@ Connect::Connect(string ip_address, string port) {
     this->port = shuntingYard.createExpression(port)->calculate();
 }
 
-
 double Connect::execute() {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock < 0) {
@@ -40,7 +39,7 @@ double Connect::execute() {
 
         size_t server_len = sizeof(sockaddr_in);
 
-        std::cout << "debug" << endl;
+        //std::cout << "debug" << endl;
         memset(&server, 0, sizeof(server));
 
         if (::connect(sock, (const sockaddr *) &server, server_len) < 0) {
@@ -51,8 +50,8 @@ double Connect::execute() {
     while(true) {
         cout << "set" << endl;
         // sock is the socket to the server
-        write(sock, "set /controls/flight/rudder 1\r\n", strlen("set /controls/flight/rudder 1\r\n"));
-        usleep(1);
+        send(sock, "set /controls/flight/rudder 1\r\n", strlen("set /controls/flight/rudder 1\r\n"),0);
+        usleep(30000);
     }
     close(sock);
 
