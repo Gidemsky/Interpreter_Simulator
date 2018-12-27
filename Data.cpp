@@ -8,7 +8,6 @@
 #include "OpenDataServer.h"
 #include "iostream"
 
-
 /**
  *
  * @param cmd
@@ -18,7 +17,6 @@ void Data::setSimulatorData(string cmd, Expression *ce) {
     this->simulator_data.insert(pair<string, Expression*>(cmd,ce));
 }
 //TODO: check if sim data getter is needed
-
 
 /**
  *
@@ -77,6 +75,9 @@ const map<string, double> &Data::getSymbolTable() const {
 //    this->local_var.insert(pair<string, string>(var_name,value));
 //}
 
+/**
+ * Initialize the xml paths.
+ */
 void Data::initializePaths() {
    this->paths = {"/instrumentation/airspeed-indicator/indicated-speed-kt",
                 "/instrumentation/altimeter/indicated-altitude-ft",
@@ -116,7 +117,7 @@ void Data::initializePathValues() {
     }
 }
 /**
- *
+ * Initialize all the path values to 0.
  * @param data
  */
 void Data::setPathValues(string data) {
@@ -139,4 +140,14 @@ map<string, double> Data::getPathValues() {
 
 const map<string, Expression *> &Data::getSimulator_data() const {
     return simulator_data;
+}
+
+// ********** added by benda: ***********
+
+/**
+ * Getter of the command expressions.
+ * @return vector of command expressions.
+ */
+vector<CommandExpression*> Data::getCommands() {
+    return this->commands;
 }

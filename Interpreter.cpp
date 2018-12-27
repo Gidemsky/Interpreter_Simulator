@@ -51,7 +51,7 @@ void Interpreter::DataParser(string strData, string strSpliter) {
     if (strSpliter == CMD_SPLIT) {
         while ((pos = lineData.find(strSpliter)) != string::npos) {
             cmdParameters = lineData.substr(0, pos);
-            DataParser(cmdParameters,CMD_PARAMETER);
+            DataParser(cmdParameters, CMD_PARAMETER);
             lineData.erase(0, pos + 1);
         }
         cmdData.push_back(lineData);
@@ -66,42 +66,40 @@ void Interpreter::DataParser(string strData, string strSpliter) {
     }
 }
 
-CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters) {
-    while (!parameters.empty()){//parameter not empty
+CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters) {
+    while (!parameters.empty()) {//parameter not empty
         vector<string> param;
         param = parameters.at(0);
         parameters.erase(parameters.begin());
         simulatorCommand commandClass = VAR;
-        if (find(param.begin(), param.end(),"=")!=param.end()){
+        if (find(param.begin(), param.end(), "=") != param.end()) {
             commandClass = INIT;
-            if (find(param.begin(), param.end(),"var")!=param.end()){
+            if (find(param.begin(), param.end(), "var") != param.end()) {
                 commandClass = VAR;
             }
-        }
-        else if(CMD_DICTIONARY.find(param[0]) != CMD_DICTIONARY.end()){
+        } else if (CMD_DICTIONARY.find(param[0]) != CMD_DICTIONARY.end()) {
             commandClass = CMD_DICTIONARY[param[0]];//TODO: add the switch case issues to function
         } else {
-            if(param[0]=="}"){
+            if (param[0] == "}") {
                 return 0;
-            } else if (this->scope_count==0) {
+            } else if (this->scope_count == 0) {
             }
             commandClass = CMD_DICTIONARY["="];
-            if(param[0]=="while" || param[0]=="}") {//temporary condition
+            if (param[0] == "while" || param[0] == "}") {//temporary condition
                 commandClass = CMD_DICTIONARY["temp"];//temporary condition
             }
         }
-        CommandExpression* ce;
-        switch(commandClass)
-        {
+        CommandExpression *ce;
+        switch (commandClass) {
             case OPEN_DATA_SERVER: {
-                ce = new CommandExpression(new OpenDataServer(param[1],param[2]));//TODO: add calculate
-                data.setSimulatorData(param[0],ce);
+                ce = new CommandExpression(new OpenDataServer(param[1], param[2]));//TODO: add calculate
+                data.setSimulatorData(param[0], ce);
                 //return ce;
                 break;
             }
             case CONNECT: {
-                ce = new CommandExpression(new Connect(param[1],param[2]));
-                data.setSimulatorData(param[0],ce);
+                ce = new CommandExpression(new Connect(param[1], param[2]));
+                data.setSimulatorData(param[0], ce);
                 //return ce;
                 break;
             }
@@ -112,35 +110,35 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
             }
             case CONDITIONAL: {
                 bool is_scope_started = true;
-                this->scope_started=true;
-                this->scope_count+=1;
-                vector<CommandExpression*> loop_ce;
-                while (is_scope_started!=false){
+                this->scope_started = true;
+                this->scope_count += 1;
+                vector<CommandExpression *> loop_ce;
+                while (is_scope_started != false) {
                     loop_ce.push_back(CommandCreator(parameters));
                     parameters.erase(parameters.begin());
-                    if(loop_ce.back()== nullptr){
-                        is_scope_started=false;
-                        parameters.erase(parameters.begin(),parameters.begin()+this->expression_count+1);
+                    if (loop_ce.back() == nullptr) {
+                        is_scope_started = false;
+                        parameters.erase(parameters.begin(), parameters.begin() + this->expression_count + 1);
                     }
                 }
-                this->scope_count-=1;
+                this->scope_count -= 1;
                 param.pop_back();
                 string cmd_condition_name = param.front();
                 string condition;
                 param.erase(param.begin());
-                while(param.size()!=0){
-                    condition+=param.front();
+                while (param.size() != 0) {
+                    condition += param.front();
                     param.erase(param.begin());
                 }
                 loop_ce.pop_back();
-                this->expression_count=loop_ce.size();
-                if(cmd_condition_name=="while"){
-                    ce = new CommandExpression(new LoopCommand(loop_ce,condition));
+                this->expression_count = loop_ce.size();
+                if (cmd_condition_name == "while") {
+                    ce = new CommandExpression(new LoopCommand(loop_ce, condition));
                 } else {
-                    ce = new CommandExpression(new LoopCommand(loop_ce,condition));
+                    ce = new CommandExpression(new LoopCommand(loop_ce, condition));
                 }
-                if(this->scope_count==0){
-                    data.setSimulatorData(cmd_condition_name,ce);
+                if (this->scope_count == 0) {
+                    data.setSimulatorData(cmd_condition_name, ce);
                     continue;
                 } else {
                     return ce;
@@ -148,18 +146,18 @@ CommandExpression* Interpreter::CommandCreator(vector<vector<string>> parameters
             }
             case PRINT: {
                 ce = new CommandExpression(new PrintCommand(param[1]));
-                data.setSimulatorData(param[0],ce);
+                data.setSimulatorData(param[0], ce);
                 return ce;
             }
             case SLEEP: {
                 ce = new CommandExpression(new Sleep(param[1]));
-                data.setSimulatorData(param[0],ce);
+                data.setSimulatorData(param[0], ce);
                 return ce;
             }
             case INIT: {
                 ce = new CommandExpression(new Assign(param));
                 ce->calculate();
-                if(this->scope_started==true){
+                if (this->scope_started == true) {
                     return ce;
                 }
                 break;

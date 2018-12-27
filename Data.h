@@ -10,6 +10,7 @@
 #include <vector>
 #include "Expression.h"
 #include "Lexer.h"
+#include "CommandExpression.h"
 
 using namespace std;
 
@@ -28,6 +29,9 @@ private:
     /* data from the xml: */
     vector<string> paths;
     map<string, double> path_values;
+
+    // added by benda for the runflow
+    vector<CommandExpression*> commands;
 
 public:
     //setter and getter to simData
@@ -48,6 +52,9 @@ public:
     void initializePathValues();
     void setPathValues(string values);
     map<string, double> getPathValues();
+
+    vector<CommandExpression*> getCommands();
+
 };
 
 #endif //SIMULATOR_DATA_H
