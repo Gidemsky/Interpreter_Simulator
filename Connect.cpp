@@ -3,6 +3,7 @@
 //
 
 #include "Connect.h"
+#include <arpa/inet.h>
 
 extern Data data;
 
@@ -20,7 +21,27 @@ Connect::Connect(string ip_address, string port) {
     this->port = shuntingYard.createExpression(port)->calculate();
 }
 
-void *Connect::
+void connect_server(const char* ip, int port)
+{
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock < 0)  {
+        // TODO
+    }
+
+    struct sockaddr_in server;
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = inet_addr(ip);
+    server.sin_port = htons(port);
+
+    size_t server_len = sizeof(sockaddr_in);
+
+    if (::connect(sock, (const sockaddr*)&server, server_len) < 0)    {
+        // TODO
+    }
+
+    // sock is the socket to the server
+
+}
 
 double Connect::execute() {
     int sockfd, portno, n;
