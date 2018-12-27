@@ -22,6 +22,7 @@ class Connect : public Command{
 
 public:
     Connect(string ip_address, string port);
+    void* connect(void* args);
     double execute();
 };
 

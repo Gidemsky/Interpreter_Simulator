@@ -12,8 +12,6 @@
 #include "Condition.h"
 extern Data data;
 class LoopCommand : public ConditionParser {
-    // members
-
 
 public:
     // ctor

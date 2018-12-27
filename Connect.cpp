@@ -90,7 +90,7 @@ double Connect::execute() {
     serv_addr.sin_port = htons(portno);
 
     /* Now connect to the server */
-    if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+    if (::connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         perror("ERROR connecting");
         exit(1);
     }
@@ -100,21 +100,19 @@ double Connect::execute() {
     while (true) {
         //pthread_mutex_lock(&mutex);
 
-            // pthread_mutex_lock(&mutex);
+        // pthread_mutex_lock(&mutex);
 
-                buffer ="set /controls/flight/rudder 1\\r\\n";
-                /* Send message to the server */
-                const char *chr = buffer.c_str();
-                n = write(sockfd, chr, strlen(chr));
-                cout << buffer << endl;
-               // data.setIsNewData(false);
-                if (n < 0) {
-                    perror("ERROR writing to socket");
-                    exit(1);
-
-
-           // data.clearBind();
-           // pthread_mutex_unlock(&mutex);
+        buffer = "set /controls/flight/rudder 1 \r\n";
+        /* Send message to the server */
+        const char *chr = buffer.c_str();
+        n = write(sockfd, chr, strlen(chr));
+        cout << buffer << endl;
+        // data.setIsNewData(false);
+        if (n < 0) {
+            perror("ERROR writing to socket");
+            exit(1);
+            // data.clearBind();
+            // pthread_mutex_unlock(&mutex);
             // pthread_mutex_unlock(&mutex);
         }
     }
