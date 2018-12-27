@@ -9,25 +9,13 @@
 #include "ShuntingYard.h"
 #include "Data.h"
 
-//extern Data data;
-
 class OpenDataServer : public Command{
     double port;
     double hz;
-    //Data* data;
 
 public:
-
     OpenDataServer(string port, string hz);
-
-    double getPort() const;
-
-    void setPort(double port);
-
-    double getHz() const;
-
-    void setHz(double hz);
-
+    void* readFromServer(void* params);
     double execute();
 };
 

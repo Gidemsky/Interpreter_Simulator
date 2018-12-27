@@ -9,57 +9,128 @@
 #include <unistd.h>
 #include "OpenDataServer.h"
 #include "Data.h"
+#include "pthread.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <netdb.h>
+#include <unistd.h>
+#include <netinet/in.h>
+
+#include <string.h>
+
+#include <sys/socket.h>
+
 extern Data data;
 
-double OpenDataServer::getPort() const {
-    return port;
-}
+struct Parameters {
+    int port;
+    int hz;
+    int socket;
+};
 
-void OpenDataServer::setPort(double port) {
-    OpenDataServer::port = port;
-}
+typedef struct Parameters Parameters;
 
-double OpenDataServer::getHz() const {
-    return hz;
-}
+void* OpenDataServer::readFromServer(void* params) {
+    struct Parameters* p = (struct Parameters*) params;
+    string buffer;
+    char c;
+    int n;
 
-void OpenDataServer::setHz(double hz) {
-    OpenDataServer::hz = hz;
-}
 
-double OpenDataServer::execute() {
     while (true) {
-        int server_fd, new_socket, valread;
-        char buffer[5000];
-        struct sockaddr_in address{};//address
-        int addrlen = sizeof(address);
-        server_fd = socket(AF_INET, SOCK_STREAM, 0);
-        address.sin_family = AF_INET;
-        address.sin_addr.s_addr = INADDR_ANY;
-        address.sin_port = htons(5400);
-        bind(server_fd, (struct sockaddr *) &address, sizeof(address));
-        listen(server_fd, 5);
+        n = read(p->socket, &buffer, 5000);
 
-        if ((new_socket = accept(server_fd, (struct sockaddr *)&address,
-                                 (socklen_t*)&addrlen))<0)
-        {
-            perror("accept");
-            exit(EXIT_FAILURE);
+        while (c != '\n') {
+            if (n < 0) {
+                perror("Eroor reading from socket");
+                exit(1);
+            }
+            buffer += c;
+            n = read(p->socket, &c, 1);
         }
 
-        data.initializePaths();
-        data.initializePathValues();
+        buffer += '\n';
 
-        //TODO: open pthread
-
-        while(true) {
-            ssize_t erez = read(new_socket, buffer, 5000);
-            data.setPathValues(buffer);
-            printf("%s\n", buffer);
-
-        }
+        data.setPathValues(buffer);
+        cout << buffer << endl;
     }
 }
+
+
+double OpenDataServer::execute() {
+    pthread_t pthread;
+    int sockfd, newsockfd, portno, clilen;
+    char buffer[256];
+    struct sockaddr_in serv_addr, cli_addr;
+    int  n;
+
+    /* First call to socket() function */
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    if (sockfd < 0) {
+        perror("ERROR opening socket");
+        exit(1);
+    }
+
+    /* Initialize socket structure */
+    bzero((char *) &serv_addr, sizeof(serv_addr));
+    portno = 5001;
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = INADDR_ANY;
+    serv_addr.sin_port = htons(portno);
+
+    /* Now bind the host address using bind() call.*/
+    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+        perror("ERROR on binding");
+        exit(1);
+    }
+
+    /* Now start listening for the clients, here process will
+       * go in sleep mode and will wait for the incoming connection
+    */
+
+    listen(sockfd,5);
+    clilen = sizeof(cli_addr);
+
+    /* Accept actual connection from the client */
+    newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, (socklen_t*)&clilen);
+
+    if (newsockfd < 0) {
+        perror("ERROR on accept");
+        exit(1);
+    }
+
+    /* If connection is established then start communicating */
+    bzero(buffer,256);
+    n = read( newsockfd,buffer,255 );
+
+    if (n < 0) {
+        perror("ERROR reading from socket");
+        exit(1);
+    }
+
+    printf("Here is the message: %s\n",buffer);
+
+    /* Write a response to the client */
+    n = write(newsockfd,"I got your message",18);
+
+    if (n < 0) {
+        perror("ERROR writing to socket");
+        exit(1);
+    }
+
+
+    auto param = new Parameters{};
+
+    data.initializePaths();
+    data.initializePathValues();
+
+
+    pthread_create(&pthread, nullptr, readFromServer, );
+}
+
 //
 OpenDataServer::OpenDataServer(string port, string hz){
     ShuntingYard shuntingYard;
