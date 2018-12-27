@@ -136,3 +136,7 @@ void Data::setPathValues(string data) {
 map<string, double> Data::getPathValues() {
     return this->path_values;
 }
+
+const map<string, Expression *> &Data::getSimulator_data() const {
+    return simulator_data;
+}

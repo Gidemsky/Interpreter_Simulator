@@ -16,7 +16,12 @@ using namespace std;
 class Data {
     Lexer lexer;
     //map<string,double> planeData;
-    map<string,Expression*> simulator_data;//the final map - <string,CommandExpression>
+    map<string,Expression*> simulator_data;
+public:
+    const map<string, Expression *> &getSimulator_data() const;
+
+private:
+//the final map - <string,CommandExpression>
     map<string,string> binds;//the final map - <string,bind>
     map<string,string> local_var;//TODO: delete
     map<string,double> symbol_table;

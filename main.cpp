@@ -78,16 +78,19 @@ Data data;//Global Class
 #include "Connect.h"
 
 int main() {
+//    map<string, CommandExpression*> check;
 //    Lexer* lexer = new Lexer("CommandTestFile.txt");
 //    string lexer_data = lexer->getFlightUserInput();
 //    Interpreter* parser = new Interpreter(lexer_data);
+//    data.getSimulator_data().at(0)->calculate();
+//    data.getSimulator_data().at(1)->calculate();
 //    cout<<"checking"<<endl;//TODO:for debuging reasons
-//    string port = "5400";
-//    string hrz = "10";
-//    OpenDataServer c = OpenDataServer(port, hrz);
-//    c.execute();
-    Connect c("127.0.0.1", "5432");
+    string port = "5400";
+    string hrz = "10";
+    OpenDataServer c = OpenDataServer(port, hrz);
     c.execute();
+    Connect ce("127.0.0.1", "5402");
+    ce.execute();
 
     pthread_exit(nullptr);
 
