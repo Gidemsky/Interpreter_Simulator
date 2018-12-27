@@ -86,4 +86,6 @@ int main() {
     OpenDataServer c = OpenDataServer(port, hrz);
     c.execute();
 
+    pthread_exit(nullptr);
+
 }

@@ -46,7 +46,7 @@ void *OpenDataServer::readFromServer(void *pparams) {
 
     while (true) {
         do {
-            n = read(p->socket, &c, 1);
+            n = read(params.socket, &c, 1);
             buffer += c;
             if (n < 0) {
                 perror("Eroor reading from socket");
@@ -55,7 +55,7 @@ void *OpenDataServer::readFromServer(void *pparams) {
         } while (c != '\n');
 
         data.setPathValues(buffer);
-        // cout << buffer << endl;
+        cout << buffer << endl;
         buffer = "";
     }
 }
@@ -63,9 +63,8 @@ void *OpenDataServer::readFromServer(void *pparams) {
 
 double OpenDataServer::execute() {
     pthread_t pthread;
-    int sockfd, newsockfd, portno, clilen;
-    char buffer[256];
-    struct sockaddr_in serv_addr, cli_addr;
+    int sockfd, newsockfd, clilen;
+    struct sockaddr_in serv_addr{}, cli_addr{};
     int n;
 
     /* First call to socket() function */
