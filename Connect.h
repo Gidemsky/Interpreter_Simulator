@@ -5,21 +5,25 @@
 #ifndef SIMULATOR_CONNECT_H
 #define SIMULATOR_CONNECT_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <string.h>
 #include "Command.h"
 #include "ShuntingYard.h"
+#include "Data.h"
 
 class Connect : public Command{
     string ip_address;
     double port;
+
 public:
-
-    double execute();//TODO:check maybe we need to do override
-
-    Connect(const string &ip_address, string& port);
-
-    const string &getIp_address() const;
-
-    void setIp_address(const string &ip_address);
+    Connect(string ip_address, string port);
+    static void* (void* params);
+    double execute();
 };
 
 #endif //SIMULATOR_CONNECT_H
