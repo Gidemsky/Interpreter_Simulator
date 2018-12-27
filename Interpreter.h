@@ -33,8 +33,8 @@ class Interpreter {
     bool isFileLoaded, scope_started;
     vector<vector<string>> victor; //my father's name
     int scope_count, expression_count;
-    fstream simulatorUserFile;
-    string flightUserInput;
+//    fstream simulatorUserFile;
+//    string flightUserInput;
 
 public:
     Interpreter();

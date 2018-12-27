@@ -45,7 +45,8 @@ Lexer::Lexer(string userFileName) {
 //template <class T>TODO:check generics
 string Lexer::lexer(string line, string split) {
     size_t pos = 0;
-    string dataTaken;
+    string dataTaken, final_line;
+    bool is_converted = false;
     //run the loop as far as it has space bars
     while ((pos = line.find(split)) != string::npos) {
         dataTaken += line.substr(0, pos) + CMD_PARAMETER;
@@ -54,6 +55,28 @@ string Lexer::lexer(string line, string split) {
     //adds the last string left in the line
     //deletes the number in the begging of the line
     dataTaken += line.substr(0, pos) + CMD_SPLIT;
+    while ((pos= dataTaken.find('-')) != string::npos){
+        if(dataTaken.at(pos-1)=='*' || dataTaken.at(pos-1)=='|'
+        || dataTaken.at(pos-1)=='+' || dataTaken.at(pos-1)=='/'
+        || dataTaken.at(pos-1)==NULL &&
+        (dataTaken.at(pos-1)!=')' || dataTaken.at(pos-1)!='(')){
+                dataTaken.insert(pos,"(0");
+                final_line += dataTaken.substr(0,pos+3);
+                dataTaken.erase(0, pos + 3);
+                while(dataTaken.at(0)>='0' && dataTaken.at(0)<='9'){
+                    final_line += dataTaken.substr(0,1);
+                    dataTaken.erase(0, 1);
+                }
+                final_line.insert(final_line.size(),")");
+                is_converted=true;
+        } else {
+            break;
+        }
+    }
+    if(is_converted){
+        final_line += dataTaken;
+        return final_line;
+    }
     pos = dataTaken.find('.') + 1;
     dataTaken = dataTaken.substr(pos,dataTaken.length());//earse the number from the beginning
     return dataTaken;
