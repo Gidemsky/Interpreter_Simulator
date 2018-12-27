@@ -42,5 +42,5 @@ public:
     void DataParser(string strData, string strSpliter);
     CommandExpression* CommandCreator(vector<vector<string>> data);
 };
-
+//
 #endif //SIMULATOR_INTERPRETER_H
