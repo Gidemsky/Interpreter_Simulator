@@ -106,9 +106,9 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                 break;
             }
             case VAR: {
-                if ()
-                ce = new CommandExpression(new DefineVarCommand(param));//TODO:check if needed
-                break;
+//                if ()
+//                ce = new CommandExpression(new DefineVarCommand(param));//TODO:check if needed
+//                break;
             }
             case CONDITIONAL: {
                 bool is_scope_started = true;
