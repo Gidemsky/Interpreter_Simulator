@@ -48,8 +48,8 @@ void expressionsTest() {
 }
 
 int main() {
-    //shuntingYardTest();
-    expressionsTest();
+    shuntingYardTest();
+    //expressionsTest();
 }
 
 
