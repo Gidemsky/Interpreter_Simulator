@@ -61,12 +61,13 @@ Expression *ShuntingYard::createExpression(string tokens) {
         }
             // Current token is a number, push
             // it to stack for numbers.
-        else if (isdigit(tokens[i])) {
+        else if (isdigit(tokens[i]) || isalpha(tokens[i])) {
             string val;
             // There may be more than one
             // digits in number.
             while ((i < tokens.length() &&
-                   isdigit(tokens[i])) || tokens[i]=='.') {
+                            (isdigit(tokens[i]) || isalpha(tokens[i])))
+                            || tokens[i]=='.') {
                 //val = (val * 10) + (tokens[i] - '0');
                 val += tokens[i];
                 i++;
