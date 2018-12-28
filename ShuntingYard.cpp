@@ -62,16 +62,18 @@ Expression *ShuntingYard::createExpression(string tokens) {
             // Current token is a number, push
             // it to stack for numbers.
         else if (isdigit(tokens[i])) {
-            int val = 0;
+            string val;
             // There may be more than one
             // digits in number.
-            while (i < tokens.length() &&
-                   isdigit(tokens[i])) {
-                val = (val * 10) + (tokens[i] - '0');
+            while ((i < tokens.length() &&
+                   isdigit(tokens[i])) || tokens[i]=='.') {
+                //val = (val * 10) + (tokens[i] - '0');
+                val += tokens[i];
                 i++;
             }
             i--;
-            Expression *num = new Number(val);
+            double converted_number = stod(val);
+            Expression *num = new Number(converted_number);
             value.push(num);
         }
             // Closing brace encountered, solve
@@ -126,8 +128,6 @@ Expression *ShuntingYard::createExpression(string tokens) {
             operators.push(tokens[i]);
         }
     }
-
-
 
     // Entire expression has been parsed at this
     // point, apply remaining ops to remaining

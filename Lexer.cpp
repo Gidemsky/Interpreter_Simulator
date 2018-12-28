@@ -69,7 +69,8 @@ string Lexer::lexer(string line, string split) {
                 final_line += dataTaken.substr(0,pos+3);
                 dataTaken.erase(0, pos + 3);
                 //adding the rest string to the rearanged one
-                while(dataTaken.at(0)>='0' && dataTaken.at(0)<='9'){
+                while((dataTaken.at(0)>='0' && dataTaken.at(0)<='9')
+                || dataTaken.at(0)=='.'){
                     final_line += dataTaken.substr(0,1);
                     dataTaken.erase(0, 1);
                 }

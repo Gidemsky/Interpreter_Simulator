@@ -16,6 +16,13 @@ void shuntingYardTest() {
     cout << sy.createExpression("15-200")->calculate() << endl;
 }
 
+void shuntingYardTest_full_test() {
+    Lexer *lexer = new Lexer("CommandTestFile.txt");
+    string lexer_data = lexer->getFlightUserInput();
+    Interpreter *parser = new Interpreter(lexer_data);
+    parser->run();
+}
+
 void runTest() {
     Lexer *lexer = new Lexer("CommandTestFile.txt");
     string lexer_data = lexer->getFlightUserInput();
@@ -31,7 +38,7 @@ void runTest() {
 }
 
 int main() {
-    shuntingYardTest();
+    shuntingYardTest_full_test();
 }
 
 
