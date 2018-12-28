@@ -22,6 +22,7 @@ double Number::calculate() {
  * @param var is the variable.
  */
 Number::Number(string var) {
+    if(any_of(var.begin(),var.end(),isChar))
     map<string, double> symbol_table = data.getSymbolTable();
     std::map<string, double>::iterator it;
     // get the value of the variable

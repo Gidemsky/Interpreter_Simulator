@@ -100,8 +100,8 @@ Expression *ShuntingYard::createExpression(string tokens) {
                 i++;
             }
             i--;
-            double number = stod(val);
-            Expression *num = new Number(number);
+            //double number = stod(val);
+            Expression *num = new Number(val);
             value.push(num);
         }
 
