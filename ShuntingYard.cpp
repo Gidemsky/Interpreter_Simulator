@@ -59,23 +59,23 @@ Expression *ShuntingYard::createExpression(string tokens) {
         else if (tokens[i] == '(') {
             operators.push(tokens[i]);
         }
-            // Current token is a number, push
-            // it to stack for numbers.
-        else if (isdigit(tokens[i])) {
-            string val;
-            // There may be more than one
-            // digits in number.
-            while ((i < tokens.length() &&
-                   isdigit(tokens[i])) || tokens[i]=='.') {
-                //val = (val * 10) + (tokens[i] - '0');
-                val += tokens[i];
-                i++;
-            }
-            i--;
-            double converted_number = stod(val);
-            Expression *num = new Number(converted_number);
-            value.push(num);
-        }
+//            // Current token is a number, push
+//            // it to stack for numbers.
+//        else if (isdigit(tokens[i])) {
+//            string val;
+//            // There may be more than one
+//            // digits in number.
+//            while ((i < tokens.length() &&
+//                   isdigit(tokens[i])) || tokens[i]=='.') {
+//                //val = (val * 10) + (tokens[i] - '0');
+//                val += tokens[i];
+//                i++;
+//            }
+//            i--;
+//            double converted_number = stod(val);
+//            Expression *num = new Number(converted_number);
+//            value.push(num);
+//        }
             // Closing brace encountered, solve
             // entire brace.
         else if (tokens[i] == ')') {
@@ -94,8 +94,9 @@ Expression *ShuntingYard::createExpression(string tokens) {
 
         //float number
         else if(isdigit(tokens[i])) {
-            string val = "";
-            while (i < tokens.length() && (isdigit(tokens[i])) || (tokens[i] == '.')) {
+            string val;
+            while ((i < tokens.length() && (isdigit(tokens[i])))
+            || (tokens[i] == '.')) {
                 val += tokens[i];
                 i++;
             }
