@@ -170,7 +170,7 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
     }
 }
 
-void Interpreter::Run() {
+void Interpreter::run() {
     // execute the commands
     for (CommandExpression* cmd : this->cmd_expressions) {
         cmd->calculate();

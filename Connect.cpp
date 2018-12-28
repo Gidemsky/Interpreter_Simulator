@@ -121,18 +121,3 @@ double Connect::execute() {
     exit(0);
     return 0;
 }
-
-//double ConnectCommand::doCommand() {
-//    pthread_t thread;
-//    int rc;
-//    thread_data *my_thread_data = new thread_data();
-//    my_thread_data->port = this->port;
-//    my_thread_data->ip = this->ip;
-//    rc = pthread_create(&thread, nullptr, runClient, my_thread_data);
-//    if (rc) {
-//        cout << "Error! unable to create thread";
-//        exit(1);
-//    }
-//    close(sock);
-//
-//}

@@ -40,7 +40,7 @@ public:
     Interpreter(string simulator_data);
     void DataParser(string strData, string strSpliter);
     CommandExpression* CommandCreator(vector<vector<string>> data);
-    void Run();
+    void run();
 };
 //
 #endif //SIMULATOR_INTERPRETER_H
