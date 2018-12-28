@@ -19,3 +19,4 @@ Number::Number(double num) {
 double Number::calculate() {
     return this->num;
 }
+
