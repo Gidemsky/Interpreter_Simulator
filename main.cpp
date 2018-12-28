@@ -8,15 +8,18 @@
 #include "Lexer.h"
 #include "Connect.h"
 #include "Data.h"
+#include "Number.h"
 
 Data data;
 
 void shuntingYardTest() {
     ShuntingYard sy;
-    cout << sy.createExpression("15-200")->calculate() << endl;
+    string h = "h";
+    data.setSymbolTable(h, 2);
+    cout << sy.createExpression("h + 3")->calculate() << endl;
 }
 
-void shuntingYardTest_full_test() {
+void shuntingYardTestFullTest() {
     Lexer *lexer = new Lexer("CommandTestFile.txt");
     string lexer_data = lexer->getFlightUserInput();
     Interpreter *parser = new Interpreter(lexer_data);
@@ -37,8 +40,16 @@ void runTest() {
     pthread_exit(nullptr);
 }
 
+void expressionsTest() {
+    string h = "h";
+    data.setSymbolTable(h, 2);
+    Number* a = new Number("h");
+    cout << a->calculate() << endl;
+}
+
 int main() {
-    shuntingYardTest_full_test();
+    //shuntingYardTest();
+    expressionsTest();
 }
 
 

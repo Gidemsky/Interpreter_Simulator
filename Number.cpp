@@ -3,10 +3,37 @@
 
 /**
  * Constructor.
- * @param num is the number.
+ * @param arg
  */
-Number::Number(double num) {
-    this->num = num;
+Number::Number(string arg) {
+    if (this->isNumber(arg)) {
+        this->num = stoi(arg);
+    } else {
+        map<string, double> symbol_table = data.getSymbolTable();
+        std::map<string, double>::iterator it;
+        it = symbol_table.find(arg);
+        if (it != symbol_table.end()) {
+            this->num = it->second;
+        } else {
+            throw "the variable " + arg + " didn't initialized";
+        }
+    }
+}
+
+/**
+ * Check if the string is number or variable.
+ * @param arg
+ * @return true if it's a number, otherwise false.
+ */
+bool Number::isNumber(string arg) {
+    for (int i = 0; i < arg.length(); i++) {
+        if (isdigit(arg[i])) {
+            continue;
+        } else {
+            return false;
+        }
+    }
+    return true;
 }
 
 /**
@@ -15,19 +42,4 @@ Number::Number(double num) {
  */
 double Number::calculate() {
     return this->num;
-}
-
-/**
- * Constructor for the variable.
- * @param var is the variable.
- */
-Number::Number(string var) {
-    if(any_of(var.begin(),var.end(),isChar))
-    map<string, double> symbol_table = data.getSymbolTable();
-    std::map<string, double>::iterator it;
-    // get the value of the variable
-    it = symbol_table.find(var);
-    if (it != symbol_table.end()) {
-        this->num = it->second;
-    }
 }

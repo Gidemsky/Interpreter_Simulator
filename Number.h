@@ -5,7 +5,7 @@
 #include "Expression.h"
 #include "string"
 #include "Data.h"
-
+#include <ctype.h>
 using namespace std;
 
 extern Data data;
@@ -14,8 +14,8 @@ class Number : public Expression {
     double num;
 
 public:
-    Number(double num);
-    Number(string num);
+    Number(string arg);
+    bool isNumber(string arg);
     virtual double calculate();
 };
 
