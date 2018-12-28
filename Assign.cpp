@@ -4,21 +4,32 @@
 
 #include <iostream>
 #include "Assign.h"
+#include "ShuntingYard.h"
 
-Assign::Assign(vector<string> parameters){
-    this->left=parameters[0];
-    this->right=parameters[2];
+#define VAR_INDEX 0
+#define VALUE_INDEX 2
+
+/**
+ * Ctor.
+ * @param params include the var name and his value.
+ */
+Assign::Assign(vector<string> params){
+    string arg;
+    ShuntingYard sy;
+    this->var = params[VAR_INDEX];
+    for (int i = VALUE_INDEX; i < params.size(); i++) {
+        arg += params[i];
+    }
+    // get the value using the shunting yard
+    this->value = sy.createExpression(arg)->calculate();
 }
 
+/**
+ *
+ * @return
+ */
 double Assign::execute() {
-//    if(data.getLocal_var().find(left) !=
-//            data.getLocal_var().end()){
-//        data.setLocal_var(left,right);
-//    } else if (data.getBinds().find(left) !=
-//                data.getBinds().end()){
-//        std::cout<<"to enter the value to the simulator or map"<<endl;
-//    } else {
-//        throw "no variabel has defined";
-//    }
+    // add to the symbol table
+    data.setSymbolTable(this->var, this->value);
     return 0;
 }

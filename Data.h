@@ -16,16 +16,15 @@ using namespace std;
 
 class Data {
     Lexer lexer;
-    map<string,Expression*> simulator_data;//the final map - <string,CommandExpression>
-    map<string,string> binds;//the final map - <string,bind>
+    map<string,Expression*> simulator_data;
+    map<string,string> binds;
     map<string,double> symbol_table;
-    /* data from the xml: */
     vector<string> paths;
     map<string, double> path_values;
 
 public:
     //setter and getter to simData
-    void setSimulatorData(string cmd,  Expression* ce);
+    void setSimulatorData(string cmd, Expression* ce);
 
     //setter and getter to setBind
     void setBinds(string var_name, string path);

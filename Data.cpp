@@ -50,31 +50,6 @@ const map<string, double> &Data::getSymbolTable() const {
     return this->symbol_table;
 }
 
-//void Data::setPlaneData(vector<string> planeData) {
-//    int size_t = static_cast<int>(planeData.size());
-//    string data;
-//    for(int i=2;i<(size_t-1);i++){
-//        data += planeData[i];
-//    }
-//    data += planeData[size_t-1];
-//    this->planeData.insert(pair<string, string>(planeData[0],data));
-//}
-
-//void Data::setSimulatorData(vector<string> cmdData) {
-//    //new CommandExpression(new OpenDataServer(stod(cmdData[1]),stod(cmdData[2])));
-//    int size_t = static_cast<int>(cmdData.size());
-//    string data;
-//    for(int i=1;i<(size_t-1);i++){
-//        data += cmdData[i] + " ";
-//    }
-//    data += cmdData[size_t-1];
-//    this->simulator_data.insert(pair<string, string>(cmdData[0],data));
-//}
-//
-//void Data::setLocal_var(string var_name, string value) {
-//    this->local_var.insert(pair<string, string>(var_name,value));
-//}
-
 /**
  * Initialize the xml paths.
  */

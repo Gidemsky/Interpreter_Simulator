@@ -16,7 +16,7 @@ void shuntingYardTest() {
     ShuntingYard sy;
     string h = "h";
     data.setSymbolTable(h, 2);
-    cout << sy.createExpression("h + 3")->calculate() << endl;
+    cout << sy.createExpression("h + 3 + (h*3)-h-h")->calculate() << endl;
 }
 
 void shuntingYardTestFullTest() {

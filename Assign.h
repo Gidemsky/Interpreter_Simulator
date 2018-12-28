@@ -9,12 +9,14 @@
 #include "Data.h"
 
 extern Data data;
-class Assign : public Command {
 
-    string left, right;
+class Assign : public Command {
+    string var;
+    double value;
+
 public:
-    Assign(vector<string> parameters);
-    double execute();
+    Assign(vector<string> params);
+    virtual double execute();
 };
 
 
