@@ -22,16 +22,17 @@ void Data::setSimulatorData(string cmd, Expression *ce) {
  *
  * @return
  */
-const map<string, string> &Data::getBinds() const {
-    return binds;
+string Data::getBind(string var) {
+    return this->binds[var];
 }
+
 /**
  *
  * @param var_name
  * @param path
  */
 void Data::setBinds(string var_name, string path) {
-    this->binds.insert(pair<string, string>(var_name,path));
+    this->binds.insert(pair<string, string>(var_name, path));
 }
 
 /**
@@ -91,6 +92,7 @@ void Data::initializePathValues() {
         this->path_values.insert(pair<string, double>(path, 0));
     }
 }
+
 /**
  * Initialize all the path values.
  * @param data
@@ -131,7 +133,7 @@ double Data::getValue(string var) {
     // get the value from the path values
     map<string, string>::iterator second_it;
     second_it = this->binds.find(var);
-    if(second_it != this->binds.end()) {
+    if (second_it != this->binds.end()) {
         it = this->path_values.find(second_it->second);
         if (it != this->path_values.end()) {
             return it->second;
@@ -139,4 +141,29 @@ double Data::getValue(string var) {
     } else {
         throw "The variable " + var + " doesn't exist in the symbol table";
     }
+}
+
+const vector<pair<string, double>> &Data::getNewPlaneData() const {
+    return new_plane_data;
+}
+
+void Data::setNewPlaneData(string var, double val) {
+    this->new_plane_data.emplace_back(var, val);
+    this->is_new_data = true;
+}
+
+void Data::setIsNewData(bool b) {
+    this->is_new_data = b;
+}
+
+bool Data::IsNewData() {
+    return this->is_new_data;
+}
+
+void Data::clearNewPlaneData() {
+    this->new_plane_data.clear();
+}
+
+map<string, string> &Data::getBinds()  {
+    return this->binds;
 }

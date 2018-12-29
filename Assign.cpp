@@ -24,8 +24,11 @@ Assign::Assign(vector<string> params){
  */
 double Assign::execute() {
     ShuntingYard sy;
-    // add to the symbol table
-    data.setSymbolTable(this->var,
+    data.setNewPlaneData(this->var,
             sy.createExpression(this->value)->calculate());
+
+//    // add to the symbol table
+//    data.setSymbolTable(this->var,
+//            sy.createExpression(this->value)->calculate());
     return 0;
 }

@@ -22,14 +22,20 @@ class Data {
     vector<string> paths;
     map<string, double> path_values;
     map<string, string> var_path;
+    bool is_new_data = false;
+    vector<pair<string, double>> new_plane_data;
 
 public:
+    const vector<pair<string, double>> &getNewPlaneData() const;
+
+    void setNewPlaneData(string var, double val);
+
     //setter and getter to simData
     void setSimulatorData(string cmd, Expression* ce);
 
     //setter and getter to setBind
     void setBinds(string var_name, string path);
-    const map<string, string> &getBinds() const;
+    string getBind(string var);
 
     //setter and getter to symbol table
     void setSymbolTable(string symbol, double value);
@@ -47,7 +53,11 @@ public:
     vector<CommandExpression*> getCommands();
 
     double getValue(string var);
+    map<string,string>& getBinds();
 
+    bool IsNewData();
+    void setIsNewData(bool b);
+    void clearNewPlaneData();
 };
 
 #endif //SIMULATOR_DATA_H

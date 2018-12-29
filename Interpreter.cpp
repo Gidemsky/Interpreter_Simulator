@@ -1,5 +1,4 @@
 
-
 #include <algorithm>
 #include <list>
 #include "Interpreter.h"
@@ -15,7 +14,6 @@
 #include "PrintCommand.h"
 #include "IfCommand.h"
 
-
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
 #define SIM_INPUT_SPLIT ","
@@ -23,7 +21,6 @@
 #define OPEN_CLOSE "{"
 #define FILE_SPACE " "
 #define FIRST_CELL 0
-
 
 extern Data data;
 

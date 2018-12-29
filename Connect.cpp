@@ -63,29 +63,38 @@ void *Connect::runClient(void *args) {
     while (true) {
         pthread_mutex_lock(&mutex2);
 
-        // pthread_mutex_lock(&mutex);
+        //buffer = "set /controls/flight/rudder -1 \r\n";
 
-        buffer = "set /controls/flight/rudder -1 \r\n";
-        /* Send message to the server */
-        const char *chr = buffer.c_str();
-        n = write(sockfd, chr, strlen(chr));
-        cout << buffer << endl;
-        // data.setIsNewData(false);
-
-        if (n < 0) {
-            perror("ERROR writing to socket");
-            exit(1);
-            // data.clearBind();
-
+        // get the new data
+        vector<pair<string, double>> plane_data = data.getNewPlaneData();
+        string path;
+        if (data.IsNewData()) {
+            for (auto &i : plane_data)
+                if(data.getBinds().count(i.first)) {
+                    path = data.getBind(i.first);
+                    buffer = "set " + path + " " + to_string(i.second);
+                    /* Send message to the server */
+                    const char *chr = buffer.c_str();
+                    n = static_cast<int>(write(sockfd, chr, strlen(chr)));
+                    if (n < 0) {
+                        perror("ERROR writing to socket");
+                        exit(1);
+                    }
+                    cout << buffer << endl;
+                    data.setSymbolTable(i.first, i.second);
+                }
+            }
         }
 
+        // clear the new plane data
+        data.clearNewPlaneData();
+        data.setIsNewData(false);
         pthread_mutex_unlock(&mutex2);
 
-    }
-    cout << buffer;
+
+
     close(sockfd);
     exit(0);
-    return 0;
 }
 
 
