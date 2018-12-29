@@ -1,6 +1,3 @@
-//
-// Created by benda on 24/12/18.
-//
 
 #include "PrintCommand.h"
 

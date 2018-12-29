@@ -1,6 +1,3 @@
-//
-// Created by benda on 24/12/18.
-//
 
 #include "Condition.h"
 #include "iostream"
@@ -14,7 +11,6 @@
  */
 Condition::Condition(string condition) {
     this->condition = condition;
-    //this->data = data;
 }
 
 /**
@@ -27,7 +23,6 @@ int Condition::findOperatorIndex() {
     for (string opr : operators) {
         index = this->condition.find(opr);
         if (index != std::string::npos) {
-            cout << index << " index" << endl;
             return index;
         }
     }
@@ -57,25 +52,18 @@ string Condition::getOperatorStr(int index) {
  * @return true if the condition is satisfied, otherwise false.
  */
 bool Condition::evaluate() {
-    ShuntingYard *sy = new ShuntingYard();
-
+    // using shunting yard in order to calculate the expressions.
+    ShuntingYard sy;
     string::iterator end_pos = remove(this->condition.begin(),
-            this->condition.end(), ' ');
-
+                                      this->condition.end(), ' ');
     condition.erase(end_pos, condition.end());
-
-    cout << this->condition << endl;
-
-    vector<string> operators OPERATORS;
-    // get the index of the operator
+    // get the index of the operator in the condition string
     int opr_index = this->findOperatorIndex();
     string opr = this->getOperatorStr(opr_index);
-    cout << opr << " opr " << endl;
     string first_exp;
     string second_exp;
-
     first_exp = this->condition.substr(0, opr_index);
-
+    // check the operator's type
     if (opr.length() == 1) {
         second_exp = this->condition.substr(
                 opr_index + 1, this->condition.length() - 1);
@@ -83,16 +71,13 @@ bool Condition::evaluate() {
         second_exp = this->condition.substr(
                 opr_index + 2, this->condition.length() - 1);
     }
-
-    cout << first_exp << endl;
-    cout << second_exp << endl;
-
-    Expression *left = sy->createExpression(first_exp);
-    Expression *right = sy->createExpression(second_exp);
-
+    // calculate the expressions using the shunting yard
+    Expression *left = sy.createExpression(first_exp);
+    Expression *right = sy.createExpression(second_exp);
     double left_value = left->calculate();
     double right_value = right->calculate();
 
+    /* check the condition */
     if (opr == "<") {
         return left_value < right_value;
     } else if (opr == ">") {
@@ -105,7 +90,5 @@ bool Condition::evaluate() {
         return left_value <= right_value;
     } else if (opr == "!=") {
         return left_value != right_value;
-    } else {
-        throw "unknown operator in the condition";
     }
 }

@@ -1,6 +1,3 @@
-//
-// Created by benda on 24/12/18.
-//
 
 #ifndef SIMULATOR_PRINTCOMMAND_H
 #define SIMULATOR_PRINTCOMMAND_H

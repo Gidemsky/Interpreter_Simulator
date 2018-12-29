@@ -1,13 +1,8 @@
-//
-// Created by gideon on 18/12/18.
-//
 
+#include "OpenDataServer.h"
 #include <utility>
 #include <iostream>
 #include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include "OpenDataServer.h"
 #include "Data.h"
 #include <pthread.h>
 #include <stdio.h>
@@ -16,7 +11,6 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <string.h>
-#include <sys/socket.h>
 
 extern Data data;
 

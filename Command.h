@@ -1,6 +1,3 @@
-//
-// Created by gideon on 18/12/18.
-//
 
 #ifndef SIMULATOR_COMMAND_H
 #define SIMULATOR_COMMAND_H

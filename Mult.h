@@ -1,6 +1,3 @@
-//
-// Created by benda on 17/12/18.
-//
 
 #ifndef SIMULATOR_MULT_H
 #define SIMULATOR_MULT_H

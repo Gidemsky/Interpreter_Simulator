@@ -1,6 +1,3 @@
-//
-// Created by benda on 23/12/18.
-//
 
 #ifndef SIMULATOR_IFCOMMAND_H
 #define SIMULATOR_IFCOMMAND_H
@@ -10,14 +7,14 @@
 #include "Expression.h"
 #include "string"
 #include "Condition.h"
-///
-class IfCommand : public ConditionParser {
+#include "Data.h"
 
+extern Data data;
+
+class IfCommand : public ConditionParser {
 public:
-    // ctor
     IfCommand(vector<CommandExpression*> commands,
             string condition);
-    // methods
     virtual double execute();
 };
 

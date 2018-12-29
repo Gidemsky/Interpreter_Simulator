@@ -1,6 +1,3 @@
-//
-// Created by benda on 17/12/18.
-//
 
 #include "Neg.h"
 
