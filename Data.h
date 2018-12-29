@@ -16,9 +16,9 @@ using namespace std;
 
 class Data {
     Lexer lexer;
-    map<string,Expression*> simulator_data;
-    map<string,string> binds;
-    map<string,double> symbol_table;
+    map<string, Expression *> simulator_data;
+    map<string, string> binds;
+    map<string, double> symbol_table;
     vector<string> paths;
     map<string, double> path_values;
 
@@ -44,6 +44,8 @@ public:
     map<string, double> getPathValues();
 
     vector<CommandExpression*> getCommands();
+
+    double getValue(string var);
 
 };
 

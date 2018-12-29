@@ -9,9 +9,14 @@
 #include "Connect.h"
 #include "Data.h"
 #include "Number.h"
+#include "PrintCommand.h"
+#include "IfCommand.h"
 
 Data data;
 
+/**
+ * Working!
+ */
 void shuntingYardTest() {
     ShuntingYard sy;
     string h = "h";
@@ -19,6 +24,9 @@ void shuntingYardTest() {
     cout << sy.createExpression("h + 3 + (h*3)-h-h")->calculate() << endl;
 }
 
+/**
+ * Working!
+ */
 void shuntingYardTestFullTest() {
     Lexer *lexer = new Lexer("CommandTestFile.txt");
     string lexer_data = lexer->getFlightUserInput();
@@ -42,6 +50,9 @@ void runTest() {
     pthread_exit(nullptr);
 }
 
+/**
+ * Working!
+ */
 void expressionsTest() {
     string h = "h";
     data.setSymbolTable(h, 2);
@@ -49,11 +60,48 @@ void expressionsTest() {
     cout << a->calculate() << endl;
 }
 
-int main() {
-    //shuntingYardTest();
-    runTest();
-    //expressionsTest();
+/**
+ * Working!
+ */
+void printCommandTests() {
+    // print sentence
+    string t = "David";
+    t = '"' + t;
+    t = t + '"';
+    // print variable
+    string k = "h0";
+    data.setSymbolTable("h0", 5);
+    PrintCommand* p = new PrintCommand(k);
+    p->execute();
 }
 
+void conditionalParserTests() {
+    vector<CommandExpression*> cmds;
+    string condition = "h > 3";
+    data.setSymbolTable("h", 5);
+    data.setSymbolTable("David", 3);
+    //print
+    string t = "David";
+    t = '"' + t;
+    t = t + '"';
+    //print cmd
+    PrintCommand* p = new PrintCommand(t);
+    CommandExpression* print = new CommandExpression(p);
+    cmds.push_back(print);
 
+    // the second if in the scope
+    IfCommand* i2 = new IfCommand(cmds, condition);
+    CommandExpression* if2 = new CommandExpression(i2);
+    cmds.push_back(if2);
+    //condition parser command
+    IfCommand* i = new IfCommand(cmds, condition);
+    i->execute();
+}
 
+int main() {
+    //shuntingYardTest();
+    //runTest();
+    //expressionsTest();
+    //printCommandTests();
+    conditionalParserTests();
+}

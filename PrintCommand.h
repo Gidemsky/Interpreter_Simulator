@@ -5,11 +5,15 @@
 #include "string"
 #include "Command.h"
 #include <iostream>
+#include "Data.h"
 
 using namespace std;
 
+extern Data data;
+
 class PrintCommand : public Command {
-    string str;
+    string to_print;
+
 public:
     PrintCommand(string str);
     virtual double execute();

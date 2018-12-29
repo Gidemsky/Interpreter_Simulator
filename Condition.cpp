@@ -30,7 +30,7 @@ int Condition::findOperatorIndex() {
         throw "there is no operator in the condition";
     }
 }
-//
+
 /**
  * Get the operator string.
  * @param index is the first index of the operator

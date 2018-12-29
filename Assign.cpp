@@ -12,12 +12,12 @@
  */
 Assign::Assign(vector<string> params){
     this->var = params[VAR_INDEX];
-    // get the string expression for futher Shunting Yard use
+    // get the string expression
     for (int i = VALUE_INDEX; i < params.size(); i++) {
         this->value += params[i];
     }
 }
-//comment check
+
 /**
  *
  * @return

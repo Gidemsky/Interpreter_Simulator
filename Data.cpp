@@ -116,3 +116,18 @@ map<string, double> Data::getPathValues() {
 const map<string, Expression *> &Data::getSimulator_data() const {
     return simulator_data;
 }
+
+/**
+ * Getter of var's value from the symbol table.
+ * @param var
+ * @return the value.
+ */
+double Data::getValue(string var) {
+    map<string, double>::iterator it;
+    it = this->symbol_table.find(var);
+    if (it != this->symbol_table.end()) {
+        return it->second;
+    } else {
+        throw "The variable " + var + " doesn't exist in the symbol table";
+    }
+}

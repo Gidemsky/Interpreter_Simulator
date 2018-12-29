@@ -6,7 +6,7 @@
  * @param str
  */
 PrintCommand::PrintCommand(string str) {
-    this->str = str;
+    this->to_print = str;
 }
 
 /**
@@ -14,6 +14,17 @@ PrintCommand::PrintCommand(string str) {
  * @return
  */
 double PrintCommand::execute() {
-    cout << this->str << endl;
+    string str = this->to_print;
+    // if it's a sentence
+    if ((str[0] == '"') && (str[str.length() - 1] = '"')) {
+        str.erase(0, 1);
+        str.erase(str.length() - 1, 1);
+        cout << str << endl;
+        return 0;
+    }
+    // if it's a variable
+    else {
+        cout << data.getValue(str) << endl;
+    }
     return 0;
 }
