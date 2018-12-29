@@ -44,6 +44,9 @@ string Lexer::lexer(string line, string split) {
     size_t pos = 0;
     string dataTaken, final_line;
     bool is_converted = false;
+    while(line.at(0)==' '){
+        line.erase(0,1);
+    }
     //run the loop as far as it has space bars
     while ((pos = line.find(split)) != string::npos) {
         dataTaken += line.substr(0, pos) + CMD_PARAMETER;
@@ -112,6 +115,9 @@ string Lexer::fileReader(fstream *dataFile, bool isLoaded, string& fileName) {
 vector<double> Lexer::simLexer(string line, string split) {//TODO:check if generic is possiable
     size_t pos = 0;
     vector<double> dataTaken;
+    while(line.at(0)==' '){
+        line.erase(0,1);
+    }
     //run the loop as far as it has space bars
     while ((pos = line.find(split)) != string::npos) {
         dataTaken.push_back(stod(line.substr(0, pos) + SIM_INPUT_SPLIT));
