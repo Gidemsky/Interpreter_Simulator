@@ -12,7 +12,7 @@ extern Data data;
 
 class Assign : public Command {
     string var;
-    double value;
+    string value;
 
 public:
     Assign(vector<string> params);

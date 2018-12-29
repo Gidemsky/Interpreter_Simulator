@@ -14,14 +14,11 @@
  * @param params include the var name and his value.
  */
 Assign::Assign(vector<string> params){
-    string arg;
-    ShuntingYard sy;
     this->var = params[VAR_INDEX];
+    // get the string expression for futher Shunting Yard use
     for (int i = VALUE_INDEX; i < params.size(); i++) {
-        arg += params[i];
+        this->value += params[i];
     }
-    // get the value using the shunting yard
-    this->value = sy.createExpression(arg)->calculate();
 }
 
 /**
@@ -29,7 +26,9 @@ Assign::Assign(vector<string> params){
  * @return
  */
 double Assign::execute() {
+    ShuntingYard sy;
     // add to the symbol table
-    data.setSymbolTable(this->var, this->value);
+    data.setSymbolTable(this->var,
+            sy.createExpression(this->value)->calculate());
     return 0;
 }
