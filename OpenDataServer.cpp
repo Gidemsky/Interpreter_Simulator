@@ -22,6 +22,8 @@ struct Parameters {
 
 typedef struct Parameters Parameters;
 
+pthread_mutex_t mutex;
+
 void *OpenDataServer::readFromServer(void *pparams) {
     auto *p = (struct Parameters *) pparams;
     Parameters params;
@@ -42,7 +44,9 @@ void *OpenDataServer::readFromServer(void *pparams) {
                 exit(1);
             }
         } while (c != '\n');
+        pthread_mutex_lock(&mutex);
         data.setPathValues(buffer);
+        pthread_mutex_unlock(&mutex);
         buffer = "";
     }
 }

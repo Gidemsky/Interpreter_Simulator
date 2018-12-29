@@ -36,6 +36,7 @@ void shuntingYardTestFullTest() {
 
 void runTest() {
     string h = "h";
+
     data.setSymbolTable(h, 2);
     Lexer *lexer = new Lexer("CommandTestFile.txt");
     string lexer_data = lexer->getFlightUserInput();
@@ -46,7 +47,12 @@ void runTest() {
 //    c.execute();
 //    Connect ce("127.0.0.1", "5402");
 //    ce.execute();
-    parser->run();
+    try {
+        parser->run();
+    } catch(string msg) {
+        cout << msg << endl;
+    }
+
     pthread_exit(nullptr);
 }
 
@@ -100,7 +106,11 @@ void conditionalParserTests() {
 
 int main() {
     //shuntingYardTest();
-    runTest();
+    try {
+        runTest();
+    } catch (string msg) {
+        cout << msg << endl;
+    }
     //expressionsTest();
     //printCommandTests();
     //conditionalParserTests();

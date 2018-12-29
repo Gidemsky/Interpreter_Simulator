@@ -1,6 +1,3 @@
-//
-// Created by gideon on 18/12/18.
-//
 
 #ifndef SIMULATOR_CONNECT_H
 #define SIMULATOR_CONNECT_H
@@ -15,6 +12,10 @@
 #include "Command.h"
 #include "ShuntingYard.h"
 #include "Data.h"
+#include <iostream>
+
+extern Data data;
+extern bool running;
 
 class Connect : public Command{
     string ip_address;
@@ -22,7 +23,7 @@ class Connect : public Command{
 
 public:
     Connect(string ip_address, string port);
-    void* connect(void* args);
+    static void* runClient(void* args);
     double execute();
 };
 

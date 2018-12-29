@@ -3,64 +3,27 @@
 //
 
 #include "Connect.h"
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <iostream>
-
-extern Data data;
 
 struct Parameters {
     int port;
-    int hz;
-    int socket;
+    string ip;
 };
 
 typedef struct Parameters Parameters;
 
+pthread_mutex_t mutex2;
+
 Connect::Connect(string ip_address, string port) {
     ShuntingYard shuntingYard;
-    this->ip_address=ip_address;
+    this->ip_address = ip_address;
     this->port = shuntingYard.createExpression(port)->calculate();
 }
 
-double Connect::execute() {
-//    int sock = socket(AF_INET, SOCK_STREAM, 0);
-//    char buffer[256];
-//        if (sock < 0) {
-//            perror("ERROR: can not open the file!");
-//            exit(1);
-//        }
-//
-//        struct sockaddr_in server;
-//        server.sin_family = AF_INET;
-//        if (inet_pton(AF_INET, ip_address.c_str(), &server.sin_addr) <= 0)  {
-//            perror("Error on IP pton");
-//        }
-//        server.sin_port = htons(port);
-//
-//        size_t server_len = sizeof(sockaddr_in);
-//
-//        //std::cout << "debug" << endl;
-//        memset(&server, 0, sizeof(server));
-//
-//        if (::connect(sock, (const sockaddr *) &server, server_len) < 0) {
-//            perror("ERROR: can not connect to the host");
-//            exit(1);
-//        }
-//int n=0;
-//    while(true) {
-//        cout << "set" << endl;
-//        // sock is the socket to the server
-//       // send(sock, "set /controls/flight/rudder 1\r\n", strlen("set /controls/flight/rudder 1\r\n"),0);
-//       // usleep(30000);
-//       string g="set /controls/flight/rudder 1\\r\\n";
-//       strcpy(buffer,g.c_str());
-//       n=write(sock,buffer,256);
-//    }
-    struct thread_data *my_thread_data;
-    //my_thread_data = (struct thread_data *) c;
-    int port = this->port;
-    string ip = this->ip_address;
+void *Connect::runClient(void *args) {
+    auto *p = (struct Parameters *) args;
+    Parameters params;
+    int port = p->port;
+    string ip = p->ip;
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -98,26 +61,44 @@ double Connect::execute() {
     //will be read by server
     //if there is new data
     while (true) {
-        //pthread_mutex_lock(&mutex);
+        pthread_mutex_lock(&mutex2);
 
         // pthread_mutex_lock(&mutex);
 
-        buffer = "set /controls/flight/rudder 1 \r\n";
+        buffer = "set /controls/flight/rudder -1 \r\n";
         /* Send message to the server */
         const char *chr = buffer.c_str();
         n = write(sockfd, chr, strlen(chr));
         cout << buffer << endl;
         // data.setIsNewData(false);
+
         if (n < 0) {
             perror("ERROR writing to socket");
             exit(1);
             // data.clearBind();
-            // pthread_mutex_unlock(&mutex);
-            // pthread_mutex_unlock(&mutex);
+
         }
+
+        pthread_mutex_unlock(&mutex2);
+
     }
     cout << buffer;
     close(sockfd);
     exit(0);
     return 0;
+}
+
+
+double Connect::execute() {
+    pthread_t pthread;
+    int rc;
+    Parameters *params = new Parameters();
+    params->ip = this->ip_address;
+    params->port = this->port;
+    rc = pthread_create(&pthread, nullptr, runClient, params);
+
+    if (rc) {
+        cout << "Error! unable to create the thread";
+        exit(1);
+    }
 }

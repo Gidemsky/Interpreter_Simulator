@@ -21,6 +21,7 @@ class Data {
     map<string, double> symbol_table;
     vector<string> paths;
     map<string, double> path_values;
+    map<string, string> var_path;
 
 public:
     //setter and getter to simData

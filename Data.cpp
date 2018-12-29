@@ -99,7 +99,6 @@ void Data::setPathValues(string data) {
     // get the values from the xml
     vector<double> values = this->lexer.simLexer(data, ",");
     map<string, double>::iterator it;
-
     // set the data
     for (int i = 0; i < this->paths.size(); i++) {
         it = this->path_values.find(this->paths[i]);
@@ -124,9 +123,19 @@ const map<string, Expression *> &Data::getSimulator_data() const {
  */
 double Data::getValue(string var) {
     map<string, double>::iterator it;
+    // get the value from the symbol table
     it = this->symbol_table.find(var);
     if (it != this->symbol_table.end()) {
         return it->second;
+    }
+    // get the value from the path values
+    map<string, string>::iterator second_it;
+    second_it = this->binds.find(var);
+    if(second_it != this->binds.end()) {
+        it = this->path_values.find(second_it->second);
+        if (it != this->path_values.end()) {
+            return it->second;
+        }
     } else {
         throw "The variable " + var + " doesn't exist in the symbol table";
     }
