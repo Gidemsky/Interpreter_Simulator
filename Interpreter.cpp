@@ -13,12 +13,15 @@
 #include "Sleep.h"
 #include "Data.h"
 #include "PrintCommand.h"
+#include "IfCommand.h"
 
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
 #define SIM_INPUT_SPLIT ","
 #define FILE_SPACE " "
+#define FIRST_CELL 0
+
 
 extern Data data;
 
@@ -26,21 +29,24 @@ extern Data data;
  * Interpreter's Constructor
  */
 Interpreter::Interpreter(){
-    isFileLoaded = false;//TODO:add the flight user data from the Cin?
     this->scope_count=0;
-    isFileLoaded = false;//TODO:check if necessary
-    this->scope_started = false;
+    this->scope_open = false;
 }
-
+/**
+ *
+ * @param simulator_data
+ */
 Interpreter::Interpreter(string simulator_data){
-    isFileLoaded = false;//TODO:add the flight user data from the Cin?
     this->scope_count=0;
-    isFileLoaded = false;//TODO:check if necessary
-    this->scope_started = false;
+    this->scope_open = false;
     DataParser(simulator_data,CMD_SPLIT);
     CommandCreator(this->victor);
 }
-
+/**
+ *
+ * @param strData
+ * @param strSpliter
+ */
 void Interpreter::DataParser(string strData, string strSpliter) {
     vector<string> cmdData;
     string lineData = strData;
@@ -64,48 +70,72 @@ void Interpreter::DataParser(string strData, string strSpliter) {
     }
 }
 
+/**
+ * collects the run_expressions vector and adding the relevant data to
+ * SimulatorData map
+ * @param name
+ * @param cmd_exp
+ */
+void Interpreter::runDataMap(string& name, CommandExpression *cmd_exp) {
+    data.setSimulatorData(name, cmd_exp);
+    this->run_expressions.push_back(cmd_exp);
+}
+
+/**
+ * This function responsiable to crate the right command and insert the data of them
+ * to the right map in Data class
+ * @param parameters
+ * @return
+ */
 CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters) {
-    while (!parameters.empty()) {//parameter not empty
+    /*
+     * creates the commands as far as parameters isn't empty
+     */
+    while (!parameters.empty()) {
         vector<string> param;
-        param = parameters.at(0);
+        //gets the first string for it's command creation
+        param = parameters.at(FIRST_CELL);
         parameters.erase(parameters.begin());
-        simulatorCommand commandClass = VAR;
-        if (find(param.begin(), param.end(), "=") != param.end()) {
-            commandClass = INIT;
-            if (find(param.begin(), param.end(), "var") != param.end()) {
-                commandClass = VAR;
-            }
-        } else if (CMD_DICTIONARY.find(param[0]) != CMD_DICTIONARY.end()) {
-            commandClass = CMD_DICTIONARY[param[0]];//TODO: add the switch case issues to function
+        simulatorCommand commandClass;
+        //checks the relevant case for the command creation
+        if (CMD_DICTIONARY.find(param[FIRST_CELL]) != CMD_DICTIONARY.end()) {
+            commandClass = CMD_DICTIONARY[param[FIRST_CELL]];
+        }
+        //the case the is no creation left during the recursion
+        else if (param[FIRST_CELL] == "}") {
+            return 0;
         } else {
-            if (param[0] == "}") {
-                return 0;
-            } else if (this->scope_count == 0) {
-            }
-            commandClass = CMD_DICTIONARY["="];
-            if (param[0] == "while" || param[0] == "}") {//temporary condition
-                commandClass = CMD_DICTIONARY["temp"];//temporary condition
-            }
+            commandClass = INIT;
         }
         CommandExpression *ce;
+        /*
+         * creates the command according to the command's constructor
+         * each one creates command and wraps him with Expression command - CommandExpression
+         * in addition, each one of the cases know whether return or break according to
+         * the 'scope_open' member
+         */
         switch (commandClass) {
+            //open data server command
             case OPEN_DATA_SERVER: {
-                ce = new CommandExpression(new OpenDataServer(param[1], param[2]));//TODO: add calculate
-                data.setSimulatorData(param[0], ce);
-                this->cmd_expressions.push_back(ce);
-                //return ce;
+                ce = new CommandExpression(new OpenDataServer(param[1], param[2]));
+                if(this->scope_open){
+                    return ce;
+                }
+                runDataMap(param[FIRST_CELL],ce);
                 break;
             }
+            //connect command
             case CONNECT: {
                 ce = new CommandExpression(new Connect(param[1], param[2]));
-                data.setSimulatorData(param[0], ce);
-                this->cmd_expressions.push_back(ce);
-                //return ce;
+                if(this->scope_open){
+                    return ce;
+                }
+                runDataMap(param[FIRST_CELL],ce);
                 break;
             }
-            case VAR: {
+            case VAR: {//TODO: check what to do with VAR
                 ce = new CommandExpression(new DefineVarCommand(param));
-                if(param[0] != "var") {
+                if(param[FIRST_CELL] != "var") {
                     data.setSimulatorData(param[0]+param[1]+param[2], ce);
                     return ce;
                 }
@@ -113,19 +143,41 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                     break;
                 }
             }
+            /*
+             * the case creates the conditional parser command:
+             * this case calls the "CommandCreator" function each time the first word
+             * in the string if while or if. This case manages the command's vector as well
+             * according to the loop_counter command.
+             */
             case CONDITIONAL: {
                 bool is_scope_started = true;
-                this->scope_started = true;
+                this->scope_open = true;
                 this->scope_count += 1;
                 vector<CommandExpression *> loop_ce;
-                while (is_scope_started != false) {
+                /*
+                 * The main while which counts and calls CommandCreator function
+                 * in addition, it collects the command expressions in to list in order to
+                 * assign the list to the condition parser class
+                 */
+                while (is_scope_started) {
+                    //collect the command expressions of the correct conditional
                     loop_ce.push_back(CommandCreator(parameters));
-                    parameters.erase(parameters.begin());
+                    //check which kind of earse should be done
+                    if(parameters[FIRST_CELL][FIRST_CELL]=="while"
+                    || parameters[FIRST_CELL][FIRST_CELL]=="if"){
+                        //erase the number of the last conditional's command list
+                        parameters.erase(parameters.begin(),
+                                parameters.begin() + this->expression_count + 2);
+                        this->expression_count=0;
+                    } else {
+                        //erase the first vector
+                        parameters.erase(parameters.begin());
+                    }
                     if (loop_ce.back() == nullptr) {
                         is_scope_started = false;
-                        parameters.erase(parameters.begin(), parameters.begin() + this->expression_count + 1);
                     }
                 }
+                //sets up the conditional parameters
                 this->scope_count -= 1;
                 param.pop_back();
                 string cmd_condition_name = param.front();
@@ -135,49 +187,60 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                     condition += param.front();
                     param.erase(param.begin());
                 }
+                //erase the 'null' vector
                 loop_ce.pop_back();
                 this->expression_count = static_cast<int>(loop_ce.size());
+                //creates the correct CommandExpression
                 if (cmd_condition_name == "while") {
                     ce = new CommandExpression(new LoopCommand(loop_ce, condition));
-                    this->cmd_expressions.push_back(ce);
                 } else {
-                    ce = new CommandExpression(new LoopCommand(loop_ce, condition));
-                    this->cmd_expressions.push_back(ce);
+                    ce = new CommandExpression(new IfCommand(loop_ce, condition));
                 }
                 if (this->scope_count == 0) {
-                    data.setSimulatorData(cmd_condition_name, ce);
+                    runDataMap(cmd_condition_name,ce);
+                    this->scope_open= false;
                     continue;
                 } else {
                     return ce;
                 }
             }
+            //Print command
             case PRINT: {
                 ce = new CommandExpression(new PrintCommand(param[1]));
-                data.setSimulatorData(param[0], ce);
-                return ce;
+                if(this->scope_open){
+                    return ce;
+                }
+                runDataMap(param[FIRST_CELL],ce);
+                break;
             }
+            //Sleep command
             case SLEEP: {
                 ce = new CommandExpression(new Sleep(param[1]));
-                data.setSimulatorData(param[0], ce);
-                return ce;
+                if(this->scope_open){
+                    return ce;
+                }
+                runDataMap(param[FIRST_CELL],ce);
+                break;
             }
+            //Assign command
             case INIT: {
                 ce = new CommandExpression(new Assign(param));
-                //ce->calculate();
-                if (this->scope_started == true) {
+                if (this->scope_open) {
                     return ce;
-                } else {
-                    data.setSimulatorData(param[0], ce);
                 }
+                runDataMap(param[FIRST_CELL],ce);
                 break;
             }
         }
     }
 }
 
+/**
+ * the main run of the maps
+ */
 void Interpreter::run() {
     // execute the commands
-    for (CommandExpression* cmd : this->cmd_expressions) {
+    for (CommandExpression* cmd : this->run_expressions) {
         cmd->calculate();
     }
 }

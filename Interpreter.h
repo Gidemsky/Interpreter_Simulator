@@ -17,7 +17,7 @@ using namespace std;
 class Interpreter {
     enum simulatorCommand{
         OPEN_DATA_SERVER, CONNECT,
-        VAR, PRINT, SLEEP, INIT, TEMP, CONDITIONAL
+        VAR, PRINT, SLEEP, INIT, CONDITIONAL
     };
     map<string,simulatorCommand> CMD_DICTIONARY = {
             {"openDataServer", OPEN_DATA_SERVER},
@@ -25,21 +25,20 @@ class Interpreter {
             {"var", VAR},
             {"print", PRINT},
             {"sleep", SLEEP},
-            {"=", INIT},
             {"while", CONDITIONAL},
             {"if", CONDITIONAL},
-            {"temp", TEMP}//temporary enum
     };
-    bool isFileLoaded, scope_started;
     vector<vector<string>> victor; //my father's name
     int scope_count, expression_count;
-    vector<CommandExpression*> cmd_expressions;
+    bool scope_open;
+    vector<CommandExpression*> run_expressions;
 
 public:
     Interpreter();
     Interpreter(string simulator_data);
     void DataParser(string strData, string strSpliter);
     CommandExpression* CommandCreator(vector<vector<string>> data);
+    void runDataMap(string& name, CommandExpression* cmd_exp);
     void run();
 };
 //
