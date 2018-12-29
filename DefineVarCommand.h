@@ -1,6 +1,3 @@
-//
-// Created by gideon on 20/12/18.
-//
 
 #ifndef SIMULATOR_DEFINEVARCOMMAND_H
 #define SIMULATOR_DEFINEVARCOMMAND_H
@@ -8,16 +5,16 @@
 #include <vector>
 #include "Command.h"
 #include "string"
+#include "Data.h"
 
+extern Data data;
 
 class DefineVarCommand : public Command {
-    //Data* data;
-    string left, right;
-    bool is_local_var;
+    string left;
+    string right;
+
 public:
     DefineVarCommand(vector<string> parameters);
-    string getLeft();
-    string getRight();
     double execute() override;
 };
 

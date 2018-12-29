@@ -1,6 +1,3 @@
-//
-// Created by gideon on 20/12/18.
-//
 
 #include <iostream>
 #include "Assign.h"

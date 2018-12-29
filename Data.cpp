@@ -92,7 +92,7 @@ void Data::initializePathValues() {
     }
 }
 /**
- * Initialize all the path values to 0.
+ * Initialize all the path values.
  * @param data
  */
 void Data::setPathValues(string data) {

@@ -1,6 +1,3 @@
-//
-// Created by gideon on 20/12/18.
-//
 
 #ifndef SIMULATOR_ASSIGN_H
 #define SIMULATOR_ASSIGN_H
@@ -18,6 +15,5 @@ public:
     Assign(vector<string> params);
     virtual double execute();
 };
-
 
 #endif //SIMULATOR_ASSIGN_H

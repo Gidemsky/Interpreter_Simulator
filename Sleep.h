@@ -1,6 +1,3 @@
-//
-// Created by gideon on 19/12/18.
-//
 
 #ifndef SIMULATOR_SLEEP_H
 #define SIMULATOR_SLEEP_H
@@ -10,9 +7,8 @@
 #include "thread"
 #include "ShuntingYard.h"
 
-
 class Sleep : public Command{
-    int millisec;
+    int milliseconds;
 public:
     Sleep(string& millisec);
     double execute();

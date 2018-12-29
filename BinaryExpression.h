@@ -1,6 +1,3 @@
-//
-// Created by benda on 14/12/18.
-//
 
 #ifndef SIMULATOR_BINARYEXPRESSION_H
 #define SIMULATOR_BINARYEXPRESSION_H
@@ -13,7 +10,6 @@ protected:
     Expression* right_arg;
 
 public:
-    // constructor
     BinaryExpression(Expression* left, Expression* right);
     virtual double calculate() = 0;
     virtual Expression* getLeftArg();

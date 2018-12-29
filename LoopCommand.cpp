@@ -1,16 +1,20 @@
-//
-// Created by benda on 23/12/18.
-//
 
 #include "LoopCommand.h"
 
-/////
+/**
+ * Ctor.
+ * @param commands
+ * @param condition
+ */
 LoopCommand::LoopCommand(vector <CommandExpression*> commands,
                          string condition) :
         ConditionParser(commands, condition) {
-    //this->data = data;
 }
 
+/**
+ * Execute all the commands in the while loop.
+ * @return
+ */
 double LoopCommand::execute() {
     Condition* cond = new Condition(this->condition);
     while (cond->evaluate()) {

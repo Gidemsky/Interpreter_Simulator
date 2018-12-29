@@ -1,13 +1,10 @@
-//
-// Created by benda on 23/12/18.
-//
 
 #include "ConditionParser.h"
 #include "Expression.h"
 #include "ShuntingYard.h"
 
 /**
- *
+ * Ctor.
  * @param commands
  * @param condition
  */

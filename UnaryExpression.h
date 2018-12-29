@@ -1,6 +1,3 @@
-//
-// Created by benda on 17/12/18.
-//
 
 #ifndef SIMULATOR_UNARYEXPRESSION_H
 #define SIMULATOR_UNARYEXPRESSION_H
@@ -12,7 +9,6 @@ protected:
     Expression* arg;
 
 public:
-    // constructor
     UnaryExpression(Expression* arg);
     virtual double calculate() = 0;
     virtual Expression* getArg();
