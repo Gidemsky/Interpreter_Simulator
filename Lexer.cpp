@@ -69,7 +69,7 @@ string Lexer::lexer(string line, string split) {
                 final_line += dataTaken.substr(0,pos+3);
                 dataTaken.erase(0, pos + 3);
                 //adding the rest string to the rearanged one
-                while((dataTaken.at(0)>='0' && dataTaken.at(0)<='9')
+                while((isdigit(dataTaken.at(0)) || isalpha(dataTaken.at(0)))
                 || dataTaken.at(0)=='.'){
                     final_line += dataTaken.substr(0,1);
                     dataTaken.erase(0, 1);
@@ -132,8 +132,3 @@ vector<double> Lexer::simLexer(string line, string split) {//TODO:check if gener
 const string &Lexer::getFlightUserInput() const {
     return flightUserInput;
 }
-
-//string Lexer::fileReader(fstream *dataFile, bool isLoaded, string &userFileName) {
-//
-//    return std::__cxx11::string();
-//}

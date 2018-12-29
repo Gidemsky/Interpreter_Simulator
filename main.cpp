@@ -27,6 +27,8 @@ void shuntingYardTestFullTest() {
 }
 
 void runTest() {
+    string h = "h";
+    data.setSymbolTable(h, 2);
     Lexer *lexer = new Lexer("CommandTestFile.txt");
     string lexer_data = lexer->getFlightUserInput();
     Interpreter *parser = new Interpreter(lexer_data);
@@ -48,7 +50,8 @@ void expressionsTest() {
 }
 
 int main() {
-    shuntingYardTest();
+    //shuntingYardTest();
+    runTest();
     //expressionsTest();
 }
 
