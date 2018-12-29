@@ -106,9 +106,14 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                 break;
             }
             case VAR: {
-                //if ()
-                ce = new CommandExpression(new DefineVarCommand(param));//TODO:check if needed
-                break;
+                ce = new CommandExpression(new DefineVarCommand(param));
+                if(param[0] != "var") {
+                    data.setSimulatorData(param[0]+param[1]+param[2], ce);
+                    return ce;
+                }
+                else {
+                    break;
+                }
             }
             case CONDITIONAL: {
                 bool is_scope_started = true;
@@ -160,9 +165,11 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             }
             case INIT: {
                 ce = new CommandExpression(new Assign(param));
-                ce->calculate();
+                //ce->calculate();
                 if (this->scope_started == true) {
                     return ce;
+                } else {
+                    data.setSimulatorData(param[0], ce);
                 }
                 break;
             }

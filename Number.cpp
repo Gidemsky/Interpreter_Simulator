@@ -6,8 +6,17 @@
  * @param arg
  */
 Number::Number(string arg) {
-    if (this->isNumber(arg)) {
-        this->num = stoi(arg);
+    unsigned long pos;
+    if ((pos = arg.find('.')) != string::npos){
+        string numerator = arg.substr(0,pos);
+        if (isNumber(numerator)) {
+            numerator = arg.substr(pos+1,arg.npos);
+            if(isNumber(numerator)){
+                this->num= stod(arg);
+            }
+        }
+    } else if (this->isNumber(arg)) {
+        this->num = stod(arg);//changed to double
     } else {
         map<string, double> symbol_table = data.getSymbolTable();
         std::map<string, double>::iterator it;
