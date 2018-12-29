@@ -19,6 +19,8 @@
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
 #define SIM_INPUT_SPLIT ","
+#define SCOPE_CLOSE "}"
+#define OPEN_CLOSE "{"
 #define FILE_SPACE " "
 #define FIRST_CELL 0
 
@@ -102,7 +104,7 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             commandClass = CMD_DICTIONARY[param[FIRST_CELL]];
         }
         //the case the is no creation left during the recursion
-        else if (param[FIRST_CELL] == "}") {
+        else if (param[FIRST_CELL] == SCOPE_CLOSE) {
             return 0;
         } else {
             commandClass = INIT;
@@ -179,13 +181,16 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                 }
                 //sets up the conditional parameters
                 this->scope_count -= 1;
-                param.pop_back();
                 string cmd_condition_name = param.front();
                 string condition;
                 param.erase(param.begin());
                 while (param.size() != 0) {
                     condition += param.front();
                     param.erase(param.begin());
+                }
+                int pos;
+                if((pos=condition.find(OPEN_CLOSE))!=string::npos){
+                    condition.erase(pos,1);
                 }
                 //erase the 'null' vector
                 loop_ce.pop_back();
