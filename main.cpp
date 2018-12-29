@@ -40,6 +40,12 @@ void runTest() {
     Lexer *lexer = new Lexer("CommandTestFile.txt");
     string lexer_data = lexer->getFlightUserInput();
     Interpreter *parser = new Interpreter(lexer_data);
+//    string port = "5400";
+//    string hrz = "10";
+//    OpenDataServer c = OpenDataServer(port, hrz);
+//    c.execute();
+//    Connect ce("127.0.0.1", "5402");
+//    ce.execute();
     parser->run();
     pthread_exit(nullptr);
 }
