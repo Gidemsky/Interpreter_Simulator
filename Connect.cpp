@@ -57,46 +57,55 @@ void *Connect::runClient(void *args) {
         perror("ERROR connecting");
         exit(1);
     }
+
+
     //Now ask for a message from the user, this message
     //will be read by server
     //if there is new data
     while (true) {
-        pthread_mutex_lock(&mutex2);
 
         //buffer = "set /controls/flight/rudder -1 \r\n";
 
         // get the new data
         vector<pair<string, double>> plane_data = data.getNewPlaneData();
         string path;
-        if (data.IsNewData()) {
-            for (auto &i : plane_data)
-                if(data.getBinds().count(i.first)) {
+        if (data.getNewPlaneData().size() != 0) {
+            for (auto &i : plane_data) {
+
+                //pthread_mutex_lock(&mutex2);
+
+                if (data.getBinds().count(i.first)) {
+                    cout << "check" << endl;
                     path = data.getBind(i.first);
-                    buffer = "set " + path + " " + to_string(i.second);
+                    buffer = "set " + path.substr(2, path.size() - 3) + " " + to_string(i.second);
                     /* Send message to the server */
+                    cout << buffer << endl;
                     const char *chr = buffer.c_str();
                     n = static_cast<int>(write(sockfd, chr, strlen(chr)));
                     if (n < 0) {
                         perror("ERROR writing to socket");
                         exit(1);
                     }
-                    cout << buffer << endl;
                     data.setSymbolTable(i.first, i.second);
                 }
+                data.del();
+                //pthread_mutex_unlock(&mutex2);
             }
+//            cout << "clear" << endl;
+//            data.clearNewPlaneData();
+//            data.setIsNewData(false);
+
         }
-
-        // clear the new plane data
-        data.clearNewPlaneData();
-        data.setIsNewData(false);
-        pthread_mutex_unlock(&mutex2);
-
-
-
+//
+//        // clear the new plane data
+//        data.clearNewPlaneData();
+//        data.setIsNewData(false);
+//
+    }
     close(sockfd);
     exit(0);
-}
 
+}
 
 double Connect::execute() {
     pthread_t pthread;

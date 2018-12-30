@@ -15,7 +15,6 @@
 #include <iostream>
 //
 extern Data data;
-extern bool running;
 
 class Connect : public Command{
     string ip_address;

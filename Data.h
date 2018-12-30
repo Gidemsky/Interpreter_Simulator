@@ -26,6 +26,7 @@ class Data {
     vector<pair<string, double>> new_plane_data;
 
 public:
+    void del();
     const vector<pair<string, double>> &getNewPlaneData() const;
 
     void setNewPlaneData(string var, double val);
