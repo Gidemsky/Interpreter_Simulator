@@ -226,7 +226,13 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             }
             //Assign command
             case INIT: {
-                ce = new CommandExpression(new Assign(param));
+                string val_exp;
+                string val = param[FIRST_CELL];
+                param.erase(param.begin());
+                for(int i=1;i<param.size();i++){
+                    val_exp += param[i];
+                }
+                ce = new CommandExpression(new Assign(val,val_exp));
                 if (this->scope_open) {
                     return ce;
                 }
