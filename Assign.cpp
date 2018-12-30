@@ -10,12 +10,14 @@
  * Ctor.
  * @param params include the var name and his value.
  */
-Assign::Assign(vector<string> params){
-    this->var = params[VAR_INDEX];
-    // get the string expression
-    for (int i = VALUE_INDEX; i < params.size(); i++) {
-        this->value += params[i];
-    }
+Assign::Assign(string var, string value) {
+    this->var = var;
+    this->value = value;
+//    this->var = params[VAR_INDEX];
+//    // get the string expression
+//    for (int i = VALUE_INDEX; i < params.size(); i++) {
+//        this->value += params[i];
+//    }
 }
 
 /**

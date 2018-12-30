@@ -12,7 +12,7 @@ class Assign : public Command {
     string value;
 
 public:
-    Assign(vector<string> params);
+    Assign(string var, string value);
     virtual double execute();
 };
 
