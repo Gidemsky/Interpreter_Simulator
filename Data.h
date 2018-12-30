@@ -59,6 +59,11 @@ public:
     bool IsNewData();
     void setIsNewData(bool b);
     void clearNewPlaneData();
+    auto get_and_clear()    {
+        auto output = new_plane_data;
+        new_plane_data.clear();
+        return output;
+    }
 };
 
 #endif //SIMULATOR_DATA_H

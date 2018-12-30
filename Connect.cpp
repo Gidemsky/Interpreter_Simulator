@@ -63,37 +63,37 @@ void *Connect::runClient(void *args) {
     //will be read by server
     //if there is new data
     while (true) {
+        cout << "bla" << endl;
 
-        //buffer = "set /controls/flight/rudder -1 \r\n";
+        // buffer = "set /controls/flight/rudder -1 \r\n";
 
         // get the new data
-        vector<pair<string, double>> plane_data = data.getNewPlaneData();
+        vector<pair<string, double>> plane_data = data.get_and_clear();
         string path;
-        if (data.getNewPlaneData().size() != 0) {
-            for (auto &i : plane_data) {
+        int count = 0;
 
-                //pthread_mutex_lock(&mutex2);
+        unsigned long size = plane_data.size();
+        for (int j = 0; j < size; ++j) {
+            auto &i = plane_data[j];
+            cout << "count: " << count++ << endl;
+            //pthread_mutex_lock(&mutex2);
 
-                if (data.getBinds().count(i.first)) {
-                    cout << "check" << endl;
-                    path = data.getBind(i.first);
-                    buffer = "set " + path.substr(2, path.size() - 3) + " " + to_string(i.second);
-                    /* Send message to the server */
-                    cout << buffer << endl;
-                    const char *chr = buffer.c_str();
-                    n = static_cast<int>(write(sockfd, chr, strlen(chr)));
-                    if (n < 0) {
-                        perror("ERROR writing to socket");
-                        exit(1);
-                    }
-                    data.setSymbolTable(i.first, i.second);
+            if (data.getBinds().count(i.first)) {
+                cout << "check " << i.second << endl;
+                path = data.getBind(i.first);
+                buffer = "set " + path.substr(2, path.size() - 3) + " " + to_string(i.second) + " \r\n";
+                /* Send message to the server */
+                cout << buffer << endl;
+                const char *chr = buffer.c_str();
+                n = static_cast<int>(write(sockfd, chr, strlen(chr) + 1));
+                cout << n << endl;
+                if (n < 0) {
+                    perror("ERROR writing to socket");
+                    exit(1);
                 }
-                data.del();
-                //pthread_mutex_unlock(&mutex2);
+                data.setSymbolTable(i.first, i.second);
             }
-//            cout << "clear" << endl;
-//            data.clearNewPlaneData();
-//            data.setIsNewData(false);
+            //pthread_mutex_unlock(&mutex2);
 
         }
 //
