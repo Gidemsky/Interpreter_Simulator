@@ -21,7 +21,7 @@ void shuntingYardTest() {
     ShuntingYard sy;
     string h = "h";
     data.setSymbolTable(h, 2);
-    cout << sy.createExpression("h + 3 + (h*3)-h-h")->calculate() << endl;
+    cout << sy.createExpression("h + 3.2 + (h*3)-h-h")->calculate() << endl;
 }
 
 /**
@@ -35,9 +35,6 @@ void shuntingYardTestFullTest() {
 }
 
 void runTest() {
-    string h = "h";
-
-    data.setSymbolTable(h, 2);
     Lexer *lexer = new Lexer("CommandTestFile.txt");
     string lexer_data = lexer->getFlightUserInput();
     Interpreter *parser = new Interpreter(lexer_data);

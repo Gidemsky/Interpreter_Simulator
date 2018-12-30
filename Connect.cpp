@@ -58,17 +58,18 @@ void *Connect::runClient(void *args) {
         exit(1);
     }
 
-
+    buffer = "set /controls/flight/rudder -1 \r\n";
+    cout << buffer << endl;
     //Now ask for a message from the user, this message
     //will be read by server
     //if there is new data
     while (true) {
         cout << "bla" << endl;
 
-        // buffer = "set /controls/flight/rudder -1 \r\n";
-
         // get the new data
         vector<pair<string, double>> plane_data = data.get_and_clear();
+
+
         string path;
         int count = 0;
 
@@ -79,13 +80,15 @@ void *Connect::runClient(void *args) {
             //pthread_mutex_lock(&mutex2);
 
             if (data.getBinds().count(i.first)) {
-                cout << "check " << i.second << endl;
+                cout << "inside the data print " << i.second << endl;
                 path = data.getBind(i.first);
                 buffer = "set " + path.substr(2, path.size() - 3) + " " + to_string(i.second) + " \r\n";
+                //buffer = "set /controls/engines/current-engine/throttle 1.00000 \r\n";
+
                 /* Send message to the server */
                 cout << buffer << endl;
                 const char *chr = buffer.c_str();
-                n = static_cast<int>(write(sockfd, chr, strlen(chr) + 1));
+                n = static_cast<int>(write(sockfd, chr, strlen(chr)));
                 cout << n << endl;
                 if (n < 0) {
                     perror("ERROR writing to socket");
