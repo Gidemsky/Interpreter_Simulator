@@ -141,10 +141,10 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                 break;
             }
             case VAR: {
-                DefineVarCommand* dvc = new DefineVarCommand(param);
-                ce = new CommandExpression(dvc);
-                data.addToDelete(ce);
-                data.addCmdToDel(dvc);
+                DefineVarCommand define_var_command(param);
+//                ce = new CommandExpression(dvc);
+//                data.addToDelete(ce);
+//                data.addCmdToDel(dvc);
                 if (param[FIRST_CELL] != "var") {
                     data.setSimulatorData(param[0] + param[1] + param[2], ce);
                     return ce;
