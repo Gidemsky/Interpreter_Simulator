@@ -1,6 +1,3 @@
-//
-// Created by gideon on 14/12/18.
-//
 
 #ifndef SIMULATOR_INTERPRETER_H
 #define SIMULATOR_INTERPRETER_H
@@ -11,6 +8,17 @@
 #include "Data.h"
 #include "Command.h"
 #include "CommandExpression.h"
+#include "OpenDataServer.h"
+#include "Connect.h"
+#include "DefineVarCommand.h"
+#include "Assign.h"
+#include "LoopCommand.h"
+#include "Sleep.h"
+#include "Data.h"
+#include "PrintCommand.h"
+#include "IfCommand.h"
+#include <algorithm>
+#include <list>
 
 using namespace std;
 

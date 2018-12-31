@@ -24,7 +24,6 @@ void run(string file_name) {
     } catch (string msg) {
         cout << msg << endl;
     }
-
 }
 
 /**

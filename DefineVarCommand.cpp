@@ -19,7 +19,7 @@ DefineVarCommand::DefineVarCommand(vector<string> parameters) {
     } else {
         this->left = parameters[1];
         this->right = parameters[3];
-        data.setSymbolTable(left,0);
+        data.setSymbolTable(left, 0);
     }
 }
 

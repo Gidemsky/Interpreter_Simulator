@@ -1,6 +1,3 @@
-//
-// Created by gideon on 26/12/18.
-//
 
 #ifndef SIMULATOR_LEXER_H
 #define SIMULATOR_LEXER_H
@@ -9,6 +6,7 @@
 #include "string"
 #include "fstream"
 #include <vector>
+
 using namespace std;
 
 class Lexer {

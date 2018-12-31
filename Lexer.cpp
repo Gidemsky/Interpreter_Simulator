@@ -25,6 +25,10 @@
 
 Lexer::Lexer() {}
 
+/**
+ * Ctor
+ * @param userFileName
+ */
 Lexer::Lexer(string userFileName) {
     this->flightUserInput = fileReader(&simulatorUserFile, userFileName);
 }
@@ -84,7 +88,7 @@ string Lexer::lexer(string line, string split) {
             dataTaken.insert(pos, "(0");
             final_line += dataTaken.substr(0, pos + 3);
             dataTaken.erase(0, pos + 3);
-            //adding the rest string to the rearanged one
+            //adding the rest string to the rearranged one
             while ((isdigit(dataTaken.at(0)) || isalpha(dataTaken.at(0)))
                    || dataTaken.at(0) == '.') {
                 final_line += dataTaken.substr(0, 1);
@@ -155,6 +159,13 @@ string Lexer::fileReader(fstream *dataFile, string &fileName) {
     return (commandsFileLine);
 }
 
+/**
+ * Lexer the data from the simulator. Convert
+ * each value to double.
+ * @param line
+ * @param split
+ * @return vector with all the data.
+ */
 vector<double> Lexer::simLexer(string line, string split) {
     size_t pos = 0;
     vector<double> dataTaken;
@@ -170,6 +181,10 @@ vector<double> Lexer::simLexer(string line, string split) {
     return dataTaken;
 }
 
+/**
+ * Getter of the flight user input
+ * @return the flight user input
+ */
 const string &Lexer::getFlightUserInput() const {
     return flightUserInput;
 }

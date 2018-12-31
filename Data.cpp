@@ -7,7 +7,7 @@
 #include <list>
 
 /**
- *
+ * Insert data
  * @param cmd
  * @param ce
  */
@@ -16,7 +16,7 @@ void Data::setSimulatorData(string cmd, Expression *ce) {
 }
 
 /**
- *
+ * Getter of bind by specific var
  * @return
  */
 string Data::getBind(string var) {
@@ -24,7 +24,7 @@ string Data::getBind(string var) {
 }
 
 /**
- *
+ * Setter of bind
  * @param var_name
  * @param path
  */
@@ -33,20 +33,20 @@ void Data::setBinds(string var_name, string path) {
 }
 
 /**
- *
+ * Setter of variable in the symbol table
  * @param symbol
  * @param value
  */
 void Data::setSymbolTable(string symbol, double value) {
-    if(this->symbol_table.find(symbol) == this->symbol_table.end()){
+    if (this->symbol_table.find(symbol) == this->symbol_table.end()) {
         this->symbol_table.insert(pair<string, double>(symbol, value));
     } else {
-        this->symbol_table[symbol]=value;
+        this->symbol_table[symbol] = value;
     }
 }
 
 /**
- *
+ * Getter of the symbol table
  * @return
  */
 const map<string, double> &Data::getSymbolTable() const {
@@ -66,7 +66,6 @@ void Data::setPathValues(string data) {
     }
 }
 
-
 /**
  * Getter of var's value from the symbol table.
  * @param var
@@ -83,15 +82,27 @@ double Data::getValue(string var) {
     }
 }
 
+/**
+ * Setter of new plane data
+ * @param var
+ * @param val
+ */
 void Data::setNewPlaneData(string var, double val) {
     lock_guard<mutex> g(m);
     this->new_plane_data.emplace_back(var, val);
 }
 
+/**
+ * Getter of the binds
+ * @return
+ */
 map<string, string> &Data::getBinds() {
     return this->binds;
 }
 
+/**
+ * Initialize all the paths according to the xml.
+ */
 void Data::initializePaths() {
     this->path_value = {pair<string, double>("/instrumentation/airspeed-indicator/indicated-speed-kt", 0),
                         pair<string, double>("/instrumentation/altimeter/indicated-altitude-ft", 0),
@@ -118,13 +129,18 @@ void Data::initializePaths() {
                         pair<string, double>("/engines/engine/rpm", 0)};
 }
 
-void Data::update_path_value(int index, double value)   {
+/**
+ * Update the value of the path
+ * @param index
+ * @param value
+ */
+void Data::update_path_value(int index, double value) {
     path_value[index].second = value;
     string path = path_value[index].first;
 
-    for (auto& it : binds)  {
+    for (auto &it : binds) {
         string alt_path = it.second.substr(1, it.second.length() - 2);
-        if (it.second == path || alt_path == path)  {
+        if (it.second == path || alt_path == path) {
             symbol_table[it.first] = value;
         }
     }
@@ -171,12 +187,18 @@ void Data::addCmdToDel(Command *c) {
     this->commands_to_del.push_back(c);
 }
 
+/**
+ * Delete all the allocated commands
+ */
 void Data::deleteCommands() {
     for (int i = 0; i < this->commands_to_del.size(); i++) {
         delete commands_to_del[i];
     }
 }
 
+/**
+ * Delete all the memory of the data
+ */
 void Data::deleteMemory() {
     this->deleteCommands();
     this->deleteExpressions();

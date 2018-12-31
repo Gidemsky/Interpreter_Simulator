@@ -1,18 +1,6 @@
 
-#include <algorithm>
-#include <list>
 #include "Interpreter.h"
-#include "CommandExpression.h"
-#include "Command.h"
-#include "OpenDataServer.h"
-#include "Connect.h"
-#include "DefineVarCommand.h"
-#include "Assign.h"
-#include "LoopCommand.h"
-#include "Sleep.h"
-#include "Data.h"
-#include "PrintCommand.h"
-#include "IfCommand.h"
+
 
 #define CMD_SPLIT "#"
 #define CMD_PARAMETER "|"
@@ -44,7 +32,7 @@ Interpreter::Interpreter(string simulator_data) {
 }
 
 /**
- *
+ * Parser the data
  * @param strData
  * @param strSpliter
  */
@@ -118,7 +106,7 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
         switch (commandClass) {
             //open data server command
             case OPEN_DATA_SERVER: {
-                OpenDataServer* ods = new OpenDataServer(param[1], param[2]);
+                OpenDataServer *ods = new OpenDataServer(param[1], param[2]);
                 ce = new CommandExpression(ods);
                 data.addToDelete(ce);
                 data.addCmdToDel(ods);
@@ -130,7 +118,7 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             }
                 //connect command
             case CONNECT: {
-                Connect* connect = new Connect(param[1], param[2]);
+                Connect *connect = new Connect(param[1], param[2]);
                 ce = new CommandExpression(connect);
                 data.addToDelete(ce);
                 data.addCmdToDel(connect);
@@ -142,9 +130,6 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             }
             case VAR: {
                 DefineVarCommand define_var_command(param);
-//                ce = new CommandExpression(dvc);
-//                data.addToDelete(ce);
-//                data.addCmdToDel(dvc);
                 if (param[FIRST_CELL] != "var") {
                     data.setSimulatorData(param[0] + param[1] + param[2], ce);
                     return ce;
@@ -204,12 +189,12 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                 this->expression_count = static_cast<int>(loop_ce.size());
                 //creates the correct CommandExpression
                 if (cmd_condition_name == "while") {
-                    LoopCommand* lc = new LoopCommand(loop_ce, condition);
+                    LoopCommand *lc = new LoopCommand(loop_ce, condition);
                     ce = new CommandExpression(lc);
                     data.addToDelete(ce);
                     data.addCmdToDel(lc);
                 } else {
-                    IfCommand* ic = new IfCommand(loop_ce, condition);
+                    IfCommand *ic = new IfCommand(loop_ce, condition);
                     ce = new CommandExpression(ic);
                     data.addToDelete(ce);
                     data.addCmdToDel(ic);
@@ -224,7 +209,7 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             }
                 //Print command
             case PRINT: {
-                PrintCommand* pc = new PrintCommand(param[1]);
+                PrintCommand *pc = new PrintCommand(param[1]);
                 ce = new CommandExpression(pc);
                 data.addToDelete(ce);
                 data.addCmdToDel(pc);
@@ -236,7 +221,7 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             }
                 //Sleep command
             case SLEEP: {
-                Sleep* sl = new Sleep(param[1]);
+                Sleep *sl = new Sleep(param[1]);
                 ce = new CommandExpression(sl);
                 data.addToDelete(ce);
                 data.addCmdToDel(sl);
@@ -254,7 +239,7 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                 for (int i = 1; i < param.size(); i++) {
                     val_exp += param[i];
                 }
-                Assign* assign = new Assign(val, val_exp);
+                Assign *assign = new Assign(val, val_exp);
                 ce = new CommandExpression(assign);
                 data.addToDelete(ce);
                 data.addCmdToDel(assign);

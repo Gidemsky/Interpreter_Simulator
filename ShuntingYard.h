@@ -1,6 +1,3 @@
-//
-// Created by gideon on 17/12/18.
-//
 
 #ifndef SIMULATOR_SHOUTINGYARD_H
 #define SIMULATOR_SHOUTINGYARD_H
@@ -24,6 +21,5 @@ public:
     Expression *createExpression(string tokens);
     Expression* applyOp(Expression* val1, Expression* val2, char operation);
 };
-
 
 #endif //SIMULATOR_SHOUTINGYARD_H

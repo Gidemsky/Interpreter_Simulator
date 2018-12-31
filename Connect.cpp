@@ -19,6 +19,11 @@ Connect::Connect(string ip_address, string port) {
     this->port = shuntingYard.createExpression(port)->calculate();
 }
 
+/**
+ * Run the client.
+ * @param args
+ * @return
+ */
 void *Connect::runClient(void *args) {
     auto *p = (struct Parameters *) args;
     Parameters params;
@@ -78,6 +83,10 @@ void *Connect::runClient(void *args) {
     exit(0);
 }
 
+/**
+ * Execute the connect command.
+ * @return
+ */
 double Connect::execute() {
     pthread_t pthread;
     int r;
@@ -86,8 +95,7 @@ double Connect::execute() {
     params->port = this->port;
     r = pthread_create(&pthread, nullptr, runClient, params);
     if (r) {
-        cout << "Error! unable to create the thread";
+        cout << "Error! unable to create the thread" << endl;
         exit(1);
     }
-
 }
