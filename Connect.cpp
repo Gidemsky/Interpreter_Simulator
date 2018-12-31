@@ -8,11 +8,17 @@ struct Parameters {
 
 typedef struct Parameters Parameters;
 
+/**
+ * Ctor.
+ * @param ip_address
+ * @param port
+ */
 Connect::Connect(string ip_address, string port) {
     ShuntingYard shuntingYard;
     this->ip_address = ip_address;
     this->port = shuntingYard.createExpression(port)->calculate();
 }
+
 
 void *Connect::runClient(void *args) {
     auto *p = (struct Parameters *) args;
@@ -56,7 +62,7 @@ void *Connect::runClient(void *args) {
     //Now ask for a message from the user, this message
     //will be read by server
     //if there is new data
-    while (true) {
+    while (data.getRunning()) {
         // get the new data
         vector<pair<string, double>> plane_data = data.get_and_clear();
         unsigned long size = plane_data.size();
@@ -78,7 +84,6 @@ void *Connect::runClient(void *args) {
     }
     close(sockfd);
     exit(0);
-
 }
 
 double Connect::execute() {

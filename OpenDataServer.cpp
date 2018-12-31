@@ -35,7 +35,7 @@ void *OpenDataServer::readFromServer(void *pparams) {
     char c;
     ssize_t n = 0;
 
-    while (true) {
+    while (data.getRunning()) {
         do {
             n = read(params.socket, &c, 1);
             buffer += c;

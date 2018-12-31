@@ -11,7 +11,6 @@ class CommandExpression : public Expression {
 public:
     CommandExpression(Command* cmd);
     double calculate();
-    Command* getCommand();
 };
 
 

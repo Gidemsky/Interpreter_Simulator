@@ -17,11 +17,3 @@ double CommandExpression::calculate() {
     cmd->execute();
     return 0;
 }
-
-/**
- * Getter of the command.
- * @return the command.
- */
-Command* CommandExpression::getCommand() {
-    return this->cmd;
-}

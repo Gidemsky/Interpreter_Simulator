@@ -151,3 +151,11 @@ void Data::update_path_value(int index, double value)   {
         }
     }
 }
+
+void Data::setRunning(bool b) {
+    this->running = b;
+}
+
+bool Data::getRunning() {
+    return this->running;
+}

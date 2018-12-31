@@ -22,6 +22,7 @@ class Data {
     vector<pair<string, double>> new_plane_data;
     vector<pair<string, double>> path_value;
     mutable mutex m;
+    bool running;
 
 public:
     void setNewPlaneData(string var, double val);
@@ -43,6 +44,8 @@ public:
         return output;
     }
     void update_path_value(int index, double value);
+    void setRunning(bool b);
+    bool getRunning();
 };
 
 #endif //SIMULATOR_DATA_H

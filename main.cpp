@@ -50,7 +50,6 @@ void runTest() {
         cout << msg << endl;
     }
 
-    pthread_exit(nullptr);
 }
 
 /**
@@ -102,6 +101,7 @@ void conditionalParserTests() {
 }
 
 int main() {
+    data.setRunning(true);
     //shuntingYardTest();
     try {
         runTest();
@@ -111,4 +111,6 @@ int main() {
     //expressionsTest();
     //printCommandTests();
     //conditionalParserTests();
+    data.setRunning(false);
+    pthread_exit(nullptr);
 }
