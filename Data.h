@@ -9,6 +9,7 @@
 #include "Expression.h"
 #include "Lexer.h"
 #include "CommandExpression.h"
+#include "Number.h"
 
 using namespace std;
 
@@ -21,6 +22,8 @@ class Data {
     map<string, double> path_values;
     vector<pair<string, double>> new_plane_data;
     vector<pair<string, double>> path_value;
+//    vector <CommandExpression> ce_to_del;
+//    list <Number> num_to_del;
     mutable mutex m;
     bool running;
 
@@ -46,6 +49,7 @@ public:
     void update_path_value(int index, double value);
     void setRunning(bool b);
     bool getRunning();
+    void setCeToDel(Expression* ce)
     void clean_data();
 };
 

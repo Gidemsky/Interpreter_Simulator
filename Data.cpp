@@ -4,6 +4,7 @@
 #include "Command.h"
 #include "OpenDataServer.h"
 #include "iostream"
+#include <list>
 
 /**
  *
@@ -159,6 +160,10 @@ void Data::setRunning(bool b) {
 bool Data::getRunning() {
     return this->running;
 }
+
+//void Data::setCeToDel(Expression *ce) {
+//    this->ce_to_del.push_back(ce);
+//}
 
 //void Data::clean_data() {
 //    int i;
