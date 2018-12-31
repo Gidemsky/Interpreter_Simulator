@@ -14,12 +14,11 @@ using namespace std;
 class Lexer {
     string flightUserInput;
     fstream simulatorUserFile;
-    bool isFileLoaded;
 public:
     Lexer();
     Lexer(string userFileName);
     const string &getFlightUserInput() const;
-    string fileReader(fstream *dataFile, bool isLoaded, string& userFileName);
+    string fileReader(fstream *dataFile, string& userFileName);
     string lexer(string line, string split);
     vector<double> simLexer(string line, string split);
 };

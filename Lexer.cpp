@@ -30,7 +30,7 @@
 
 Lexer::Lexer(){}
 Lexer::Lexer(string userFileName) {
-    this->flightUserInput = fileReader(&simulatorUserFile, this->isFileLoaded, userFileName);
+    this->flightUserInput = fileReader(&simulatorUserFile, userFileName);
 }
 
 /**
@@ -116,22 +116,25 @@ string Lexer::lexer(string line, string split) {
  * @param fileName - The user's flight commands file name as.txt. sends via the register
  * @return all the commands as one string splited by the sign '|'
  */
-string Lexer::fileReader(fstream *dataFile, bool isLoaded, string& fileName) {
+string Lexer::fileReader(fstream *dataFile, string& fileName) {
     string line, commandsFileLine;
     dataFile->open(fileName);
     //checks if the file has been opened successfully
     if (!dataFile->is_open()) {
         throw "ERROR: CAN'T OPEN THE FILE";//TODO:check try and catch
     }
-    //run the lexer functions as far as there is a non empty line
-    int pos;
+    /*
+     * runs the lexer functions as far as there is a non empty line.
+     * in addition, it fix the line in order to make the space bars to be
+     * in the right place
+     */
+    unsigned long pos;
     while (getline(*dataFile, line)) {
         if(line.find(',') != string::npos) {
             pos = line.find(',');
             if(line.at(pos-1)!=' ' && line.at(pos+1)!=' '){
                 line.insert(pos+1," ");
                 line.erase(pos,1);
-                //line.insert(pos+1," ");
             } else if (line.at(pos-1)==' ' && line.at(pos+1)!=' '){
                 line.insert(pos+1," ");
                 line.erase(pos,1);
@@ -150,6 +153,7 @@ string Lexer::fileReader(fstream *dataFile, bool isLoaded, string& fileName) {
                 line.insert(pos," ");
             }
         }
+        //make lexer for the fixed line from the file
         commandsFileLine += lexer(line, FILE_SPACE);
     }
     cout<<commandsFileLine<<endl;//TODO:for debuging reasons
