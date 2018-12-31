@@ -35,7 +35,7 @@ void *OpenDataServer::readFromServer(void *pparams) {
     char c;
     ssize_t n = 0;
 
-    while (true) {
+    while (data.getRunning()) {
         do {
             n = read(params.socket, &c, 1);
             buffer += c;
@@ -46,9 +46,7 @@ void *OpenDataServer::readFromServer(void *pparams) {
                 exit(1);
             }
         } while (c != '\n');
-        //pthread_mutex_lock(&mutex);
         data.setPathValues(buffer);
-        //pthread_mutex_unlock(&mutex);
         buffer = "";
     }
 }
@@ -57,16 +55,12 @@ double OpenDataServer::execute() {
     pthread_t pthread;
     int sockfd, newsockfd, clilen;
     struct sockaddr_in serv_addr{}, cli_addr{};
-    int n;
-
     /* First call to socket() function */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
     if (sockfd < 0) {
         perror("ERROR opening socket");
         exit(1);
     }
-
     /* Initialize socket structure */
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -80,8 +74,7 @@ double OpenDataServer::execute() {
     }
 
     /* Now start listening for the clients, here process will
-       * go in sleep mode and will wait for the incoming connection
-    */
+     * go in sleep mode and will wait for the incoming connection */
     listen(sockfd, 5);
     clilen = sizeof(cli_addr);
 

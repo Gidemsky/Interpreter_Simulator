@@ -1,6 +1,3 @@
-//
-// Created by gideon on 17/12/18.
-//
 
 #include "Data.h"
 #include "CommandExpression.h"
@@ -16,7 +13,6 @@
 void Data::setSimulatorData(string cmd, Expression *ce) {
     this->simulator_data.insert(pair<string, Expression *>(cmd, ce));
 }
-//TODO: check if sim data getter is needed
 
 /**
  *
@@ -56,35 +52,6 @@ const map<string, double> &Data::getSymbolTable() const {
     return this->symbol_table;
 }
 
-///**
-// * Initialize the xml paths.
-// */
-//void Data::initializePaths() {
-//    this->paths = {"/instrumentation/airspeed-indicator/indicated-speed-kt",
-//                   "/instrumentation/altimeter/indicated-altitude-ft",
-//                   "/instrumentation/altimeter/pressure-alt-ft",
-//                   "/instrumentation/attitude-indicator/indicated-pitch-deg",
-//                   "/instrumentation/attitude-indicator/indicated-roll-deg",
-//                   "/instrumentation/attitude-indicator/internal-pitch-deg",
-//                   "/instrumentation/attitude-indicator/internal-roll-deg",
-//                   "/instrumentation/encoder/indicated-altitude-ft",
-//                   "/instrumentation/encoder/pressure-alt-ft",
-//                   "/instrumentation/gps/indicated-altitude-ft",
-//                   "/instrumentation/gps/indicated-ground-speed-kt",
-//                   "/instrumentation/gps/indicated-vertical-speed",
-//                   "/instrumentation/heading-indicator/indicated-heading-deg",
-//                   "/instrumentation/magnetic-compass/indicated-heading-deg",
-//                   "/instrumentation/slip-skid-ball/indicated-slip-skid",
-//                   "/instrumentation/turn-indicator/indicated-turn-rate",
-//                   "/instrumentation/vertical-speed-indicator/indicated-speed-fpm",
-//                   "/controls/flight/aileron",
-//                   "/controls/flight/elevator",
-//                   "/controls/flight/rudder",
-//                   "/controls/flight/flaps",
-//                   "/controls/engines/engine/throttle",
-//                   "/engines/engine/rpm"};
-//}
-
 vector<string> Data::getPaths() {
     return this->paths;
 }
@@ -98,23 +65,6 @@ void Data::initializePathValues() {
         this->path_values.insert(pair<string, double>(path, 0));
     }
 }
-
-///**
-// * Initialize all the path values.
-// * @param data
-// */
-//void Data::setPathValues(string data) {
-//    // get the values from the xml
-//    vector<double> values = this->lexer.simLexer(data, ",");
-//    map<string, double>::iterator it;
-//    // set the data
-//    for (int i = 0; i < this->paths.size(); i++) {
-//        it = this->path_values.find(this->paths[i]);
-//        if (it != this->path_values.end()) {
-//            it->second = values[i];
-//        }
-//    }
-//}
 
 /**
  * Initialize all the path values.
@@ -158,14 +108,7 @@ double Data::getValue(string var) {
 void Data::setNewPlaneData(string var, double val) {
     lock_guard<mutex> g(m);
     this->new_plane_data.emplace_back(var, val);
-    this->is_new_data = true;
 }
-
-void Data::setIsNewData(bool b) {
-    this->is_new_data = b;
-}
-
-
 
 map<string, string> &Data::getBinds() {
     return this->binds;
@@ -195,4 +138,24 @@ void Data::initializePaths() {
                         pair<string, double>("/controls/flight/flaps", 0),
                         pair<string, double>("/controls/engines/engine/throttle", 0),
                         pair<string, double>("/engines/engine/rpm", 0)};
+}
+
+void Data::update_path_value(int index, double value)   {
+    path_value[index].second = value;
+    string path = path_value[index].first;
+
+    for (auto& it : binds)  {
+        string alt_path = it.second.substr(1, it.second.length() - 2);
+        if (it.second == path || alt_path == path)  {
+            symbol_table[it.first] = value;
+        }
+    }
+}
+
+void Data::setRunning(bool b) {
+    this->running = b;
+}
+
+bool Data::getRunning() {
+    return this->running;
 }
