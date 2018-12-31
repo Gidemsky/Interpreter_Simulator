@@ -1,6 +1,3 @@
-//
-// Created by gideon on 18/12/18.
-//
 
 #ifndef SIMULATOR_OPENDATASERVER_H
 #define SIMULATOR_OPENDATASERVER_H
@@ -8,6 +5,11 @@
 #include "Command.h"
 #include "ShuntingYard.h"
 #include "Data.h"
+#include <sys/socket.h>
+#include <pthread.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <string.h>
 
 class OpenDataServer : public Command{
     unsigned short port;

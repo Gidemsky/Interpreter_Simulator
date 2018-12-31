@@ -1,102 +1,44 @@
-#include <iostream>
 
 #include "Interpreter.h"
 #include "OpenDataServer.h"
-#include "Condition.h"
-#include "algorithm"
-#include "ShuntingYard.h"
 #include "Lexer.h"
-#include "Connect.h"
 #include "Data.h"
-#include "Number.h"
-#include "PrintCommand.h"
-#include "IfCommand.h"
+
+#define FILE_NAME_INDEX 1
 
 Data data;
 
 /**
- * Working!
+ * Run the program
+ * @param file_name is the file name to read from.
  */
-void shuntingYardTest() {
-    ShuntingYard sy;
-    string h = "h";
-    data.setSymbolTable(h, 2);
-    cout << sy.createExpression("h + 3.2 + (h*3)-h-h")->calculate() << endl;
-}
-
-void runTest() {
-    Lexer *lexer = new Lexer("CommandTestFile.txt");
+void run(string file_name) {
+    Lexer *lexer = new Lexer(file_name);
     string lexer_data = lexer->getFlightUserInput();
     Interpreter *parser = new Interpreter(lexer_data);
     try {
         parser->run();
+        // delete memory
         delete parser;
         delete lexer;
-    } catch(string msg) {
-        cout << msg << endl;
-    }
-
-}
-
-/**
- * Working!
- */
-void expressionsTest() {
-    string h = "h";
-    data.setSymbolTable(h, 2);
-    Number* a = new Number("h");
-    cout << a->calculate() << endl;
-}
-
-/**
- * Working!
- */
-void printCommandTests() {
-    // print sentence
-    string t = "David";
-    t = '"' + t;
-    t = t + '"';
-    // print variable
-    string k = "h0";
-    data.setSymbolTable("h0", 5);
-    PrintCommand* p = new PrintCommand(k);
-    p->execute();
-}
-
-void conditionalParserTests() {
-    vector<CommandExpression*> cmds;
-    string condition = "h > 3";
-    data.setSymbolTable("h", 5);
-    data.setSymbolTable("David", 3);
-    //print
-    string t = "David";
-    t = '"' + t;
-    t = t + '"';
-    //print cmd
-    PrintCommand* p = new PrintCommand(t);
-    CommandExpression* print = new CommandExpression(p);
-    cmds.push_back(print);
-
-    // the second if in the scope
-    IfCommand* i2 = new IfCommand(cmds, condition);
-    CommandExpression* if2 = new CommandExpression(i2);
-    cmds.push_back(if2);
-    //condition parser command
-    IfCommand* i = new IfCommand(cmds, condition);
-    i->execute();
-}
-
-int main() {
-    data.setRunning(true);
-    //shuntingYardTest();
-    try {
-        runTest();
     } catch (string msg) {
         cout << msg << endl;
     }
-    //expressionsTest();
-    //printCommandTests();
-    //conditionalParserTests();
+
+}
+
+/**
+ * Main
+ * @param argc
+ * @param argv includes the file name of the script.
+ */
+int main(int argc, char *argv[]) {
+    // notify that we start to run the program
+    data.setRunning(true);
+    run(argv[FILE_NAME_INDEX]);
     data.setRunning(false);
+    // delete allocated memory from the data
+    data.deleteMemory();
+    // close the pthread
     pthread_exit(nullptr);
 }

@@ -6,6 +6,7 @@
 #include "string"
 #include "Data.h"
 #include <ctype.h>
+
 using namespace std;
 
 extern Data data;

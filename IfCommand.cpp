@@ -20,4 +20,5 @@ double IfCommand::execute() {
     if (cond->evaluate()) {
         ConditionParser::execute();
     }
+    delete cond;
 }

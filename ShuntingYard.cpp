@@ -22,14 +22,26 @@ int ShuntingYard::precedence(char operation) {
 
 Expression *ShuntingYard::applyOp(Expression *val1, Expression *val2, char operation) {
     switch (operation) {
-        case '*':
-            return new Mult(val1, val2);
-        case '/':
-            return new Div(val1, val2);
-        case '+':
-            return new Plus(val1, val2);
-        case '-':
-            return new Minus(val1, val2);
+        case '*': {
+            Mult* m = new Mult(val1, val2);
+            data.addToDelete(m);
+            return m;
+        }
+        case '/': {
+            Div* d = new Div(val1, val2);
+            data.addToDelete(d);
+            return d;
+        }
+        case '+': {
+            Plus* p = new Plus(val1, val2);
+            data.addToDelete(p);
+            return p;
+        }
+        case '-': {
+            Minus* m = new Minus(val1, val2);
+            data.addToDelete(m);
+            return m;
+        }
         default:
             break;
     }
@@ -68,8 +80,8 @@ Expression *ShuntingYard::createExpression(string tokens) {
             }
             i--;
             //double converted_number = stod(val);
-            //Expression *num = new Number(converted_number);
             Expression *num = new Number(val);
+            data.addToDelete(num);
             value.push(num);
         }
             // Closing brace encountered, solve

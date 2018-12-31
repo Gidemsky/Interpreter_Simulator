@@ -1,6 +1,3 @@
-//
-// Created by gideon on 26/12/18.
-//
 
 #include "Lexer.h"
 #include <algorithm>
@@ -11,13 +8,6 @@
 #include "OpenDataServer.h"
 #include "Connect.h"
 #include "DefineVarCommand.h"
-
-
-#define SIM_INPUT_SPLIT ","
-#define FILE_SPACE " "
-#define CMD_SPLIT "#"
-#define CMD_PARAMETER "|"
-
 #include "Interpreter.h"
 #include "CommandExpression.h"
 #include "Command.h"
@@ -28,7 +18,13 @@
 #include "LoopCommand.h"
 #include "Sleep.h"
 
-Lexer::Lexer(){}
+#define SIM_INPUT_SPLIT ","
+#define FILE_SPACE " "
+#define CMD_SPLIT "#"
+#define CMD_PARAMETER "|"
+
+Lexer::Lexer() {}
+
 Lexer::Lexer(string userFileName) {
     this->flightUserInput = fileReader(&simulatorUserFile, userFileName);
 }
@@ -41,31 +37,31 @@ Lexer::Lexer(string userFileName) {
  */
 string Lexer::lexer(string line, string split) {
     int sub_pos;
-    bool tab_begin=false;
+    bool tab_begin = false;
     size_t pos = 0;
     string dataTaken, final_line;
     bool is_converted = false;
-    while(line.at(0)==' '){
-        line.erase(0,1);
+    while (line.at(0) == ' ') {
+        line.erase(0, 1);
     }
 
     //run the loop as far as it has space bars
     while ((pos = line.find(split)) != string::npos) {
-        while(line.at(0)==' '){
-            line.erase(0,1);
-            tab_begin=true;
+        while (line.at(0) == ' ') {
+            line.erase(0, 1);
+            tab_begin = true;
         }
-        if(tab_begin){
+        if (tab_begin) {
             sub_pos = line.find(split);
-            if (sub_pos<0){
-                sub_pos=line.length();
+            if (sub_pos < 0) {
+                sub_pos = line.length();
                 dataTaken += line.substr(0, sub_pos);
                 line.erase(0, sub_pos + split.length());
             } else {
                 dataTaken += line.substr(0, sub_pos) + CMD_PARAMETER;
                 line.erase(0, sub_pos + split.length());
             }
-            tab_begin=false;
+            tab_begin = false;
         } else {
             dataTaken += line.substr(0, pos) + CMD_PARAMETER;
             line.erase(0, pos + split.length());
@@ -80,29 +76,29 @@ string Lexer::lexer(string line, string split) {
      * this block responsible to locolize the (-) sign and rearange
      * the string for correct shunting yard progress
      */
-    while ((pos= dataTaken.find('-')) != string::npos){
-        if(dataTaken.at(pos-1)=='*' || dataTaken.at(pos-1)=='|'
-        || dataTaken.at(pos-1)=='+' || dataTaken.at(pos-1)=='/'
-        || (dataTaken.at(pos-1)==' ' &&
-        (dataTaken.at(pos-1)!=')' || dataTaken.at(pos-1)!='('))){
-                dataTaken.insert(pos,"(0");
-                final_line += dataTaken.substr(0,pos+3);
-                dataTaken.erase(0, pos + 3);
-                //adding the rest string to the rearanged one
-                while((isdigit(dataTaken.at(0)) || isalpha(dataTaken.at(0)))
-                || dataTaken.at(0)=='.'){
-                    final_line += dataTaken.substr(0,1);
-                    dataTaken.erase(0, 1);
-                }
-                final_line.insert(final_line.size(),")");
-                is_converted=true;
+    while ((pos = dataTaken.find('-')) != string::npos) {
+        if (dataTaken.at(pos - 1) == '*' || dataTaken.at(pos - 1) == '|'
+            || dataTaken.at(pos - 1) == '+' || dataTaken.at(pos - 1) == '/'
+            || (dataTaken.at(pos - 1) == ' ' &&
+                (dataTaken.at(pos - 1) != ')' || dataTaken.at(pos - 1) != '('))) {
+            dataTaken.insert(pos, "(0");
+            final_line += dataTaken.substr(0, pos + 3);
+            dataTaken.erase(0, pos + 3);
+            //adding the rest string to the rearanged one
+            while ((isdigit(dataTaken.at(0)) || isalpha(dataTaken.at(0)))
+                   || dataTaken.at(0) == '.') {
+                final_line += dataTaken.substr(0, 1);
+                dataTaken.erase(0, 1);
+            }
+            final_line.insert(final_line.size(), ")");
+            is_converted = true;
         } else {
             //finish the loop
             break;
         }
     }
     //return the converted string
-    if(is_converted){
+    if (is_converted) {
         final_line += dataTaken;
         return final_line;
     }
@@ -115,7 +111,7 @@ string Lexer::lexer(string line, string split) {
  * @param fileName - The user's flight commands file name as.txt. sends via the register
  * @return all the commands as one string splited by the sign '|'
  */
-string Lexer::fileReader(fstream *dataFile, string& fileName) {
+string Lexer::fileReader(fstream *dataFile, string &fileName) {
     string line, commandsFileLine;
     dataFile->open(fileName);
     //checks if the file has been opened successfully
@@ -129,41 +125,41 @@ string Lexer::fileReader(fstream *dataFile, string& fileName) {
      */
     unsigned long pos;
     while (getline(*dataFile, line)) {
-        if(line.find(',') != string::npos) {
+        if (line.find(',') != string::npos) {
             pos = line.find(',');
-            if(line.at(pos-1)!=' ' && line.at(pos+1)!=' '){
-                line.insert(pos+1," ");
-                line.erase(pos,1);
-            } else if (line.at(pos-1)==' ' && line.at(pos+1)!=' '){
-                line.insert(pos+1," ");
-                line.erase(pos,1);
+            if (line.at(pos - 1) != ' ' && line.at(pos + 1) != ' ') {
+                line.insert(pos + 1, " ");
+                line.erase(pos, 1);
+            } else if (line.at(pos - 1) == ' ' && line.at(pos + 1) != ' ') {
+                line.insert(pos + 1, " ");
+                line.erase(pos, 1);
             } else {
-                line.insert(pos," ");
-                line.erase(pos+1,1);
+                line.insert(pos, " ");
+                line.erase(pos + 1, 1);
             }
-        } else if (line.find('=') != string::npos){
+        } else if (line.find('=') != string::npos) {
             pos = line.find('=');
-            if(line.at(pos-1)!=' ' && line.at(pos+1)!=' '){
-                line.insert(pos+1," ");
-                line.insert(pos," ");
-            } else if (line.at(pos-1)==' ' && line.at(pos+1)!=' '){
-                line.insert(pos+1," ");
+            if (line.at(pos - 1) != ' ' && line.at(pos + 1) != ' ') {
+                line.insert(pos + 1, " ");
+                line.insert(pos, " ");
+            } else if (line.at(pos - 1) == ' ' && line.at(pos + 1) != ' ') {
+                line.insert(pos + 1, " ");
             } else {
-                line.insert(pos," ");
+                line.insert(pos, " ");
             }
         }
         //make lexer for the fixed line from the file
         commandsFileLine += lexer(line, FILE_SPACE);
     }
     dataFile->close();
-    return(commandsFileLine);
+    return (commandsFileLine);
 }
 
-vector<double> Lexer::simLexer(string line, string split) {//TODO:check if generic is possiable
+vector<double> Lexer::simLexer(string line, string split) {
     size_t pos = 0;
     vector<double> dataTaken;
-    while(line.at(0)==' '){
-        line.erase(0,1);
+    while (line.at(0) == ' ') {
+        line.erase(0, 1);
     }
     //run the loop as far as it has space bars
     while ((pos = line.find(split)) != string::npos) {

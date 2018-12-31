@@ -1,16 +1,5 @@
 
 #include "OpenDataServer.h"
-#include <utility>
-#include <iostream>
-#include <sys/socket.h>
-#include "Data.h"
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <string.h>
 
 extern Data data;
 
@@ -22,8 +11,23 @@ struct Parameters {
 
 typedef struct Parameters Parameters;
 
-//pthread_mutex_t mutex;
+/**
+ * Ctor.
+ * @param port
+ * @param hz
+ */
+OpenDataServer::OpenDataServer(string port, string hz) {
+    ShuntingYard shuntingYard;
+    this->port = static_cast<unsigned short>(shuntingYard.createExpression(port)->calculate());
+    this->hz = static_cast<short>(shuntingYard.createExpression(hz)->calculate());
+    data.initializePaths();
+}
 
+/**
+ * Read data from the server, according to the binds in the xml.
+ * @param pparams
+ * @return
+ */
 void *OpenDataServer::readFromServer(void *pparams) {
     auto *p = (struct Parameters *) pparams;
     Parameters params;
@@ -51,6 +55,11 @@ void *OpenDataServer::readFromServer(void *pparams) {
     }
 }
 
+/**
+ * Execute. the function opens a socket and the pthread
+ * in order to read from the server.
+ * @return
+ */
 double OpenDataServer::execute() {
     pthread_t pthread;
     int sockfd, newsockfd, clilen;
@@ -91,12 +100,4 @@ double OpenDataServer::execute() {
     param->hz = hz;
     param->port = port;
     pthread_create(&pthread, nullptr, readFromServer, param);
-}
-
-OpenDataServer::OpenDataServer(string port, string hz) {
-    ShuntingYard shuntingYard;
-    this->port = static_cast<unsigned short>(shuntingYard.createExpression(port)->calculate());
-    this->hz = static_cast<short>(shuntingYard.createExpression(hz)->calculate());
-    data.initializePaths();
-    data.initializePathValues();
 }

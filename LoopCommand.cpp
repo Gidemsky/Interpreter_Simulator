@@ -20,4 +20,5 @@ double LoopCommand::execute() {
     while (cond->evaluate()) {
         ConditionParser::execute();
     }
+    delete cond;
 }

@@ -53,20 +53,6 @@ const map<string, double> &Data::getSymbolTable() const {
     return this->symbol_table;
 }
 
-vector<string> Data::getPaths() {
-    return this->paths;
-}
-
-/**
- *
- */
-void Data::initializePathValues() {
-    // initialize all the paths with 0
-    for (string path : this->getPaths()) {
-        this->path_values.insert(pair<string, double>(path, 0));
-    }
-}
-
 /**
  * Initialize all the path values.
  * @param data
@@ -92,15 +78,6 @@ double Data::getValue(string var) {
     it = this->symbol_table.find(var);
     if (it != this->symbol_table.end()) {
         return it->second;
-    }
-    // get the value from the path values
-    map<string, string>::iterator second_it;
-    second_it = this->binds.find(var);
-    if (second_it != this->binds.end()) {
-        it = this->path_values.find(second_it->second);
-        if (it != this->path_values.end()) {
-            return it->second;
-        }
     } else {
         throw "The variable " + var + " doesn't exist in the symbol table";
     }
@@ -153,21 +130,54 @@ void Data::update_path_value(int index, double value)   {
     }
 }
 
+/**
+ * Setter of the boolean running.
+ * @param b is the bool to set.
+ */
 void Data::setRunning(bool b) {
     this->running = b;
 }
 
+/**
+ * Getter of the boolean running.
+ * @return true or false.
+ */
 bool Data::getRunning() {
     return this->running;
 }
 
-//void Data::setCeToDel(Expression *ce) {
-//    this->ce_to_del.push_back(ce);
-//}
+/**
+ * Add the expression to delete
+ * @param e is the expression to add.
+ */
+void Data::addToDelete(Expression *e) {
+    this->expressions_to_del.push_back(e);
+}
 
-//void Data::clean_data() {
-//    int i;
-//    while(this->simulator_data.size() != 0){
-//        i = this->simulator_data.begin();
-//    }
-//}
+/**
+ * Delete all the allocated expressions.
+ */
+void Data::deleteExpressions() {
+    for (int i = 0; i < this->expressions_to_del.size(); i++) {
+        delete expressions_to_del[i];
+    }
+}
+
+/**
+ * Add the command to delete.
+ * @param c is the command to add.
+ */
+void Data::addCmdToDel(Command *c) {
+    this->commands_to_del.push_back(c);
+}
+
+void Data::deleteCommands() {
+    for (int i = 0; i < this->commands_to_del.size(); i++) {
+        delete commands_to_del[i];
+    }
+}
+
+void Data::deleteMemory() {
+    this->deleteCommands();
+    this->deleteExpressions();
+}

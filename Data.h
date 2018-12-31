@@ -9,7 +9,6 @@
 #include "Expression.h"
 #include "Lexer.h"
 #include "CommandExpression.h"
-#include "Number.h"
 
 using namespace std;
 
@@ -18,12 +17,10 @@ class Data {
     map<string, Expression *> simulator_data;
     map<string, string> binds;
     map<string, double> symbol_table;
-    vector<string> paths;
-    map<string, double> path_values;
     vector<pair<string, double>> new_plane_data;
     vector<pair<string, double>> path_value;
-//    vector <CommandExpression> ce_to_del;
-//    list <Number> num_to_del;
+    vector<Expression*> expressions_to_del;
+    vector<Command*> commands_to_del;
     mutable mutex m;
     bool running;
 
@@ -35,8 +32,6 @@ public:
     void setSymbolTable(string symbol, double value);
     const map<string, double> &getSymbolTable() const;
     void initializePaths();
-    vector<string> getPaths();
-    void initializePathValues();
     void setPathValues(string values);
     double getValue(string var);
     map<string,string>& getBinds();
@@ -49,8 +44,11 @@ public:
     void update_path_value(int index, double value);
     void setRunning(bool b);
     bool getRunning();
-    void setCeToDel(Expression* ce)
-    void clean_data();
+    void addToDelete(Expression* e);
+    void deleteExpressions();
+    void addCmdToDel(Command* c);
+    void deleteCommands();
+    void deleteMemory();
 };
 
 #endif //SIMULATOR_DATA_H
