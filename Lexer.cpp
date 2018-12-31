@@ -39,19 +39,39 @@ Lexer::Lexer(string userFileName) {
  * @param split - the split sign between the commands
  * @return - a string that ready to be add to all commands string (commandsFileLine)
  */
-//template <class T>TODO:check generics
 string Lexer::lexer(string line, string split) {
+    int sub_pos;
+    bool tab_begin=false;
     size_t pos = 0;
     string dataTaken, final_line;
     bool is_converted = false;
     while(line.at(0)==' '){
         line.erase(0,1);
     }
+
     //run the loop as far as it has space bars
     while ((pos = line.find(split)) != string::npos) {
-        dataTaken += line.substr(0, pos) + CMD_PARAMETER;
-        line.erase(0, pos + split.length());
+        while(line.at(0)==' '){
+            line.erase(0,1);
+            tab_begin=true;
+        }
+        if(tab_begin){
+            sub_pos = line.find(split);
+            if (sub_pos<0){
+                sub_pos=line.length();
+                dataTaken += line.substr(0, sub_pos);
+                line.erase(0, sub_pos + split.length());
+            } else {
+                dataTaken += line.substr(0, sub_pos) + CMD_PARAMETER;
+                line.erase(0, sub_pos + split.length());
+            }
+            tab_begin=false;
+        } else {
+            dataTaken += line.substr(0, pos) + CMD_PARAMETER;
+            line.erase(0, pos + split.length());
+        }
     }
+
     //adds the last string left in the line
     //deletes the number in the begging of the line
     dataTaken += line.substr(0, pos) + CMD_SPLIT;
@@ -104,7 +124,32 @@ string Lexer::fileReader(fstream *dataFile, bool isLoaded, string& fileName) {
         throw "ERROR: CAN'T OPEN THE FILE";//TODO:check try and catch
     }
     //run the lexer functions as far as there is a non empty line
+    int pos;
     while (getline(*dataFile, line)) {
+        if(line.find(',') != string::npos) {
+            pos = line.find(',');
+            if(line.at(pos-1)!=' ' && line.at(pos+1)!=' '){
+                line.insert(pos+1," ");
+                line.erase(pos,1);
+                //line.insert(pos+1," ");
+            } else if (line.at(pos-1)==' ' && line.at(pos+1)!=' '){
+                line.insert(pos+1," ");
+                line.erase(pos,1);
+            } else {
+                line.insert(pos," ");
+                line.erase(pos+1,1);
+            }
+        } else if (line.find('=') != string::npos){
+            pos = line.find('=');
+            if(line.at(pos-1)!=' ' && line.at(pos+1)!=' '){
+                line.insert(pos+1," ");
+                line.insert(pos," ");
+            } else if (line.at(pos-1)==' ' && line.at(pos+1)!=' '){
+                line.insert(pos+1," ");
+            } else {
+                line.insert(pos," ");
+            }
+        }
         commandsFileLine += lexer(line, FILE_SPACE);
     }
     cout<<commandsFileLine<<endl;//TODO:for debuging reasons
