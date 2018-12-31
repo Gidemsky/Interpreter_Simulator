@@ -64,11 +64,10 @@ void *Connect::runClient(void *args) {
     //will be read by server
     //if there is new data
     while (true) {
-        cout << "bla" << endl;
+        //cout << "bla" << endl;
 
         // get the new data
         vector<pair<string, double>> plane_data = data.get_and_clear();
-
 
         string path;
         int count = 0;
@@ -97,13 +96,10 @@ void *Connect::runClient(void *args) {
                 data.setSymbolTable(i.first, i.second);
             }
             //pthread_mutex_unlock(&mutex2);
-
         }
-//
-//        // clear the new plane data
-//        data.clearNewPlaneData();
-//        data.setIsNewData(false);
-//
+        // clear the new plane data
+        //data.clearNewPlaneData();
+        data.setIsNewData(false);
     }
     close(sockfd);
     exit(0);

@@ -6,6 +6,7 @@
 #define SIMULATOR_DATA_H
 
 #include <map>
+#include <mutex>
 #include <string>
 #include <vector>
 #include "Expression.h"
@@ -21,13 +22,12 @@ class Data {
     map<string, double> symbol_table;
     vector<string> paths;
     map<string, double> path_values;
-    map<string, string> var_path;
     bool is_new_data = false;
     vector<pair<string, double>> new_plane_data;
+    vector<pair<string, double>> path_value;
+    mutable mutex m;
 
 public:
-    void del();
-    const vector<pair<string, double>> &getNewPlaneData() const;
 
     void setNewPlaneData(string var, double val);
 
@@ -45,24 +45,37 @@ public:
     //void setLocal_var(string var_name, string value);
 
     void initializePaths();
+
+
+
     vector<string> getPaths();
-    const map<string, Expression *> &getSimulator_data() const;
     void initializePathValues();
     void setPathValues(string values);
-    map<string, double> getPathValues();
 
-    vector<CommandExpression*> getCommands();
+
 
     double getValue(string var);
     map<string,string>& getBinds();
 
-    bool IsNewData();
     void setIsNewData(bool b);
-    void clearNewPlaneData();
-    auto get_and_clear()    {
+
+    auto get_and_clear() {
+        lock_guard<mutex> g(m);
         auto output = new_plane_data;
         new_plane_data.clear();
         return output;
+    }
+
+    void update_path_value(int index, double value)   {
+        path_value[index].second = value;
+        string path = path_value[index].first;
+
+        for (auto& it : binds)  {
+            string alt_path = it.second.substr(1, it.second.length() - 2);
+            if (it.second == path || alt_path == path)  {
+                symbol_table[it.first] = value;
+            }
+        }
     }
 };
 

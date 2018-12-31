@@ -19,13 +19,7 @@ Number::Number(string arg) {
         this->num = stod(arg);
     } else {
         map<string, double> symbol_table = data.getSymbolTable();
-        map<string, double>::iterator it;
-        it = symbol_table.find(arg);
-        if (it != symbol_table.end()) {
-            this->num = it->second;
-        } else {
-            throw "the variable " + arg + " didn't initialized";
-        }
+        this->num = symbol_table.at(arg);
     }
 }
 
