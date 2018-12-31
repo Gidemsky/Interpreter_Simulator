@@ -1,6 +1,3 @@
-//
-// Created by gideon on 17/12/18.
-//
 
 #include "ShuntingYard.h"
 #include "Number.h"
@@ -8,9 +5,6 @@
 #include "Div.h"
 #include "Minus.h"
 #include "Plus.h"
-
-//TODO: evaluate var's value
-//TODO: decimal numbers
 
 ShuntingYard::ShuntingYard() {
     initializeMap();
@@ -46,7 +40,7 @@ Expression *ShuntingYard::applyOp(Expression *val1, Expression *val2, char opera
 Expression *ShuntingYard::createExpression(string tokens) {
     //int i;
     // stack to store integer values.
-    stack<Expression*> value;
+    stack<Expression *> value;
     // stack to store operators.
     stack<char> operators;
     for (int i = 0; i < tokens.length(); i++) {
@@ -66,8 +60,8 @@ Expression *ShuntingYard::createExpression(string tokens) {
             // There may be more than one
             // digits in number.
             while ((i < tokens.length() &&
-                            (isdigit(tokens[i]) || isalpha(tokens[i])))
-                            || tokens[i]=='.') {
+                    (isdigit(tokens[i]) || isalpha(tokens[i])))
+                   || tokens[i] == '.') {
                 //val = (val * 10) + (tokens[i] - '0');
                 val += tokens[i];
                 i++;
@@ -94,20 +88,6 @@ Expression *ShuntingYard::createExpression(string tokens) {
             operators.pop();
         }
 
-//        //float number
-//        else if(isdigit(tokens[i])) {
-//            string val;
-//            while ((i < tokens.length() && (isdigit(tokens[i])))
-//            || (tokens[i] == '.')) {
-//                val += tokens[i];
-//                i++;
-//            }
-//            i--;
-//            //double number = stod(val);
-//            Expression *num = new Number(val);
-//            value.push(num);
-//        }
-
             // Current token is an operator.
         else {
             // While top of 'ops' has same or greater
@@ -115,7 +95,7 @@ Expression *ShuntingYard::createExpression(string tokens) {
             // is an operator. Apply operator on top
             // of 'ops' to top two elements in values stack.
             while (!operators.empty() && precedence(operators.top())
-                                   >= precedence(tokens[i])) {
+                                         >= precedence(tokens[i])) {
                 Expression *val2 = value.top();
                 value.pop();
 

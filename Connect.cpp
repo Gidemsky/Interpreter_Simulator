@@ -1,6 +1,3 @@
-//
-// Created by gideon on 18/12/18.
-//
 
 #include "Connect.h"
 
@@ -10,8 +7,6 @@ struct Parameters {
 };
 
 typedef struct Parameters Parameters;
-
-pthread_mutex_t mutex2;
 
 Connect::Connect(string ip_address, string port) {
     ShuntingYard shuntingYard;
@@ -57,49 +52,29 @@ void *Connect::runClient(void *args) {
         perror("ERROR connecting");
         exit(1);
     }
-
-    buffer = "set /controls/flight/rudder -1 \r\n";
-    cout << buffer << endl;
+    string path;
     //Now ask for a message from the user, this message
     //will be read by server
     //if there is new data
     while (true) {
-        //cout << "bla" << endl;
-
         // get the new data
         vector<pair<string, double>> plane_data = data.get_and_clear();
-
-        string path;
-        int count = 0;
-
         unsigned long size = plane_data.size();
         for (int j = 0; j < size; ++j) {
             auto &i = plane_data[j];
-            cout << "count: " << count++ << endl;
-            //pthread_mutex_lock(&mutex2);
-
             if (data.getBinds().count(i.first)) {
-                cout << "inside the data print " << i.second << endl;
                 path = data.getBind(i.first);
                 buffer = "set " + path.substr(2, path.size() - 3) + " " + to_string(i.second) + " \r\n";
-                //buffer = "set /controls/engines/current-engine/throttle 1.00000 \r\n";
-
                 /* Send message to the server */
-                cout << buffer << endl;
                 const char *chr = buffer.c_str();
                 n = static_cast<int>(write(sockfd, chr, strlen(chr)));
-                cout << n << endl;
                 if (n < 0) {
                     perror("ERROR writing to socket");
                     exit(1);
                 }
                 data.setSymbolTable(i.first, i.second);
             }
-            //pthread_mutex_unlock(&mutex2);
         }
-        // clear the new plane data
-        //data.clearNewPlaneData();
-        data.setIsNewData(false);
     }
     close(sockfd);
     exit(0);
@@ -113,7 +88,6 @@ double Connect::execute() {
     params->ip = this->ip_address;
     params->port = this->port;
     rc = pthread_create(&pthread, nullptr, runClient, params);
-
     if (rc) {
         cout << "Error! unable to create the thread";
         exit(1);
