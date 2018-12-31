@@ -30,6 +30,8 @@ void runTest() {
     Interpreter *parser = new Interpreter(lexer_data);
     try {
         parser->run();
+        delete parser;
+        delete lexer;
     } catch(string msg) {
         cout << msg << endl;
     }

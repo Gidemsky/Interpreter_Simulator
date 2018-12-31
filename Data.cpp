@@ -159,3 +159,10 @@ void Data::setRunning(bool b) {
 bool Data::getRunning() {
     return this->running;
 }
+
+//void Data::clean_data() {
+//    int i;
+//    while(this->simulator_data.size() != 0){
+//        i = this->simulator_data.begin();
+//    }
+//}

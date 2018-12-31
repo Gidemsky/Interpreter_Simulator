@@ -46,6 +46,7 @@ public:
     void update_path_value(int index, double value);
     void setRunning(bool b);
     bool getRunning();
+    void clean_data();
 };
 
 #endif //SIMULATOR_DATA_H

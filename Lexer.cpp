@@ -112,7 +112,6 @@ string Lexer::lexer(string line, string split) {
 /**
  * Function Name: FileReader
  * @param dataFile - A pointer to the user's flight commands file
- * @param isLoaded - TODO:check if necessary
  * @param fileName - The user's flight commands file name as.txt. sends via the register
  * @return all the commands as one string splited by the sign '|'
  */
@@ -121,7 +120,7 @@ string Lexer::fileReader(fstream *dataFile, string& fileName) {
     dataFile->open(fileName);
     //checks if the file has been opened successfully
     if (!dataFile->is_open()) {
-        throw "ERROR: CAN'T OPEN THE FILE";//TODO:check try and catch
+        throw "ERROR: CAN'T OPEN THE FILE";
     }
     /*
      * runs the lexer functions as far as there is a non empty line.
@@ -156,7 +155,6 @@ string Lexer::fileReader(fstream *dataFile, string& fileName) {
         //make lexer for the fixed line from the file
         commandsFileLine += lexer(line, FILE_SPACE);
     }
-    cout<<commandsFileLine<<endl;//TODO:for debuging reasons
     dataFile->close();
     return(commandsFileLine);
 }
