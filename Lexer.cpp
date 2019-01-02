@@ -40,21 +40,22 @@ Lexer::Lexer(string userFileName) {
  * @return - a string that ready to be add to all commands string (commandsFileLine)
  */
 string Lexer::lexer(string line, string split) {
-    int sub_pos;
+    //int sub_pos; changed
     bool tab_begin = false;
-    size_t pos = 0;
+    size_t pos, sub_pos;
     string dataTaken, final_line;
     bool is_converted = false;
+    //run the loop as far as it has space bars before the line string
     while (line.at(0) == ' ') {
         line.erase(0, 1);
     }
 
-    //run the loop as far as it has space bars
     while ((pos = line.find(split)) != string::npos) {
         while (line.at(0) == ' ') {
             line.erase(0, 1);
             tab_begin = true;
         }
+        //clears the space bar before the string.
         if (tab_begin) {
             sub_pos = line.find(split);
             if (sub_pos < 0) {
@@ -79,6 +80,8 @@ string Lexer::lexer(string line, string split) {
     /*
      * this block responsible to locolize the (-) sign and rearange
      * the string for correct shunting yard progress
+     * example: -5400 = (0-5400)
+     * example: -54*-100 = (0-5400)*(0-100)
      */
     while ((pos = dataTaken.find('-')) != string::npos) {
         if (dataTaken.at(pos - 1) == '*' || dataTaken.at(pos - 1) == '|'
@@ -160,7 +163,7 @@ string Lexer::fileReader(fstream *dataFile, string &fileName) {
 }
 
 /**
- * Lexer the data from the simulator. Convert
+ * Lexer the data from the simulator. Converts
  * each value to double.
  * @param line
  * @param split

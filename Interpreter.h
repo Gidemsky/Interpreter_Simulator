@@ -44,7 +44,7 @@ class Interpreter {
 public:
     Interpreter();
     Interpreter(string simulator_data);
-    void DataParser(string strData, string strSpliter);
+    void DataParser(string& strData, string strSpliter);
     CommandExpression* CommandCreator(vector<vector<string>> data);
     void runDataMap(string& name, CommandExpression* cmd_exp);
     void run();

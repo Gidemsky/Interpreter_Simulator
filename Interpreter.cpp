@@ -6,7 +6,7 @@
 #define CMD_PARAMETER "|"
 #define SIM_INPUT_SPLIT ","
 #define SCOPE_CLOSE "}"
-#define OPEN_CLOSE "{"
+#define SCOPE_OPEN "{"
 #define FILE_SPACE " "
 #define FIRST_CELL 0
 
@@ -36,7 +36,7 @@ Interpreter::Interpreter(string simulator_data) {
  * @param strData
  * @param strSpliter
  */
-void Interpreter::DataParser(string strData, string strSpliter) {
+void Interpreter::DataParser(string& strData, string strSpliter) {
     vector<string> cmdData;
     string lineData = strData;
     size_t pos = 0;
@@ -90,9 +90,9 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
         if (CMD_DICTIONARY.find(param[FIRST_CELL]) != CMD_DICTIONARY.end()) {
             commandClass = CMD_DICTIONARY[param[FIRST_CELL]];
         }
-            //the case the is no creation left during the recursion
+        //the case the is no creation left during the recursion
         else if (param[FIRST_CELL] == SCOPE_CLOSE) {
-            return 0;
+            return nullptr;//changed from 0
         } else {
             commandClass = INIT;
         }
@@ -130,12 +130,7 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
             }
             case VAR: {
                 DefineVarCommand define_var_command(param);
-                if (param[FIRST_CELL] != "var") {
-                    data.setSimulatorData(param[0] + param[1] + param[2], ce);
-                    return ce;
-                } else {
-                    break;
-                }
+                break;
             }
                 /*
                  * the case creates the conditional parser command:
@@ -176,12 +171,13 @@ CommandExpression *Interpreter::CommandCreator(vector<vector<string>> parameters
                 string cmd_condition_name = param.front();
                 string condition;
                 param.erase(param.begin());
-                while (param.size() != 0) {
+                //checks if param is empty
+                while (!param.empty()) {
                     condition += param.front();
                     param.erase(param.begin());
                 }
-                int pos;
-                if ((pos = condition.find(OPEN_CLOSE)) != string::npos) {
+                unsigned long pos;
+                if ((pos = condition.find(SCOPE_OPEN)) != string::npos) {
                     condition.erase(pos, 1);
                 }
                 //erase the 'null' vector
